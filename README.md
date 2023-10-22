@@ -20,3 +20,7 @@ Frontend je pisan u React.js-u, a backend u Java Spring Boot-u.
 ## Kontribucije
 Pogledaj [CONTRIBUTING.md](https://github.com/VelicanstveniTimRaketa/prijava-ostecenja-javnih-povrsina).
 
+## Startanje backend servisa
+Pozicioniranje u backend direktorij i pokretanje: 
+--> **mvn clean spring-boot:run** <-- naredbe u terminalu.
+Izvršavanjem ove naredbe pokrenut će se spring-boot server na localhost:8080.
