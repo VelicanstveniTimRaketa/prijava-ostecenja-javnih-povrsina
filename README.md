@@ -35,3 +35,6 @@ Package pod imenom repository sadrži fileove koji rade direktne operacije nad b
 na pomoću već spomenutog object relational mapinga u javi.
 Package pod imenom service sadrži svu bussines logiku koja je implementirana u kodu. Cilj je postići što jednostavnije 
 i preglednije kontrolere i repository fileove čiste tako da se unutart njih obavlja isključivo opearcije nad bazom.
+
+## Dokumentacija
+Podaci o opisu zadatka postavljeni su u projectTask.pdf fileu, koji će se s vremenom nadograđivati kako aplikacija bude napredovala. 
