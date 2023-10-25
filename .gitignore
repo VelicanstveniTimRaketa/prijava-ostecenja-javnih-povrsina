@@ -1,6 +1,6 @@
 .idea
 .vscode
-*.class
+**/.DS_Store
 frontend/dist
-.DS_Store
-backend/.DS_Store
+frontend/node_modules
+backend/target
