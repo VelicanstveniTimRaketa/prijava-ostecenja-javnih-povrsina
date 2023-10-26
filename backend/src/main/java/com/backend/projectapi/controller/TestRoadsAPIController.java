@@ -26,7 +26,6 @@ public class TestRoadsAPIController {
     public String nearestRoad(@RequestParam(required = false) String address, @RequestParam(required = false) String lat, @RequestParam(required = false) String lng){
         String mapsAPIkey="AIzaSyDvl5jScXppKWZFz6vaPtasP7pPGutq8T8";
         RestTemplate restTemplate=new RestTemplate();
-        String geocodingAPIresponse="";
         StringBuilder points=new StringBuilder();
 
         //provjera da su poslani ili adresa ili koordinate
@@ -37,7 +36,7 @@ public class TestRoadsAPIController {
         if(StringUtils.hasText(address)) {
             //dobijamo koordinate iz adrese pomocu geocodingAPI-a
             String geocodingAPIurl = "https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={key}";
-            geocodingAPIresponse = restTemplate.getForObject(geocodingAPIurl, String.class, address, mapsAPIkey);
+            String geocodingAPIresponse= restTemplate.getForObject(geocodingAPIurl, String.class, address, mapsAPIkey);
             assert geocodingAPIresponse != null;
 
             //parsiranje geocodingAPIresponsea kako bi iz njega izvukli koordinate
