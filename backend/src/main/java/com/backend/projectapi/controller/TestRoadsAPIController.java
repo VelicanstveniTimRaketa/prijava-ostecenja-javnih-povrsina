@@ -27,11 +27,10 @@ public class TestRoadsAPIController {
         String mapsAPIkey="AIzaSyDvl5jScXppKWZFz6vaPtasP7pPGutq8T8";
         RestTemplate restTemplate=new RestTemplate();
         String geocodingAPIresponse="";
-        String location="";
         StringBuilder points=new StringBuilder();
 
         //provjera da su poslani ili adresa ili koordinate
-        if(!StringUtils.hasText(address) && !StringUtils.hasText(lat) && !StringUtils.hasText(lng)){ // ovaj logicki izraz se moze jos poboljsati tako da ako je poslana jedna koordinata a ne druga da takoder baci error
+        if(!StringUtils.hasText(address) && (!StringUtils.hasText(lat) || !StringUtils.hasText(lng))){
             throw new IllegalArgumentException("Ne moguce pronaci koordinate ceste jer ni adresa ni koordinate nisu poslane ");
         }
 
@@ -42,7 +41,7 @@ public class TestRoadsAPIController {
             assert geocodingAPIresponse != null;
 
             //parsiranje geocodingAPIresponsea kako bi iz njega izvukli koordinate
-            location=geocodingAPIresponse.split("location")[1];
+            String location=geocodingAPIresponse.split("location")[1];
             String address_lat=location.split(",")[0].split("\"lat\" : ")[1].trim();
             String address_lng=location.split(",")[1].split("}")[0].split(": ")[1].trim();
 
@@ -57,7 +56,8 @@ public class TestRoadsAPIController {
         String response=restTemplate.getForObject(roadsAPIurl,String.class,points,mapsAPIkey);
 
         //response bi se kasnije prosljedivao u Service dio na daljnu obradu
-        return response;
+        return response; // iz nepoznatog razloga vraca detalje za istu lokaciju dva puta, no to nije problem
+
     }
 
 }
