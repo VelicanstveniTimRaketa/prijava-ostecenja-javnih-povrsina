@@ -1,20 +1,8 @@
-import { Breadcrumb, Button, Layout, Menu, MenuProps, theme } from "antd";
-import { Content, Header } from "antd/es/layout/layout";
+import { Breadcrumb, Layout, Menu, MenuProps, theme } from "antd";
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from "@ant-design/icons";
-import Sider from "antd/es/layout/Sider";
+import { Content } from "antd/es/layout/layout";
 import { createElement } from "react";
-import { Link } from "react-router-dom";
-
-const items1: MenuProps["items"] = [
-  {
-    key: 1,
-    label: "Pretraga",
-  },
-  {
-    key: 2,
-    label: "Prijavi štetu",
-  },
-];
+import Sider from "antd/es/layout/Sider";
 
 const items2: MenuProps["items"] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
   (icon, index) => {
@@ -36,23 +24,14 @@ const items2: MenuProps["items"] = [UserOutlined, LaptopOutlined, NotificationOu
   },
 );
 
-function App() {
+
+function Start() {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  //const { global, setGlobal } = useContext(StateContext);
-
   return (
     <Layout>
-      <Header style={{ borderBottom: 0, borderTop: "2px", backgroundColor: "white", display: "flex", alignItems: "center", justifyContent: "end" }}>
-        <div className="demo-logo" />
-        <Menu style={{ display: "flex", padding: "0 1em" }} mode="horizontal" defaultSelectedKeys={["2"]} items={items1} />
-        <Link to="/login">
-            <Button type="primary">Prijava</Button>
-        </Link>
-      </Header>
-      <Layout>
         <Sider width={200} style={{ background: colorBgContainer }}>
           <Menu
             mode="inline"
@@ -80,10 +59,8 @@ function App() {
             Content
           </Content>
         </Layout>
-      </Layout>
     </Layout>
   );
 }
 
-export default App;
- 
+export default Start;

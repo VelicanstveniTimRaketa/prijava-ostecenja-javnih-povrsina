@@ -1,7 +1,7 @@
 import "./App.css";
 import { useState } from "react";
-import Main from "./views/Main";
-import Login from "./views/Login";
+import Main from "./pages/Main";
+import Login from "./pages/Login";
 import { STATE, StateContext } from "./utils/state";
 import { Route, Routes } from "react-router";
 import { BrowserRouter } from "react-router-dom";
@@ -13,8 +13,8 @@ function App() {
     <BrowserRouter>
       <StateContext.Provider value={{ global, setGlobal }}>
         <Routes>
-          <Route path="/" element={<Main />}></Route>
           <Route path="/login" element={<Login />}></Route>
+          <Route path="*" element={<Main />}></Route>
         </Routes>
       </StateContext.Provider>
     </BrowserRouter>
