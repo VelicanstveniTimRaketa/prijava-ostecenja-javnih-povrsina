@@ -18,3 +18,5 @@ ovisno dodaje li se nova funkcionalnost ili bugfix.
 - front: feat: Added admin page (UI only, no functionality)
 - front: bugfix: Fetching route /user/[:id] now properly returns an object instead of string
 
+**Za docs promjene**
+- docs: Added functional requirements
