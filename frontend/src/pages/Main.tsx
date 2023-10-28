@@ -3,15 +3,15 @@ import { StateContext } from "../utils/state";
 import { Button, Layout, Menu } from "antd";
 import { Avatar } from "antd";
 import { Header } from "antd/es/layout/layout";
-import { MenuInfo } from "rc-menu/lib/interface";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
-import { UserOutlined } from "@ant-design/icons";
+import { UserOutlined, PlusOutlined } from "@ant-design/icons";
 import { MenuPropsWithComponent } from "../utils/types";
 import { Route, Routes } from "react-router";
 import Start from "../views/Start";
 import Explore from "../views/Explore";
 import Report from "../views/Report";
+import Logo from "../components/Logo";
 
 const items: MenuPropsWithComponent = [
   {
@@ -33,25 +33,46 @@ const items: MenuPropsWithComponent = [
 
 function App() {
   const { global } = useContext(StateContext);
-  const [currentPage, setPage] = useState(window.location.pathname);
+  const [currentPage, setPage] = useState(window.location.pathname.split("/")[1]);
   const navigate = useNavigate();
 
-  function handleMenuClick(info: MenuInfo) {
-    setPage(info.key);
-    navigate(info.key);
+  function navigateToPage(page: string) {
+    setPage(page);
+    navigate(page);
   }
 
   return (
     <Layout>
-      <Header style={{ borderBottom: 0, borderTop: "2px", backgroundColor: "white", display: "flex", alignItems: "center", justifyContent: "end" }}>
-        <div className="demo-logo" />
-        <Menu style={{ display: "flex", padding: "0 1em" }} mode="horizontal" onClick={handleMenuClick} defaultSelectedKeys={[currentPage]} items={items} />
+      <Header
+        style={{
+          borderBottom: 0,
+          borderTop: "2px",
+          backgroundColor: "white",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "end",
+          background: "white",
+        }}
+      >
+        <Layout style={{ display: "flex", flexDirection: "row", background: "white", alignItems: "center" }}>
+          <Logo />
+          <Menu
+            style={{ display: "flex", padding: "0 1em" }}
+            mode="horizontal"
+            onClick={info => navigateToPage(info.key)}
+            selectedKeys={[currentPage]}
+            items={items}
+          />
+          <Button type="primary" size="large" shape="round" icon={<PlusOutlined />} onClick={() => navigateToPage("report")}>
+            Prijavi štetu
+          </Button>
+        </Layout>
         {global.loggedIn ? (
-            <Avatar icon={<UserOutlined />} />
+          <Avatar icon={<UserOutlined />} />
         ) : (
-            <Link to="/login">
-                <Button type="primary">Prijava</Button>
-            </Link>
+          <Link to="/login">
+            <Button type="primary">Prijava</Button>
+          </Link>
         )}
       </Header>
       <Routes>
@@ -64,4 +85,3 @@ function App() {
 }
 
 export default App;
- 

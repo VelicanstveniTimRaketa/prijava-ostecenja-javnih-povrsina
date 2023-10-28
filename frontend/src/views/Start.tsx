@@ -1,29 +1,8 @@
-import { Breadcrumb, Layout, Menu, MenuProps, theme } from "antd";
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from "@ant-design/icons";
+import { Layout, Typography, theme } from "antd";
 import { Content } from "antd/es/layout/layout";
-import { createElement } from "react";
-import Sider from "antd/es/layout/Sider";
-
-const items2: MenuProps["items"] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
-  (icon, index) => {
-    const key = String(index + 1);
-
-    return {
-      key: `sub${key}`,
-      icon: createElement(icon),
-      label: `subnav ${key}`,
-
-      children: new Array(4).fill(null).map((_, j) => {
-        const subKey = index * 4 + j + 1;
-        return {
-          key: subKey,
-          label: `option${subKey}`,
-        };
-      }),
-    };
-  },
-);
-
+import Title from "antd/es/typography/Title";
+import BigButton from "../components/BigButton";
+import MapEmbed from "../components/MapEmbed";
 
 function Start() {
   const {
@@ -31,34 +10,32 @@ function Start() {
   } = theme.useToken();
 
   return (
-    <Layout>
-        <Sider width={200} style={{ background: colorBgContainer }}>
-          <Menu
-            mode="inline"
-            defaultSelectedKeys={["1"]}
-            defaultOpenKeys={["sub1"]}
-            style={{ height: "100%", borderRight: 0 }}
-            items={items2}
-          />
-        </Sider>
-        <Layout style={{ padding: "0 24px 24px" }}>
-          <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item>
-          </Breadcrumb>
-          <Content
-            style={{
-              padding: 24,
-              margin: 0,
-              minHeight: 280,
-              background: colorBgContainer,
-              color: "black",
-            }}
-          >
-            Content
-          </Content>
+    <Layout
+      style={{
+        padding: "2em",
+        display: "flex",
+        flexDirection: "row",
+      }}>
+      <Content
+        style={{
+          padding: "2em",
+          margin: 0,
+          minHeight: 280,
+          color: "black",
+        }}
+      >
+        <Title level={1}>Prijavi oštećenje na cesti</Title>
+        <Typography.Paragraph style={{ fontSize: "1.5em" }}>
+          Odmah i sada!
+        </Typography.Paragraph>
+        <Layout style={{ display: "flex", flexDirection: "row", gap: "1em" }}>
+          <BigButton bold>Pretraži</BigButton>
+          <BigButton bold>Prijavi</BigButton>
         </Layout>
+      </Content>
+      <Layout style={{ flex: 1, height: "500px", background: colorBgContainer }}>
+        <MapEmbed />
+      </Layout>
     </Layout>
   );
 }
