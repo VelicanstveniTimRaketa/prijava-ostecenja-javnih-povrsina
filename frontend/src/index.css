@@ -30,6 +30,10 @@ body {
   min-height: 100vh;
 }
 
+html, body, #root {
+  background: white;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

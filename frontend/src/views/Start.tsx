@@ -2,7 +2,7 @@ import { Layout, Typography, theme } from "antd";
 import { Content } from "antd/es/layout/layout";
 import Title from "antd/es/typography/Title";
 import BigButton from "../components/BigButton";
-import MapEmbed from "../components/MapEmbed";
+import MapJsApi from "../components/MapJsApi";
 
 function Start() {
   const {
@@ -34,7 +34,7 @@ function Start() {
         </Layout>
       </Content>
       <Layout style={{ flex: 1, height: "500px", background: colorBgContainer }}>
-        <MapEmbed />
+        <MapJsApi />
       </Layout>
     </Layout>
   );

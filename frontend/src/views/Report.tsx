@@ -1,13 +1,13 @@
-import { Breadcrumb, Layout, Menu, MenuProps, Form, theme, Select } from "antd";
+import { Breadcrumb, Layout, Menu, MenuProps, Form, theme, Select, Radio, RadioChangeEvent, notification } from "antd";
 import { LaptopOutlined, NotificationOutlined, UserOutlined, PlusOutlined } from "@ant-design/icons";
 import { Content } from "antd/es/layout/layout";
-import { createElement } from "react";
+import { createElement, useState } from "react";
 import Sider from "antd/es/layout/Sider";
 import Title from "antd/es/typography/Title";
 import TextArea from "antd/es/input/TextArea";
 import Upload from "antd/es/upload/Upload";
 import { Button } from "antd";
-import MapEmbed from "../components/MapEmbed";
+import MapJsApi from "../components/MapJsApi";
 
 const items2: MenuProps["items"] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
   (icon, index) => {
@@ -29,11 +29,50 @@ const items2: MenuProps["items"] = [UserOutlined, LaptopOutlined, NotificationOu
   },
 );
 
-
 function Report() {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  const [mapInputType, setMapInputType] = useState("onMap");
+  const [location, setLocation] = useState<google.maps.LatLng | undefined>(undefined);
+
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(pos => {
+        setLocation(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+      }, error => {
+        if (error.code == error.PERMISSION_DENIED) {
+          notification.warning({
+            message: "Vaša lokacija nije dohvaćena",
+            description: "Onemogućili ste dohvaćanje lokacije zbog čega nije moguće " +
+              "dohvatiti Vašu lokaciju. Molimo unesite lokaciju na neki drugi način ili omogućite dohvaćanje lokacije.",
+            placement: "top",
+          });
+        } else {
+          notification.error({
+            message: "Vaša lokacija nije dohvaćena",
+            description: "Dogodila se pogreška pri dohvaćanju lokacije. Pokušajte ponovno kasnije.",
+            placement: "top",
+          });
+        }
+      });
+    } else {
+      notification.error({
+        message: "Vaša lokacija nije dohvaćena",
+        description: "Vaš preglednik ne podržava dohvaćanje lokacije. Molimo ažurirajte preglednik.",
+        placement: "top",
+      });
+    }
+  }
+
+  function handleMapChange(e: RadioChangeEvent): void {
+    if (e.target.value == "myLocation") {
+      getLocation();
+      return;
+    }
+    setMapInputType(e.target.value);
+  }
 
   return (
     <Layout>
@@ -54,7 +93,7 @@ function Report() {
         </Breadcrumb>
         <Content
           style={{
-            padding: 24,
+            padding: "0 3em",
             margin: 0,
             minHeight: 280,
             background: colorBgContainer,
@@ -72,16 +111,23 @@ function Report() {
               </Select>
             </Form.Item>
             <Form.Item label="Opis">
-              <TextArea rows={4}></TextArea>
+              <TextArea rows={4} />
             </Form.Item>
             <Form.Item required label="Lokacija">
-              <MapEmbed />
+              <Radio.Group onChange={handleMapChange}>
+                <Radio.Button defaultChecked value="onMap">Odaberi na karti</Radio.Button>
+                <Radio.Button value="address">Unesi adresu</Radio.Button>
+                <Radio.Button value="myLocation">Uzmi moju lokaciju</Radio.Button>
+              </Radio.Group>
+              <Layout style={{ margin: "1em 0" }}>
+                <MapJsApi marker={location} onClick={l => setLocation(l)} disabled={mapInputType !== "onMap"} />
+              </Layout>
             </Form.Item>
-            <Form.Item label="slike" valuePropName="fileList" getValueFromEvent={(file) => console.log(file)}>
+            <Form.Item label="Slike" valuePropName="fileList" getValueFromEvent={(file) => console.log(file)}>
               <Upload action="/upload" accept="image/jpeg, image/png" listType="picture-card">
                 <div>
                   <PlusOutlined />
-                  <div style={{ marginTop: 8 }}>Učitaj slike</div>
+                  <div style={{ marginTop: 8 }}>Učitaj sliku</div>
                 </div>
               </Upload>
             </Form.Item>
