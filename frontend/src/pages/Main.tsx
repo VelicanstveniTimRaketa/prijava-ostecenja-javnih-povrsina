@@ -1,17 +1,17 @@
 import { useContext, useState } from "react";
 import { StateContext } from "../utils/state";
 import { Button, Layout, Menu } from "antd";
-import { Avatar } from "antd";
 import { Header } from "antd/es/layout/layout";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
-import { UserOutlined, PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import { MenuPropsWithComponent } from "../utils/types";
 import { Route, Routes } from "react-router";
 import Start from "../views/Start";
 import Explore from "../views/Explore";
 import Report from "../views/Report";
 import Logo from "../components/Logo";
+import UserIcon from "../components/UserIcon";
 
 const items: MenuPropsWithComponent = [
   {
@@ -67,8 +67,8 @@ function App() {
             Prijavi štetu
           </Button>
         </Layout>
-        {global.loggedIn ? (
-          <Avatar icon={<UserOutlined />} />
+        {global.user ? (
+          <UserIcon />
         ) : (
           <Link to="/login">
             <Button type="primary">Prijava</Button>

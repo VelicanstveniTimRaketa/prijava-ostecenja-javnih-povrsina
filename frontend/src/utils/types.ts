@@ -5,9 +5,13 @@ export enum Page {
   LOGIN
 }
 
+export type User = {
+  username: string;
+}
+
 export type GlobalState = {
   page: Page,
-  loggedIn: boolean,
+  user?: User,
 }
 
 // this is some vile black magic fr
