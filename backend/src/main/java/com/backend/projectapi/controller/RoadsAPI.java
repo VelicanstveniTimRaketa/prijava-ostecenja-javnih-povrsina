@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Testna klasa za isprobavanje rada RoadAPI-a
+ * ovo ce kasnije postati dio SERVICE koda
  */
 @RestController
 @RequestMapping("test/api")
-public class TestRoadsAPIController {
+public class RoadsAPI {
 
     /**
      * Nalazi koordinate najblize ceste iz ili adrese ili koordinata
