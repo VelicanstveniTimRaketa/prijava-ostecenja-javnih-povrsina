@@ -22,4 +22,4 @@ ovisno dodaje li se nova funkcionalnost ili bugfix.
 - front: refractor: Routes now use component wrappers to render header and footer
 
 **Za promjene dokumentacije**  
-- documentation: Fixed spelling mistakes
+- docs: Added functional requirements
