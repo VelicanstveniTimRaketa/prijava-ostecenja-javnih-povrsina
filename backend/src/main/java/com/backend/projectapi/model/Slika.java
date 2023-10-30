@@ -8,11 +8,13 @@ import lombok.Setter;
 import java.util.UUID;
 
 @Entity
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 @Table
 public class Slika {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", insertable = false, updatable = false, nullable = false)
     private UUID Id;
     private byte[] podatak; //slika

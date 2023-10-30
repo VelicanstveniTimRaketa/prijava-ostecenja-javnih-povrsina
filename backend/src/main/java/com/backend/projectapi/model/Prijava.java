@@ -17,7 +17,7 @@ import java.util.UUID;
 @Getter @Setter @NoArgsConstructor
 public class Prijava {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", insertable = false, updatable = false, nullable = false)
     private UUID Id;
     private long latitude;

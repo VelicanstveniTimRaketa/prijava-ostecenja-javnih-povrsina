@@ -32,5 +32,4 @@ public class LogoviPrijave {
 class LogoviPrijaveKey implements Serializable{
     private UUID korisnikId;
     private UUID prijavaId;
-
 }
