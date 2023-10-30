@@ -3,14 +3,15 @@ package com.backend.projectapi.exception;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ErrorDataResponse {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
-    private String message;
+    private List<String> message;
 
-    public ErrorDataResponse(String message) {
+    public ErrorDataResponse(List<String> message) {
         this.timestamp = LocalDateTime.now();
         this.message = message;
     }
@@ -23,11 +24,11 @@ public class ErrorDataResponse {
         this.timestamp = timestamp;
     }
 
-    public String getMessage() {
+    public List<String> getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(List<String> message) {
         this.message = message;
     }
 }
