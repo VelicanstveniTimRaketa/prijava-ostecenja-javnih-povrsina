@@ -22,9 +22,6 @@ public class TipOstecenja {
     @NonNull
     private String naziv;
 
-    @NonNull
-    private String nazivVijeca;
-
     @OneToOne
     @JoinColumn(name = "vijeceId", referencedColumnName = "id")
     private Vijece vijeceId;
