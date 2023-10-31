@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table
+@Table(name = "tipovi_ostecenja")
 @RequiredArgsConstructor
 public class TipOstecenja {
     @Id

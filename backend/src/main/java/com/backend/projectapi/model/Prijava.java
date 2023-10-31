@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.java.Log;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -37,14 +38,17 @@ public class Prijava {
     @JoinColumn(name = "kreatorId")
     private Korisnik kreatorId;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "prijava", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Slika> slike;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "parent_prijava_id")
+    private Prijava parentPrijava;
 
     @NonNull
-    private LocalDate prvoVrijemePrijave;
+    private Timestamp prvoVrijemePrijave;
 
-    private LocalDate vrijemeOtklona;
+    private Timestamp vrijemeOtklona;
 
 }

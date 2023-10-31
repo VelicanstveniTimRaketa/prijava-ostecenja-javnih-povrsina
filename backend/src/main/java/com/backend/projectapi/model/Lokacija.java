@@ -13,11 +13,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @RequiredArgsConstructor
+@Table(name = "lokacije")
 public class Lokacija {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", insertable = false, updatable = false, nullable = false)
-    private Long id;
+    private Long Id;
 
     @NonNull
     @NotBlank

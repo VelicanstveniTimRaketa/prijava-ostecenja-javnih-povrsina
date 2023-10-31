@@ -1,5 +1,6 @@
 package com.backend.projectapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
@@ -9,6 +10,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @RequiredArgsConstructor
+@Table(name = "vijeca")
 public class Vijece {
 
     @Id
@@ -21,6 +23,7 @@ public class Vijece {
     @Column(name = "naziv",nullable = false)
     private String naziv;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "vijeceId")
     private TipOstecenja tipOstecenja;
 }

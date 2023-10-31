@@ -11,7 +11,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @RequiredArgsConstructor
-@Table
+@Table(name = "slike")
 public class Slika {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

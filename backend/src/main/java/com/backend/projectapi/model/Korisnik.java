@@ -2,6 +2,7 @@ package com.backend.projectapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -21,11 +22,13 @@ public class Korisnik {
     private Long Id;
 
     @NonNull
-    @Column(name = "username", nullable = false)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
     @NonNull
-    @Column(name = "email", nullable = false)
+    @Email
+
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @JsonIgnore
