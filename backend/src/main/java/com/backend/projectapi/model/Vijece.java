@@ -1,29 +1,26 @@
 package com.backend.projectapi.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-
-import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @RequiredArgsConstructor
-@Table
-public class Slika {
+public class Vijece {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", insertable = false, updatable = false, nullable = false)
-    private Long Id;
+    private Long id;
 
     @NonNull
-    private byte[] podatak; //slika
+    @NotBlank
+    @Column(name = "naziv",nullable = false)
+    private String naziv;
 
-    @JsonIgnore
-    @NonNull
-    @ManyToOne
-    @JoinColumn(name = "prijavaId")
-    private Prijava prijava;
+    @OneToOne(mappedBy = "vijeceId")
+    private TipOstecenja tipOstecenja;
 }
