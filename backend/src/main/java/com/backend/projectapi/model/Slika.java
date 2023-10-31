@@ -20,7 +20,7 @@ public class Slika {
 
 
     @NonNull
-    private Byte[] podatak; //slika
+    private byte[] podatak; //slika
 
     @JsonIgnore
     @NonNull
