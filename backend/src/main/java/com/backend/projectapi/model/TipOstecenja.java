@@ -17,14 +17,12 @@ public class TipOstecenja {
     @Column(name="id", insertable = false, updatable = false, nullable = false)
     private UUID Id;
     private String naziv;
-    private long IdVijeca; //neznan koliko je ovo bitno ali tako je na skici
     private String nazivVijeca;
-    @OneToMany(mappedBy = "tipOstecenja",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "tipOstecenja", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Prijava> prijave;
 
-    public TipOstecenja(String naziv, long idVijeca, String nazivVijeca) {
+    public TipOstecenja(String naziv, String nazivVijeca) {
         this.naziv = naziv;
-        IdVijeca = idVijeca;
         this.nazivVijeca = nazivVijeca;
     }
 }
