@@ -32,7 +32,4 @@ public class Korisnik {
     @OneToMany(mappedBy = "kreatorId",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Prijava> prijave;
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "korisnik")
-    private LogoviPrijave log;
 }

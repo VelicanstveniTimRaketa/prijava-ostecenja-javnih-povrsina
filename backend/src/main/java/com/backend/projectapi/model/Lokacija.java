@@ -2,35 +2,34 @@ package com.backend.projectapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.hibernate.annotations.NotFound;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Table
 @RequiredArgsConstructor
-public class TipOstecenja {
+public class Lokacija {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", insertable = false, updatable = false, nullable = false)
-    private Long Id;
+    private Long id;
 
     @NonNull
-    private String naziv;
+    @NotBlank
+    @Column(name = "latitude",nullable = false)
+    private Double latitude;
 
     @NonNull
-    private String nazivVijeca;
-
-    @OneToOne
-    @JoinColumn(name = "vijeceId", referencedColumnName = "id")
-    private Vijece vijeceId;
+    @NotBlank
+    @Column(name = "longitude",nullable = false)
+    private Double longitute;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "tipOstecenja", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "lokacijaId", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Prijava> prijave;
-
 }
