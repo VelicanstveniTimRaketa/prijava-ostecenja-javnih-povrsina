@@ -16,7 +16,7 @@ public class Slika {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", insertable = false, updatable = false, nullable = false)
-    private UUID Id;
+    private Long Id;
     private byte[] podatak; //slika
     @ManyToOne
     @JoinColumn(name = "prijavaId")

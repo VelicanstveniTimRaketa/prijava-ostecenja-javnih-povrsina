@@ -15,7 +15,7 @@ public class TipOstecenja {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", insertable = false, updatable = false, nullable = false)
-    private UUID Id;
+    private Long Id;
     private String naziv;
     private String nazivVijeca;
     @OneToMany(mappedBy = "tipOstecenja", cascade = CascadeType.ALL,orphanRemoval = true)

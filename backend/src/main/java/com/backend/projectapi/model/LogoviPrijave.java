@@ -16,9 +16,9 @@ import java.util.UUID;
 public class LogoviPrijave {
     //treba skuziti kako postaviti kompleksni kljuc
     @Id
-    private UUID korisnikId;
+    private Long korisnikId;
     @Id
-    private UUID prijavaId;
+    private Long prijavaId;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "korisnikId")
     private Korisnik korisnik;
@@ -30,6 +30,6 @@ public class LogoviPrijave {
 }
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
 class LogoviPrijaveKey implements Serializable{
-    private UUID korisnikId;
-    private UUID prijavaId;
+    private Long korisnikId;
+    private Long prijavaId;
 }
