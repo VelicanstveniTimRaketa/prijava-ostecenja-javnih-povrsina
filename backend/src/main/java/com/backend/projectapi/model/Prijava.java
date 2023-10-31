@@ -1,5 +1,6 @@
 package com.backend.projectapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.java.Log;
@@ -28,20 +29,28 @@ public class Prijava {
     @Column(name = "longitude", nullable = false)
     private Long longitude;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "ostecenjeId")
     private TipOstecenja tipOstecenja;
 
+    @JsonIgnore
+    @NonNull
     @ManyToOne //jedna prijava ima samo jednog korisnika a jedan korisnik moze imati vise prijava
     @JoinColumn(name = "kreatorId")
     private Korisnik kreatorId;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "prijava", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Slika> slike;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "prijava")
     private LogoviPrijave log;
+
+    @NonNull
     private LocalDate prvoVrijemePrijave;
+
     private LocalDate vrijemeOtklona;
     public Prijava(long latitude, long longitude, TipOstecenja tipOstecenja, Korisnik kreatorId, LocalDate prvoVrijemePrijave, LocalDate vrijemeOtklona) {
         this.latitude = latitude;

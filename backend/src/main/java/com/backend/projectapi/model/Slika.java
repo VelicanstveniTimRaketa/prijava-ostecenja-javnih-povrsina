@@ -1,9 +1,8 @@
 package com.backend.projectapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -11,19 +10,21 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@RequiredArgsConstructor
 @Table
 public class Slika {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", insertable = false, updatable = false, nullable = false)
     private Long Id;
-    private byte[] podatak; //slika
+
+
+    @NonNull
+    private Byte[] podatak; //slika
+
+    @JsonIgnore
+    @NonNull
     @ManyToOne
     @JoinColumn(name = "prijavaId")
     private Prijava prijava;
-
-    public Slika(byte[] podatak, Prijava prijava) {
-        this.podatak = podatak;
-        this.prijava = prijava;
-    }
 }
