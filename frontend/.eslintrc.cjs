@@ -14,5 +14,9 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    "semi": [1, "always"],
+    "quotes": [1, "double"],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
   },
 }
