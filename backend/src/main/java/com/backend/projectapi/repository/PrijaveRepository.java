@@ -8,5 +8,7 @@ import java.util.Optional;
 
 public interface PrijaveRepository extends JpaRepository<Prijava, Long> {
 
-    Optional<List<Prijava>> findAllByParentPrijava(Prijava prijava);
+    List<Prijava> getAllByVrijemeOtklonaIsNull();
+    List<Prijava> findAllByParentPrijava(Prijava prijava);
+
 }

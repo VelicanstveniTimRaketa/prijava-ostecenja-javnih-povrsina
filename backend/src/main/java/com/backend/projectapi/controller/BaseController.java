@@ -25,13 +25,5 @@ public class BaseController {
         return new ResponseEntity<>(repo.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/home/child_prijave")
-    public ResponseEntity<Object> getChildPrijave(@RequestBody Prijava prijava){
-        Optional<Prijava> parent_prijava= repo.findById(prijava.getId());
-        if (parent_prijava.isEmpty()){
-            throw new RecordNotFoundException("nepostoji prijava za dani id: "+prijava.getId());
-        }else {
-            return new ResponseEntity<>(repo.findAllByParentPrijava(prijava), HttpStatus.OK);
-        }
-    }
+
 }
