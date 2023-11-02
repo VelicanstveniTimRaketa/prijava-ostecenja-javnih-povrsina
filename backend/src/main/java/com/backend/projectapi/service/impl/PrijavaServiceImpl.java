@@ -6,6 +6,7 @@ import com.backend.projectapi.model.Prijava;
 import com.backend.projectapi.repository.PrijaveRepository;
 import com.backend.projectapi.service.PrijavaService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -54,6 +55,7 @@ public class PrijavaServiceImpl implements PrijavaService {
     }
 
     @Override
+    @Transactional
     public Boolean makeChildPrijavu(Long parent_id, Long child_id) {
         Optional<Prijava> parent_prijava=prijaveRepo.findById(parent_id);
         Optional<Prijava> child_prijava=prijaveRepo.findById(child_id);
