@@ -53,5 +53,22 @@ public class PrijavaServiceImpl implements PrijavaService {
         return closePrijave;
     }
 
+    @Override
+    public Boolean makeChildPrijavu(Long parent_id, Long child_id) {
+        Optional<Prijava> parent_prijava=prijaveRepo.findById(parent_id);
+        Optional<Prijava> child_prijava=prijaveRepo.findById(child_id);
+
+        if (parent_prijava.isEmpty()){
+            return false;
+        }
+        if (child_prijava.isEmpty()){
+            return false;
+        }
+        Prijava child=child_prijava.get();
+        child.setParentPrijava(parent_prijava.get());
+
+        return true;
+    }
+
 
 }

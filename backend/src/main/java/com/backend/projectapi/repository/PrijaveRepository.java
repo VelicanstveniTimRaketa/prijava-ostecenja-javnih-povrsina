@@ -22,4 +22,5 @@ public interface PrijaveRepository extends JpaRepository<Prijava, Long> {
             "latitude between (:lat - 0.00009) and (:lat + 0.00009) and longitude between (:lng - 0.00009) and " +
             "(:lng + 0.00009)", nativeQuery = true)
     List<Prijava> findClosePrijave (@Param("lat") Double lat, @Param("lng") Double lng);
+
 }
