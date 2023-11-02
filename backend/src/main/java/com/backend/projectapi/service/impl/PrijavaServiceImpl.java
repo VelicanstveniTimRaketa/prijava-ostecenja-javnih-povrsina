@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,12 +31,13 @@ public class PrijavaServiceImpl implements PrijavaService {
     }
 
     @Override
-    public Object getChildPrijave(Long id) {
+    public List<Prijava> getChildPrijave(Long id) {
        Optional<Prijava> optionalPrijava = prijaveRepo.findById(id);
-       if (optionalPrijava.isEmpty()){
-           return new RecordNotFoundException("ne postoji prijava sa danim id-em: "+id);
+       if (optionalPrijava.isPresent()){
+           return prijaveRepo.findAllByParentPrijava(optionalPrijava.get());
+       }else {
+           return new ArrayList<>();
        }
-       return prijaveRepo.findAllByParentPrijava(optionalPrijava.get());
     }
 
     @Override

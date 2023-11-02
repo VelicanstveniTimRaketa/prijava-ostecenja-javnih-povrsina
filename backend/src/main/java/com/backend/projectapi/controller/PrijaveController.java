@@ -1,5 +1,6 @@
 package com.backend.projectapi.controller;
 
+import com.backend.projectapi.ResponseData;
 import com.backend.projectapi.model.Prijava;
 import com.backend.projectapi.service.PrijavaService;
 import lombok.extern.java.Log;
@@ -23,11 +24,11 @@ public class PrijaveController {
     }
 
     @GetMapping("/prijave")
-    public ResponseEntity<List<Prijava>> getAllPrijave(){
-        return new ResponseEntity<>(prijavaService.getAllPrijave(), HttpStatus.OK);
+    public ResponseEntity<ResponseData<List<Prijava>>> getAllPrijave(){
+        return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave()), HttpStatus.OK);
     }
 
-    @GetMapping("/aktvnePrijave")
+    @GetMapping("/aktivnePrijave")
     public ResponseEntity<List<Prijava>> getAllActivePrijave(){
         return new ResponseEntity<>(prijavaService.getActivePrijave(),HttpStatus.OK);
     }

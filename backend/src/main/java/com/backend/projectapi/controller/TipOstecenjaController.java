@@ -1,5 +1,6 @@
 package com.backend.projectapi.controller;
 
+import com.backend.projectapi.ResponseData;
 import com.backend.projectapi.model.TipOstecenja;
 import com.backend.projectapi.service.TipOstecenjaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class TipOstecenjaController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<TipOstecenja>> getOstecenja(){
-        return new ResponseEntity<>(service.getAllTipOstecenja(), HttpStatus.OK);
+    public ResponseEntity<ResponseData<List<TipOstecenja>>> getOstecenja(){
+        return new ResponseEntity<>(ResponseData.success(service.getAllTipOstecenja()), HttpStatus.OK);
     }
 }

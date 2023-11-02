@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface PrijavaService {
 
     public List<Prijava> getAllPrijave();
-    public Object getChildPrijave(Long id);
+    public List<Prijava> getChildPrijave(Long id);
     public List<Prijava> getActivePrijave();
 
 }
