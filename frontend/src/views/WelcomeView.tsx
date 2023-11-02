@@ -4,7 +4,7 @@ import Title from "antd/es/typography/Title";
 import BigButton from "../components/BigButton";
 import MapJsApi from "../components/MapJsApi";
 
-function Start() {
+function WelcomeView() {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -40,4 +40,4 @@ function Start() {
   );
 }
 
-export default Start;
+export default WelcomeView;
