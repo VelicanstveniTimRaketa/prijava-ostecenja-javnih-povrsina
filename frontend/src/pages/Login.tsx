@@ -1,15 +1,15 @@
 import { Layout, Button, Typography, Form, Input } from "antd";
-import { Content, Header } from "antd/es/layout/layout";
+import { Content } from "antd/es/layout/layout";
 import { useNavigate } from "react-router-dom";
-import Logo from "../components/Logo";
 import { useForm } from "antd/es/form/Form";
 import { useContext } from "react";
 import { StateContext } from "../utils/state";
+import LoginRegisterHeader from "../components/LoginRegisterHeader";
 
 function Login() {
+  const { global, setGlobal } = useContext(StateContext);
   const [form] = useForm();
   const navigate = useNavigate();
-  const { global, setGlobal } = useContext(StateContext);
 
   function onSubmit() {
     setGlobal({
@@ -21,19 +21,7 @@ function Login() {
 
   return (
     <Layout>
-      <Header
-        style={{
-          borderBottom: 0,
-          borderTop: "2px",
-          backgroundColor: "white",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between"
-        }}
-      >
-        <Logo />
-        <Button onClick={() => navigate(-1)}>Natrag</Button>
-      </Header>
+      <LoginRegisterHeader />
       <Layout>
         <Content style={{ display: "flex", alignItems: "center", flexDirection: "column", flex: "1", width: "100%" }}>
           <Typography.Title level={2}>Prijava</Typography.Title>

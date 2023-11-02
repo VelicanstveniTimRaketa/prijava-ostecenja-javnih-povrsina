@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 import { PlusOutlined } from "@ant-design/icons";
 import { MenuPropsWithComponent } from "../utils/types";
 import { Route, Routes } from "react-router";
-import Start from "../views/Start";
+import WelcomeView from "../views/WelcomeView";
 import Explore from "../views/Explore";
 import Report from "../views/Report";
 import Logo from "../components/Logo";
@@ -17,7 +17,7 @@ const items: MenuPropsWithComponent = [
   {
     key: "",
     label: "Početna",
-    component: Start,
+    component: WelcomeView,
   },
   {
     key: "search",
@@ -70,9 +70,14 @@ function App() {
         {global.user ? (
           <UserIcon />
         ) : (
-          <Link to="/login">
-            <Button type="primary">Prijava</Button>
-          </Link>
+          <>
+            <Link to="/register" style={{ margin: "1em" }}>
+              <Button>Registracija</Button>
+            </Link>
+            <Link to="/login">
+              <Button type="primary">Prijava</Button>
+            </Link>
+          </>
         )}
       </Header>
       <Routes>
