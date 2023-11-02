@@ -14,7 +14,7 @@ function Login() {
   function onSubmit() {
     setGlobal({
       ...global,
-      user: { username: form.getFieldValue("username") }
+      user: { username: form.getFieldValue("username"), email: "", id: 0 }
     });
     navigate("/");
   }

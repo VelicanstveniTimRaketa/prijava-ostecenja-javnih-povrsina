@@ -9,7 +9,6 @@ import { MenuPropsWithComponent } from "../utils/types";
 import { Route, Routes } from "react-router";
 import WelcomeView from "../views/WelcomeView";
 import Explore from "../views/Explore";
-import Report from "../views/Report";
 import Logo from "../components/Logo";
 import UserIcon from "../components/UserIcon";
 
@@ -23,11 +22,6 @@ const items: MenuPropsWithComponent = [
     key: "search",
     label: "Pretraga",
     component: Explore,
-  },
-  {
-    key: "report",
-    label: "Prijavi štetu",
-    component: Report,
   },
 ];
 
