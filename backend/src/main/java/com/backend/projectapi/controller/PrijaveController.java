@@ -36,4 +36,9 @@ public class PrijaveController {
     public ResponseEntity<Object> getChildPrijave(@RequestParam Long id){
         return new ResponseEntity<>(prijavaService.getChildPrijave(id),HttpStatus.OK);
     }
+
+    @GetMapping("/closePrijave")
+    public ResponseEntity<Object> getClosePrijave(@RequestParam Double lat, @RequestParam Double lng){
+        return new ResponseEntity<>(prijavaService.getClosePrijave(lat,lng),HttpStatus.OK);
+    }
 }

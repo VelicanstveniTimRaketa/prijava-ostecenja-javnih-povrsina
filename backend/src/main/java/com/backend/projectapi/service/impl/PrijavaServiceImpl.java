@@ -5,9 +5,6 @@ import com.backend.projectapi.exception.RecordNotFoundException;
 import com.backend.projectapi.model.Prijava;
 import com.backend.projectapi.repository.PrijaveRepository;
 import com.backend.projectapi.service.PrijavaService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,4 +39,15 @@ public class PrijavaServiceImpl implements PrijavaService {
     public List<Prijava> getActivePrijave() {
         return prijaveRepo.getAllByVrijemeOtklonaIsNull();
     }
+
+    @Override
+    public Object getClosePrijave(Double latitude, Double longitude) {
+        List<Prijava> closePrijave= prijaveRepo.findClosePrijave(latitude,longitude);
+        if (closePrijave.isEmpty()){
+            return new RecordNotFoundException("ne postoje bliske prijave za dane lat "+latitude+" i lng "+longitude);
+        }
+        return closePrijave;
+    }
+
+
 }

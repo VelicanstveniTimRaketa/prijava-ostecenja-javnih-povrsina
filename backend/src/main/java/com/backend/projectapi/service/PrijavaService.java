@@ -12,5 +12,5 @@ public interface PrijavaService {
     public List<Prijava> getAllPrijave();
     public Object getChildPrijave(Long id);
     public List<Prijava> getActivePrijave();
-
+    public Object getClosePrijave(Double latitude, Double longitude);
 }
