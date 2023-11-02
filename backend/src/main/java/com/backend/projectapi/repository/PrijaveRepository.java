@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PrijaveRepository extends JpaRepository<Prijava, Long> {
-
+    @Query (value = "select prijave.* from prijave where vrijeme_otklona is null", nativeQuery = true)
     List<Prijava> getAllByVrijemeOtklonaIsNull();
     List<Prijava> findAllByParentPrijava(Prijava prijava);
 

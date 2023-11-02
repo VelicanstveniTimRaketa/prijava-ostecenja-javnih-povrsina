@@ -24,14 +24,11 @@ public class PrijaveController {
     }
 
     @GetMapping("/prijave")
-    public ResponseEntity<ResponseData<List<Prijava>>> getAllPrijave(){
-        return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave()), HttpStatus.OK);
+    public ResponseEntity<ResponseData<List<Prijava>>> getAllPrijave(@RequestParam(required = false) String active){
+        return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave(active)), HttpStatus.OK);
     }
 
-    @GetMapping("/aktivnePrijave")
-    public ResponseEntity<List<Prijava>> getAllActivePrijave(){
-        return new ResponseEntity<>(prijavaService.getActivePrijave(),HttpStatus.OK);
-    }
+
 
     @GetMapping("/childPrijave")
     public ResponseEntity<Object> getChildPrijave(@RequestParam Long id){
