@@ -6,6 +6,7 @@ import com.backend.projectapi.model.Prijava;
 import com.backend.projectapi.repository.PrijaveRepository;
 import com.backend.projectapi.service.PrijavaService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,12 @@ public class PrijavaServiceImpl implements PrijavaService {
 
 
     @Override
-    public List<Prijava> getAllPrijave() {
-        return prijaveRepo.findAll();
+    public List<Prijava> getAllPrijave(String status) {
+        if (status.equals("true")){
+            return prijaveRepo.getAllByVrijemeOtklonaIsNull();
+        }else{
+            return  prijaveRepo.findAll();
+        }
     }
 
     @Override
@@ -37,10 +42,7 @@ public class PrijavaServiceImpl implements PrijavaService {
        }
     }
 
-    @Override
-    public List<Prijava> getActivePrijave() {
-        return prijaveRepo.getAllByVrijemeOtklonaIsNull();
-    }
+
 
     @Override
     public Object getClosePrijave(Double latitude, Double longitude) {

@@ -9,8 +9,7 @@ import java.util.Optional;
 
 public interface PrijavaService {
 
-    public List<Prijava> getAllPrijave();
+    public List<Prijava> getAllPrijave(String status);
     public List<Prijava> getChildPrijave(Long id);
-    public List<Prijava> getActivePrijave();
     public Object getClosePrijave(Double latitude, Double longitude);
 }
