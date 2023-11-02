@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.ArrayList;
@@ -24,7 +25,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
     @ExceptionHandler(RecordNotFoundException.class)
     public ResponseEntity<Object> handleRecordNotFoundException(RecordNotFoundException exc){
         ErrorDataResponse response = new ErrorDataResponse(Collections.singletonList(exc.getLocalizedMessage()));
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(ResponseData.error(response.getMessage()), HttpStatus.NOT_FOUND);
     }
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
@@ -32,6 +33,6 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
         for(ObjectError err : ex.getBindingResult().getAllErrors()){
             errorList.add(err.getDefaultMessage());
         }
-        return new ResponseEntity<>(new ErrorDataResponse(errorList), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ResponseData.error(errorList), HttpStatus.BAD_REQUEST);
     }
 }

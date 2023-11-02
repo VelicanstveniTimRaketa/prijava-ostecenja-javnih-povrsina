@@ -1,34 +1,32 @@
 package com.backend.projectapi;
 
 
+import java.util.List;
+
 public class ResponseData<T> {
     private boolean success;
     private T data;
-    private String error;
+    private List<String> errors;
 
-    public ResponseData(boolean success, T data, String error){
+    public ResponseData(boolean success, T data, List<String> errors){
         this.success = success;
         this.data = data;
-        this.error = error;
+        this.errors = errors;
     }
 
     public boolean isSuccess() {
         return success;
     }
 
-    public T getData() {
-        return data;
-    }
-
-    public String getError() {
-        return error;
+    public List<String> getErrors() {
+        return errors;
     }
 
     public static <T> ResponseData<T> success(T data) {
         return new ResponseData<>(true, data, null);
     }
 
-    public static <T> ResponseData<T> error(String error) {
-        return new ResponseData<>(false, null, error);
+    public static <T> ResponseData<T> error(List<String> errors) {
+        return new ResponseData<>(false, null, errors);
     }
 }

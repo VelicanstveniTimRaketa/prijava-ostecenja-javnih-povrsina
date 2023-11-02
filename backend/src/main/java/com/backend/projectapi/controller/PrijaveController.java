@@ -28,15 +28,13 @@ public class PrijaveController {
         return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave(active)), HttpStatus.OK);
     }
 
-
-
     @GetMapping("/childPrijave")
     public ResponseEntity<Object> getChildPrijave(@RequestParam Long id){
-        return new ResponseEntity<>(prijavaService.getChildPrijave(id),HttpStatus.OK);
+        return new ResponseEntity<>(ResponseData.success(prijavaService.getChildPrijave(id)), HttpStatus.OK);
     }
 
     @GetMapping("/closePrijave")
     public ResponseEntity<Object> getClosePrijave(@RequestParam Double lat, @RequestParam Double lng){
-        return new ResponseEntity<>(prijavaService.getClosePrijave(lat,lng),HttpStatus.OK);
+        return new ResponseEntity<>(ResponseData.success(prijavaService.getClosePrijave(lat,lng)), HttpStatus.OK);
     }
 }

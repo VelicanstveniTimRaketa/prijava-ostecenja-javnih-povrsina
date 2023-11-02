@@ -44,13 +44,11 @@ public class PrijavaServiceImpl implements PrijavaService {
        }
     }
 
-
-
     @Override
     public Object getClosePrijave(Double latitude, Double longitude) {
         List<Prijava> closePrijave= prijaveRepo.findClosePrijave(latitude,longitude);
         if (closePrijave.isEmpty()){
-            return new RecordNotFoundException("ne postoje bliske prijave za dane lat "+latitude+" i lng "+longitude);
+            return new ArrayList<>();
         }
         return closePrijave;
     }
