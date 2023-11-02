@@ -45,8 +45,8 @@ function Report() {
         if (error.code == error.PERMISSION_DENIED) {
           notification.warning({
             message: "Vaša lokacija nije dohvaćena",
-            description: "Onemogućili ste dohvaćanje lokacije zbog čega nije moguće " +
-              "dohvatiti Vašu lokaciju. Molimo unesite lokaciju na neki drugi način ili omogućite dohvaćanje lokacije.",
+            description: "Onemogućili ste dohvaćanje Vaše lokacije. Molimo unesite " +
+              "lokaciju na neki drugi način ili omogućite dohvaćanje lokacije.",
             placement: "top",
           });
         } else {
