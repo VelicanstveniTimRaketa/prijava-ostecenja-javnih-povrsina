@@ -26,6 +26,7 @@ public class PrijaveController {
 
     @GetMapping("/prijave")
     public ResponseEntity<ResponseData<List<Prijava>>> getAllPrijave(@RequestParam(required = false) String active){
+        System.out.println(prijavaService.getAllPrijave(active));
         return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave(active)), HttpStatus.OK);
     }
 

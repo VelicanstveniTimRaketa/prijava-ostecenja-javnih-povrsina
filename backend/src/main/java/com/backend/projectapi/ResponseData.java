@@ -22,6 +22,10 @@ public class ResponseData<T> {
         return errors;
     }
 
+    public T getData(){
+        return this.data;
+    }
+
     public static <T> ResponseData<T> success(T data) {
         return new ResponseData<>(true, data, null);
     }
