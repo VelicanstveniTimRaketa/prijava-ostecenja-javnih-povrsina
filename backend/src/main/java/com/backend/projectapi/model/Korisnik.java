@@ -32,7 +32,7 @@ public class Korisnik {
     private String email;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "kreatorId",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "kreator",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Prijava> prijave;
 
 }

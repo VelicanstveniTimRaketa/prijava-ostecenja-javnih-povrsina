@@ -24,6 +24,6 @@ public class Vijece {
     private String naziv;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "vijeceId")
+    @OneToOne(mappedBy = "vijece")
     private TipOstecenja tipOstecenja;
 }

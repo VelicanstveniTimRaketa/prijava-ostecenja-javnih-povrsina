@@ -24,7 +24,7 @@ public class TipOstecenja {
 
     @OneToOne
     @JoinColumn(name = "vijeceId", referencedColumnName = "id")
-    private Vijece vijeceId;
+    private Vijece vijece;
 
     @JsonIgnore
     @OneToMany(mappedBy = "tipOstecenja", cascade = CascadeType.ALL,orphanRemoval = true)

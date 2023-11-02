@@ -25,7 +25,7 @@ public class Prijava {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "lokacijaId")
-    private Lokacija lokacijaId;
+    private Lokacija lokacija;
 
 
     @ManyToOne(optional = false)
@@ -36,7 +36,7 @@ public class Prijava {
     @NonNull
     @ManyToOne(optional = false) //jedna prijava ima samo jednog korisnika a jedan korisnik moze imati vise prijava
     @JoinColumn(name = "kreatorId")
-    private Korisnik kreatorId;
+    private Korisnik kreator;
 
     @OneToMany(mappedBy = "prijava", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Slika> slike;
