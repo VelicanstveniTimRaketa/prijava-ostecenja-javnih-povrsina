@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/ostecenja/tipovi")
+@RequestMapping("/api/ostecenja/tipovi")
 public class TipOstecenjaController {
     private final TipOstecenjaService service;
     public TipOstecenjaController(TipOstecenjaService ostecenjaService){

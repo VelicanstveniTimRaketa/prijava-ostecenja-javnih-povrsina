@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/korisnici")
+@RequestMapping("/api/korisnici")
 public class KorisnikController {
     private final KorisnikService service;
     public KorisnikController(KorisnikService service){
