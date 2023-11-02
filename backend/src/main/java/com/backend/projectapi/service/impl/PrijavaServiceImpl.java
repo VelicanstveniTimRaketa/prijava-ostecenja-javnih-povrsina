@@ -25,11 +25,13 @@ public class PrijavaServiceImpl implements PrijavaService {
 
     @Override
     public List<Prijava> getAllPrijave(String status) {
-        if (status.equals("true")){
-            return prijaveRepo.getAllByVrijemeOtklonaIsNull();
-        }else{
-            return  prijaveRepo.findAll();
+        if (StringUtils.hasText(status)){
+            if (status.equals("true")){
+                return prijaveRepo.getAllByVrijemeOtklonaIsNull();
+            }
         }
+        return  prijaveRepo.findAll();
+
     }
 
     @Override
