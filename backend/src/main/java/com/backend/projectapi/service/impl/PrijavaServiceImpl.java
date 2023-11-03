@@ -68,6 +68,10 @@ public class PrijavaServiceImpl implements PrijavaService {
     }
 
     @Override
+    public Prijava addPrijave(Prijava prijava) {
+        return  prijaveRepo.save(prijava);
+    }
+  
     @Transactional
     public Boolean makeChildPrijavu(Long parent_id, Long child_id) {
         Optional<Prijava> parent_prijava=prijaveRepo.findById(parent_id);
