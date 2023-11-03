@@ -21,9 +21,8 @@ public class PrijaveController {
     }
 
     @GetMapping("/prijave")
-    public ResponseEntity<ResponseData<List<Prijava>>> getAllPrijave(@RequestParam(required = false) String active,@RequestParam(required = false) Long parent_id){
-        System.out.println(prijavaService.getAllPrijave(active, parent_id));
-        return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave(active,parent_id)), HttpStatus.OK);
+    public ResponseEntity<ResponseData<List<Prijava>>> getAllPrijave(@RequestParam(required = false) String active,@RequestParam(required = false) Long parent_id,@RequestParam(required = false) Long... ostecenje_id){
+        return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave(active,parent_id,ostecenje_id)), HttpStatus.OK);
     }
 
     // dodat u /prijave sa query opcijom   RESENOOOOOOOO BREEEEEEEE BATOOO BATICEEEEEE
