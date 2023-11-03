@@ -9,6 +9,7 @@ import { MenuPropsWithComponent } from "../utils/types";
 import { Route, Routes } from "react-router";
 import WelcomeView from "../views/WelcomeView";
 import Explore from "../views/Explore";
+import Report from "../views/Report";
 import Logo from "../components/Logo";
 import UserIcon from "../components/UserIcon";
 
@@ -78,6 +79,7 @@ function App() {
         {items.map(item => (
           <Route key={item.key} path={item.key as string} element={<item.component />} />
         ))}
+        <Route path={"report"} element={<Report />} />
       </Routes>
     </Layout>
   );

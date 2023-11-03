@@ -27,6 +27,7 @@ export type Vijece = {
 }
 
 export type TipOstecenja = {
+  id: number;
   naziv: string;
   vijece: Vijece;
 }
@@ -36,15 +37,15 @@ export type Prijava = {
   lokacija: Location;
   tipOstecenja: TipOstecenja;
   kreator?: User;
-  slike: never[];
   prvoVrijemePrijave: Date;
   vrijemeOtklona?: Date;
+  slike: never[];
 }
 
-export type ResponsePrijave = {
+export type Response<T> = {
   success: boolean;
   error?: string;
-  data: Prijava[];
+  data?: T;
 }
 
 // this is some vile black magic fr

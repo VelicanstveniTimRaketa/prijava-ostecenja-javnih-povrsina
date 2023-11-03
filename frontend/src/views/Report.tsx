@@ -1,4 +1,4 @@
-import { Breadcrumb, Layout, Menu, MenuProps, Form, theme, Select, Radio, RadioChangeEvent, notification } from "antd";
+import { Button, Breadcrumb, Layout, Menu, MenuProps, Form, theme, Select, Radio, RadioChangeEvent, notification } from "antd";
 import { LaptopOutlined, NotificationOutlined, UserOutlined, PlusOutlined } from "@ant-design/icons";
 import { Content } from "antd/es/layout/layout";
 import { createElement, useState } from "react";
@@ -6,8 +6,8 @@ import Sider from "antd/es/layout/Sider";
 import Title from "antd/es/typography/Title";
 import TextArea from "antd/es/input/TextArea";
 import Upload from "antd/es/upload/Upload";
-import { Button } from "antd";
 import MapJsApi from "../components/MapJsApi";
+import { useOstecenja } from "../hooks/useOstecenja";
 
 const items2: MenuProps["items"] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
   (icon, index) => {
@@ -36,6 +36,7 @@ function Report() {
 
   const [mapInputType, setMapInputType] = useState("onMap");
   const [location, setLocation] = useState<google.maps.LatLng | undefined>(undefined);
+  const ostecenja = useOstecenja();
 
   function getLocation() {
     if (navigator.geolocation) {
@@ -104,10 +105,9 @@ function Report() {
           <Form labelCol={{ span: "6" }} wrapperCol={{ span: "20" }} style={{ maxWidth: "40em" }}>
             <Form.Item required label="Tip">
               <Select>
-                <Select.Option key="rupa-u-kolniku">Rupa u kolniku</Select.Option>
-                <Select.Option key="puknuta-tramvajska-zica">Puknuće tramvajske žice</Select.Option>
-                <Select.Option key="ostecen-prometni-znak">Oštećen prometni znak</Select.Option>
-                <Select.Option key="ostalo">Ostalo</Select.Option>
+                {ostecenja && ostecenja.map(ostecenje => (
+                  <Select.Option key={ostecenje.id}>{ostecenje.naziv}</Select.Option>
+                ))}
               </Select>
             </Form.Item>
             <Form.Item label="Opis">
