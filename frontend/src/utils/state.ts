@@ -3,7 +3,11 @@ import { GlobalState, Page } from "../utils/types";
 
 export const STATE: GlobalState = {
   page: Page.MAIN,
-  user: undefined,
+  user: {
+    id: 2,
+    username: "korisnik1",
+    email: "korisnik1@gmail.com"
+  },
 };
 
 export const StateContext = createContext<{
