@@ -81,5 +81,19 @@ public class PrijavaServiceImpl implements PrijavaService {
         return true;
     }
 
+    @Override
+    public boolean deletePrijava(Long id) {
+        Optional<Prijava> optionalPrijava = prijaveRepo.findById(id);
+
+        if (optionalPrijava.isPresent()) {
+            Prijava prijava = optionalPrijava.get();
+
+            prijaveRepo.delete(prijava);
+            return true;
+        }
+
+        return false;
+    }
+
 
 }

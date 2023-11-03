@@ -11,4 +11,6 @@ public interface PrijavaService {
     public Object getClosePrijave(Double latitude, Double longitude);
     public Prijava addPrijave(Prijava prijava);
     Boolean makeChildPrijavu(Long parent_id, Long child_id);
+
+    boolean deletePrijava(Long id);
 }

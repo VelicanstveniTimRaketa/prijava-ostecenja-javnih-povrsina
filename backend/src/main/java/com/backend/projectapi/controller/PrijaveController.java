@@ -43,10 +43,14 @@ public class PrijaveController {
     public ResponseEntity<Object> getClosePrijave(@RequestParam Double lat, @RequestParam Double lng){
         return new ResponseEntity<>(ResponseData.success(prijavaService.getClosePrijave(lat,lng)), HttpStatus.OK);
     }
-
+  
+    @DeleteMapping("/deletePrijava")
+    public ResponseEntity<Object> deletePrijava(@RequestParam Long id){
+        return new ResponseEntity<>(ResponseData.success(prijavaService.deletePrijava(id)), HttpStatus.NO_CONTENT);
+    }
+  
     @GetMapping("/addPrijave")
     public ResponseEntity<Object> addPrijave(@RequestBody Prijava prijava) {
         return new ResponseEntity<>(ResponseData.success(prijavaService.addPrijave(prijava)), HttpStatus.OK);
     }
-
 }
