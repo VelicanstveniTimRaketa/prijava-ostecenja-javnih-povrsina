@@ -27,15 +27,8 @@ public class PrijaveController {
     }
 
     @GetMapping("/prijave")
-    public ResponseEntity<ResponseData<List<Prijava>>> getAllPrijave(@RequestParam(required = false) String active,@RequestParam(required = false) Long parent_id){
-        System.out.println(prijavaService.getAllPrijave(active, parent_id));
-        return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave(active,parent_id)), HttpStatus.OK);
-    }
-
-    // dodat u /prijave sa query opcijom   RESENOOOOOOOO BREEEEEEEE BATOOO BATICEEEEEE
-    @GetMapping("/childPrijave")
-    public ResponseEntity<Object> getChildPrijave(@RequestParam Long id){
-        return new ResponseEntity<>(ResponseData.success(prijavaService.getChildPrijave(id)), HttpStatus.OK);
+    public ResponseEntity<ResponseData<List<Prijava>>> getAllPrijave(@RequestParam(required = false) String active,@RequestParam(required = false) Long parent_id,@RequestParam(required = false) Long... ostecenje_id){
+        return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave(active,parent_id,ostecenje_id)), HttpStatus.OK);
     }
 
     // provjeri ako parent_id prijava vec ima parent_prijavu  RESENOOOO BREEEEE
@@ -44,18 +37,19 @@ public class PrijaveController {
         return new ResponseEntity<>(ResponseData.success(prijavaService.makeChildPrijavu(parent_id,child_id)),HttpStatus.OK);
     }
 
-    // todo
-    //@PostMapping("/createPrijava")
-
     // ova logika ce se raditi u postMapingu poslije spremanja u bazu
     @GetMapping("/closePrijave")
     public ResponseEntity<Object> getClosePrijave(@RequestParam Double lat, @RequestParam Double lng){
         return new ResponseEntity<>(ResponseData.success(prijavaService.getClosePrijave(lat,lng)), HttpStatus.OK);
     }
-
+  
+    @DeleteMapping("/deletePrijava")
+    public ResponseEntity<Object> deletePrijava(@RequestParam Long id){
+        return new ResponseEntity<>(ResponseData.success(prijavaService.deletePrijava(id)), HttpStatus.NO_CONTENT);
+    }
+  
     @GetMapping("/addPrijave")
     public ResponseEntity<Object> addPrijave(@RequestBody Prijava prijava) {
         return new ResponseEntity<>(ResponseData.success(prijavaService.addPrijave(prijava)), HttpStatus.OK);
     }
-
 }
