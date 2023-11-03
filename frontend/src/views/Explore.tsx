@@ -1,4 +1,4 @@
-import { Button, DatePicker, Form, Layout, List, Select } from "antd";
+import { Button, DatePicker, Divider, Form, Layout, List, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { Content } from "antd/es/layout/layout";
 import { useState } from "react";
@@ -20,8 +20,16 @@ function Explore() {
 
   return (
     <Layout style={{ display: "flex", alignItems: "center" }}>
-      <Content style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "fit-content", height: "100%", color: "black", margin: "2em" }}>
-        <Form form={form} onFinish={onSubmit} layout="inline">
+      <Content style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: "fit-content",
+        height: "100%",
+        color: "black",
+        margin: "2em",
+      }}>
+        <Form form={form} onFinish={onSubmit} layout="inline" style={{ justifyContent: "center", gap: "1.5em", margin: "1em 0" }}>
           <Form.Item label="Tip">
             <Select allowClear style={{ width: "21em" }}>
               {ostecenja && ostecenja.map(ostecenje => (
@@ -50,8 +58,9 @@ function Explore() {
             <Button type="primary" htmlType="submit">Pošalji</Button>
           </Form.Item>
         </Form>
+        <Divider />
         {data && (
-          <List bordered style={{ margin: "2em 0", width: "fit-content" }}>
+          <List bordered style={{ margin: "1em 0", width: "fit-content" }}>
             {data.map(prijava => (
               <List.Item key={prijava.id} style={{ padding: "1.5em 2em", display: "flex", textAlign: "center" }}>
                 <PrijavaListItemField title="ID:" text={prijava.id} />
