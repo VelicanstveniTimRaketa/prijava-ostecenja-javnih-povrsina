@@ -1,4 +1,4 @@
-import { Button, DatePicker, Divider, Form, Layout, List, Select } from "antd";
+import { Button, Checkbox, DatePicker, Divider, Form, Layout, List, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { Content } from "antd/es/layout/layout";
 import { useState } from "react";
@@ -13,9 +13,13 @@ function Explore() {
   const ostecenja = useOstecenja();
 
   function onSubmit() {
-    getPrijave()
-      .then(res => setData(res.data))
-      .catch(error => console.info(error));
+    const options: { active?: string } = {};
+
+    if (form.getFieldValue("active") !== "both") {
+      options.active = form.getFieldValue("active");
+    }
+
+    getPrijave(options).then(res => setData(res.data));
   }
 
   return (
@@ -29,7 +33,7 @@ function Explore() {
         color: "black",
         margin: "2em",
       }}>
-        <Form form={form} onFinish={onSubmit} layout="inline" style={{ justifyContent: "center", gap: "1.5em", margin: "1em 0" }}>
+        <Form form={form} initialValues={{ active: "true", isChild: "both" }} onFinish={onSubmit} layout="inline" style={{ justifyContent: "center", gap: "1.5em", margin: "1em 0" }}>
           <Form.Item label="Tip">
             <Select allowClear style={{ width: "21em" }}>
               {ostecenja && ostecenja.map(ostecenje => (
@@ -40,18 +44,18 @@ function Explore() {
           <Form.Item label="Raspon datuma:" style={{ width: "28em" }}>
             <DatePicker.RangePicker />
           </Form.Item>
-          <Form.Item label="Stanje prijave: ">
-            <Select defaultValue="open" style={{ width: "8em" }}>
-              <Select.Option key="open">Otvorena</Select.Option>
-              <Select.Option key="closed">Zatvorena</Select.Option>
+          <Form.Item name="active" label="Stanje prijave: ">
+            <Select style={{ width: "8em" }}>
+              <Select.Option key="true">Otvorena</Select.Option>
+              <Select.Option key="false">Zatvorena</Select.Option>
               <Select.Option key="both">Oboje</Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item label="Child prijave: ">
-            <Select defaultValue="both" style={{ width: "9em" }}>
+          <Form.Item name="isChild" label="Child prijave: ">
+            <Select style={{ width: "9em" }}>
               <Select.Option key="both">Oboje</Select.Option>
-              <Select.Option key="child">Samo child</Select.Option>
-              <Select.Option key="parent">Samo parent</Select.Option>
+              <Select.Option key="true">Samo child</Select.Option>
+              <Select.Option key="false">Samo parent</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item>
@@ -63,9 +67,10 @@ function Explore() {
           <List bordered style={{ margin: "1em 0", width: "fit-content" }}>
             {data.map(prijava => (
               <List.Item key={prijava.id} style={{ padding: "1.5em 2em", display: "flex", textAlign: "center" }}>
-                <PrijavaListItemField title="ID:" text={prijava.id} />
-                <PrijavaListItemField title="Tip oštećenja:" text={prijava.tipOstecenja.naziv} />
-                <PrijavaListItemField title="Prijavitelj:" text={prijava.kreator?.username || "Anoniman"} />
+                <PrijavaListItemField title="ID:" value={prijava.id} />
+                <PrijavaListItemField title="Tip oštećenja:" value={prijava.tipOstecenja.naziv} />
+                <PrijavaListItemField title="Prijavitelj:" value={prijava.kreator?.username || "Anoniman"} />
+                <PrijavaListItemField title="Jest povezan:" value={<Checkbox checked={true} />} />
               </List.Item>
             ))}
           </List>

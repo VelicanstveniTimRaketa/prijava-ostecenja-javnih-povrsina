@@ -37,9 +37,9 @@ export type Prijava = {
   lokacija: Location;
   tipOstecenja: TipOstecenja;
   kreator?: User;
-  slike: never[];
   prvoVrijemePrijave: Date;
   vrijemeOtklona?: Date;
+  slike: never[];
 }
 
 export type Response<T> = {

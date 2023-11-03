@@ -1,13 +1,13 @@
 interface PrijavaListItemField {
   title: string;
-  text: string | number;
+  value: string | number | React.ReactElement;
 }
 
 function PrijavaListItemField(props: PrijavaListItemField) {
   return (
-    <div style={{ width: "20em" }}>
+    <div style={{ minWidth: "5em", maxWidth: "30em", margin: "0.5em" }}>
       <div style={{ fontWeight: "bold" }}>{props.title}</div>
-      <div>{props.text}</div>
+      <div>{props.value}</div>
     </div>
   );
 }

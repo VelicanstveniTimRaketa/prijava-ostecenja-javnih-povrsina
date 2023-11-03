@@ -1,6 +1,6 @@
 import { Prijava, Response, TipOstecenja } from "./types";
 
-export function getPrijave(options?: never): Promise<Response<Prijava[]>> {
+export function getPrijave(options?: { active?: string }): Promise<Response<Prijava[]>> {
     return new Promise(res => {
       fetch("/api/prijave?" + new URLSearchParams(options))
         .then(resp => resp.json())
