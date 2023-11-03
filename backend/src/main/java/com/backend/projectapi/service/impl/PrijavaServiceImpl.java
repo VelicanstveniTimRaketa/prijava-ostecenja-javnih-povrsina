@@ -83,9 +83,7 @@ public class PrijavaServiceImpl implements PrijavaService {
 
     @Override
     public Prijava addPrijave(Prijava prijava) {
-        Lokacija lokacija = lokacijRepo.save(prijava.getLokacija());
         prijava.setLokacija(lokacijRepo.save(prijava.getLokacija()));
-
 
         System.out.println(prijava.getSlike());
         Optional<TipOstecenja> tipOstecenja = ostecenjaRepo.findById(prijava.getTipOstecenja().getId());
