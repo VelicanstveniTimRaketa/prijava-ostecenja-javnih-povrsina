@@ -29,7 +29,13 @@ export function getOstecenja(): Promise<Response<TipOstecenja[]>> {
 
 export function addPrijava(prijava: BarebonesPrijava): Promise<Response<never>> {
   return new Promise(res => {
-    fetch("/api/addPrijava", { method: "POST", body: JSON.stringify(prijava) })
+    fetch("/api/addPrijava", {
+      method: "POST",
+      body: JSON.stringify(prijava),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
       .then(resp => resp.json())
       .then(r => console.log(r))
       .catch(error => res({ success: false, error }));
