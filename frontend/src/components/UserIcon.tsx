@@ -48,6 +48,10 @@ function UserIcon() {
           <List style={{ margin: "0.5em", textAlign: "right" }}>
             <List.Item onClick={onLogout} style={{ justifyContent: "center", gap: "1em", cursor: "pointer" }}>
               <LogoutOutlined />
+              <Typography>Pregled mojih</Typography>
+            </List.Item>
+            <List.Item onClick={onLogout} style={{ justifyContent: "center", gap: "1em", cursor: "pointer" }}>
+              <LogoutOutlined />
               <Typography>Logout</Typography>
             </List.Item>
           </List>
