@@ -2,6 +2,7 @@ package com.backend.projectapi.repository;
 
 import com.backend.projectapi.model.Lokacija;
 import com.backend.projectapi.model.Prijava;
+import com.backend.projectapi.model.TipOstecenja;
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +24,6 @@ public interface PrijaveRepository extends JpaRepository<Prijava, Long> {
             "(:lng + 0.00009)", nativeQuery = true)
     List<Prijava> findClosePrijave (@Param("lat") Double lat, @Param("lng") Double lng);
 
+    @Query(value = "SELECT * FROM prijave  WHERE ostecenje_id = :id",nativeQuery = true)
+    List<Prijava> findAllByTipOstecenja(@Param("id") Long id);
 }
