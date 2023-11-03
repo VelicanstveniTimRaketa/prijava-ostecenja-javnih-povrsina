@@ -36,7 +36,6 @@ export type BarebonesPrijava = {
   tipOstecenja: { id: number };
   opis: string;
   lokacija: Location;
-  slike: string[];
 }
 
 export type Prijava = BarebonesPrijava & {
@@ -45,6 +44,7 @@ export type Prijava = BarebonesPrijava & {
   kreator?: User;
   prvoVrijemePrijave: Date;
   vrijemeOtklona?: Date;
+  slike: string[];
 }
 
 export type Response<T> = {

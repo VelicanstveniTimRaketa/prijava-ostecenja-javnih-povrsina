@@ -1,3 +1,4 @@
+import { RcFile } from "antd/es/upload";
 import { BarebonesPrijava, Prijava, Response, TipOstecenja } from "./types";
 
 export type PrijaveOptions = {
@@ -27,9 +28,14 @@ export function getOstecenja(): Promise<Response<TipOstecenja[]>> {
   });
 }
 
-export function addPrijava(prijava: BarebonesPrijava): Promise<Response<never>> {
+export function addPrijava(prijava: BarebonesPrijava, images: RcFile[]): Promise<Response<never>> {
   return new Promise(res => {
-    fetch("/api/addPrijava", { method: "POST", body: JSON.stringify(prijava) })
+    const data = new FormData();
+    
+    data.append("data", JSON.stringify(prijava));
+    images.forEach(im => data.append("files", im, im.name));
+
+    fetch("/api/addPrijava", { method: "POST", body: data, })
       .then(resp => resp.json())
       .then(r => console.log(r))
       .catch(error => res({ success: false, error }));

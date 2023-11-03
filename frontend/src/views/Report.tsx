@@ -11,7 +11,6 @@ import { useOstecenja } from "../hooks/useOstecenja";
 import { useForm } from "antd/es/form/Form";
 import { BarebonesPrijava } from "../utils/types";
 import { RcFile } from "antd/es/upload";
-import { getBase64 } from "../utils/imageTransform";
 import { addPrijava } from "../utils/fetch";
 
 const items2: MenuProps["items"] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
@@ -84,11 +83,6 @@ function Report() {
       console.error("no location");
       return;
     }
-    const b64 = [];
-    for (const im of images) {
-      b64.push(await getBase64(im.originFileObj));
-    }
-    console.log(b64);
     const prijava: BarebonesPrijava = {
       tipOstecenja: { id: Number.parseInt(form.getFieldValue("tip")) },
       opis: form.getFieldValue("opis"),
@@ -96,10 +90,9 @@ function Report() {
         latitude: location?.lat(),
         longitude: location?.lng()
       },
-      slike: b64,
     };
 
-    addPrijava(prijava).then(console.log);
+    addPrijava(prijava, images.map(image => image.originFileObj)).then(console.log);
   }
 
   return (

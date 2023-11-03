@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "antd/es/form/Form";
 import { useContext } from "react";
 import { StateContext } from "../utils/state";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 import LoginRegisterHeader from "../components/LoginRegisterHeader";
 
 function Login() {
@@ -29,27 +31,26 @@ function Login() {
             id="login"
             form={form}
             onFinish={onSubmit}
-            labelCol={{ span: 7 }}
-            wrapperCol={{ span: 20 }}
-            style={{ width: "100%", maxWidth: "30em" }}
+            style={{ width: "100%", maxWidth: "20em" }}
           >
             <Form.Item
-              label="Korisničko ime: "
               name="username"
               rules={[{ required: true, message: "Molimo unesite svoje korisničko ime" }]}
             >
-              <Input autoFocus />
+              <Input prefix={<UserOutlined style={{ color: "rgba(0, 0, 0, 0.25)" }} />} placeholder="Korisničko ime" autoFocus />
             </Form.Item>
             <Form.Item
-              label="Lozinka: "
               name="password"
               rules={[{ required: true, message: "Molimo unesite svoju lozinku" }]}
             >
-              <Input.Password />
+              <Input.Password placeholder="Lozinka" prefix={<LockOutlined style={{ color: "rgba(0, 0, 0, 0.25)" }} />} />
             </Form.Item>
-            <Form.Item key="submit" wrapperCol={{ offset: 10 }}>
-              <Button type="primary" htmlType="submit">Prijava</Button>
+            <Form.Item key="submit">
+              <Button type="primary" htmlType="submit" style={{ width: "100%" }}>Prijava</Button>
+              Nemaš račun? <Link to="/register">Registriraj se!</Link>
             </Form.Item>
+            <Form.Item>
+          </Form.Item>
           </Form>
         </Content>
       </Layout>
