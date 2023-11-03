@@ -1,6 +1,6 @@
 interface PrijavaListItemField {
   title: string;
-  text: string;
+  text: string | number;
 }
 
 function PrijavaListItemField(props: PrijavaListItemField) {

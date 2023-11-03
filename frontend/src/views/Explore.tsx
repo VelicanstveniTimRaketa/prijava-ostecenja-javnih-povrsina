@@ -5,10 +5,12 @@ import { useState } from "react";
 import { Prijava } from "../utils/types";
 import { getPrijave } from "../utils/fetch";
 import PrijavaListItemField from "../components/PrijavaListItemField";
+import { useOstecenja } from "../hooks/useOstecenja";
 
 function Explore() {
   const [form] = useForm();
   const [data, setData] = useState<Prijava[]>();
+  const ostecenja = useOstecenja();
 
   function onSubmit() {
     getPrijave()
@@ -16,18 +18,15 @@ function Explore() {
       .catch(error => console.info(error));
   }
 
-  console.log(data);
-
   return (
     <Layout style={{ display: "flex", alignItems: "center" }}>
       <Content style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "fit-content", height: "100%", color: "black", margin: "2em" }}>
         <Form form={form} onFinish={onSubmit} layout="inline">
           <Form.Item label="Tip">
-            <Select allowClear style={{ width: "15em" }}>
-              <Select.Option key="rupa-u-kolniku">Rupa u kolniku</Select.Option>
-              <Select.Option key="puknuta-tramvajska-zica">Puknuće tramvajske žice</Select.Option>
-              <Select.Option key="ostecen-prometni-znak">Oštećen prometni znak</Select.Option>
-              <Select.Option key="ostalo">Ostalo</Select.Option>
+            <Select allowClear style={{ width: "21em" }}>
+              {ostecenja && ostecenja.map(ostecenje => (
+                <Select.Option key={ostecenje.id}>{ostecenje.naziv}</Select.Option>
+              ))}
             </Select>
           </Form.Item>
           <Form.Item label="Raspon datuma:" style={{ width: "28em" }}>
@@ -57,7 +56,7 @@ function Explore() {
               <List.Item key={prijava.id} style={{ padding: "1.5em 2em", display: "flex", textAlign: "center" }}>
                 <PrijavaListItemField title="ID:" text={prijava.id} />
                 <PrijavaListItemField title="Tip oštećenja:" text={prijava.tipOstecenja.naziv} />
-                <PrijavaListItemField title="Kreator:" text={prijava.kreatorId?.username} />
+                <PrijavaListItemField title="Prijavitelj:" text={prijava.kreator?.username || "Anoniman"} />
               </List.Item>
             ))}
           </List>
