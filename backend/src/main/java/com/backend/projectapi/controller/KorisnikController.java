@@ -5,9 +5,7 @@ import com.backend.projectapi.model.Korisnik;
 import com.backend.projectapi.service.KorisnikService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,8 +18,16 @@ public class KorisnikController {
     }
 
     @GetMapping("/korisnici")
-    public ResponseEntity<ResponseData<List<Korisnik>>> getAllUsers(){
-        return new ResponseEntity<>(ResponseData.success(service.getAllUsers()), HttpStatus.OK);
+    public ResponseEntity<ResponseData<List<Korisnik>>> getAllUsers(@RequestParam(required = false) Long id){
+        return new ResponseEntity<>(ResponseData.success(service.getAllUsers(id)), HttpStatus.OK);
         //return new ResponseEntity<>(service.getAllUsers(), HttpStatus.OK);
     }
+    /*
+
+    @PutMapping("/korisnici/add")
+    public ResponseEntity<Object> addNewKorisnik(@RequestBody Korisnik korisnik){
+        return new ResponseEntity<>(ResponseData.success(service.addNewKorisnik(korisnik)),HttpStatus.OK);
+    }
+
+     */
 }
