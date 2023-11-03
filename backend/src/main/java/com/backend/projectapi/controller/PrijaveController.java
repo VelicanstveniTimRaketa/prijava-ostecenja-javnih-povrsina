@@ -31,6 +31,7 @@ public class PrijaveController {
         this.korisnikService = korisnikService;
     }
 
+    // dodaj has_parent
     @GetMapping("/prijave")
     public ResponseEntity<ResponseData<List<Prijava>>> getAllPrijave(@RequestParam(required = false) String active,@RequestParam(required = false) Long parent_id,@RequestParam(required = false) Long... ostecenje_id){
         return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave(active,parent_id,ostecenje_id)), HttpStatus.OK);
