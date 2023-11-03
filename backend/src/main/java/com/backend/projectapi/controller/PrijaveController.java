@@ -45,7 +45,7 @@ public class PrijaveController {
   
     @DeleteMapping("/deletePrijava")
     public ResponseEntity<Object> deletePrijava(@RequestParam Long id){
-        return new ResponseEntity<>(ResponseData.success(prijavaService.deletePrijava(id)), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(ResponseData.success(prijavaService.deletePrijava(id)), HttpStatus.OK);
     }
   
     @GetMapping("/addPrijave")
