@@ -33,6 +33,7 @@ public class Prijava {
     @JoinColumn(name = "ostecenjeId")
     private TipOstecenja tipOstecenja;
 
+    @Column(name = "opis")
     private String opis;
 
     @NonNull
