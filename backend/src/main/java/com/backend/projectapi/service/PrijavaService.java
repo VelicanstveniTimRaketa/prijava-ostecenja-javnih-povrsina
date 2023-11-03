@@ -12,4 +12,7 @@ public interface PrijavaService {
     public List<Prijava> getAllPrijave(String status);
     public List<Prijava> getChildPrijave(Long id);
     public Object getClosePrijave(Double latitude, Double longitude);
+
+    public Prijava addPrijave(Prijava prijava);
+
 }

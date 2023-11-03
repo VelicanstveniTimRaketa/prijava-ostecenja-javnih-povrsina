@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,4 +39,10 @@ public class PrijaveController {
     public ResponseEntity<Object> getClosePrijave(@RequestParam Double lat, @RequestParam Double lng){
         return new ResponseEntity<>(ResponseData.success(prijavaService.getClosePrijave(lat,lng)), HttpStatus.OK);
     }
+
+    @GetMapping("/addPrijave")
+    public ResponseEntity<Object> addPrijave(@RequestBody Prijava prijava) {
+        return new ResponseEntity<>(ResponseData.success(prijavaService.addPrijave(prijava)), HttpStatus.OK);
+    }
+
 }

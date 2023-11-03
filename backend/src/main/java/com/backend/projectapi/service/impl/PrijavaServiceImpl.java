@@ -53,5 +53,10 @@ public class PrijavaServiceImpl implements PrijavaService {
         return closePrijave;
     }
 
+    @Override
+    public Prijava addPrijave(Prijava prijava) {
+        return  prijaveRepo.save(prijava);
+    }
+
 
 }
