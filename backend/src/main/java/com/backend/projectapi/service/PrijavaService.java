@@ -11,5 +11,5 @@ public interface PrijavaService {
     public Object getClosePrijave(Double latitude, Double longitude);
     Boolean makeChildPrijavu(Long parent_id, Long child_id);
 
-    void deletePrijava(Long id);
+    boolean deletePrijava(Long id);
 }
