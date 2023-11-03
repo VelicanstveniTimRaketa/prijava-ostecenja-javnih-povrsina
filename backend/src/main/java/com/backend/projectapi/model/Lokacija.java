@@ -28,7 +28,7 @@ public class Lokacija {
     @NonNull
     @NotBlank
     @Column(name = "longitude",nullable = false)
-    private Double longitute;
+    private Double longitude;
 
     @JsonIgnore
     @OneToMany(mappedBy = "lokacija", cascade = CascadeType.ALL,orphanRemoval = true)
