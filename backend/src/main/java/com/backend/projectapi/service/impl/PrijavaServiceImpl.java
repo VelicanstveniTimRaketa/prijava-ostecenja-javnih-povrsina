@@ -1,6 +1,7 @@
 package com.backend.projectapi.service.impl;
 
 
+import com.backend.projectapi.exception.RecordNotFoundException;
 import com.backend.projectapi.model.Lokacija;
 import com.backend.projectapi.model.Prijava;
 import com.backend.projectapi.model.TipOstecenja;
@@ -10,6 +11,8 @@ import com.backend.projectapi.repository.PrijaveRepository;
 import com.backend.projectapi.repository.TipoviOstecenjaRepository;
 import com.backend.projectapi.service.PrijavaService;
 import com.backend.projectapi.service.TipOstecenjaService;
+import lombok.NonNull;
+import org.springframework.data.jpa.repository.query.JSqlParserUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -38,28 +41,56 @@ public class PrijavaServiceImpl implements PrijavaService {
     }
 
     @Override
-    public List<Prijava> getAllPrijave(String status, Long parent_id, Long[] ostecenje_id) {
-        if (StringUtils.hasText(status)){
-            if (status.equals("true")){
-                return prijaveRepo.getAllByVrijemeOtklonaIsNull();
-            }else if (status.equals("false")){
-                return prijaveRepo.getAllByVrijemeOtklonaIsNotNull();
+    public List<Prijava> getAllPrijave(String active, Long parentId,Date dateFrom, Date dateTo, Double lat, Double lng, Long... ostecenjeId) {
+        List<Prijava> listActive=new ArrayList<>();
+        if (StringUtils.hasText(active)){
+            if (active.equals("true")){
+                listActive.addAll(prijaveRepo.getAllByVrijemeOtklonaIsNull());
+            }else if (active.equals("false")){
+                listActive.addAll(prijaveRepo.getAllByVrijemeOtklonaIsNotNull());
             }
-        }else if (parent_id != null){
-            Optional<Prijava> optionalPrijava = prijaveRepo.findById(parent_id);
-            if (optionalPrijava.isPresent()){
-                return prijaveRepo.findAllByParentPrijava(optionalPrijava.get());
-            }else {
-                return new ArrayList<>();
-            }
-        }else if(ostecenje_id != null){
-            List<Prijava> list=new ArrayList<>();
-            for (Long ostecenje : ostecenje_id) {
-                list.addAll(prijaveRepo.findAllByTipOstecenja(ostecenje));
-            }
-            return list;
         }
-        return  prijaveRepo.findAll();
+        List<Prijava> listParent=new ArrayList<>();
+        if (parentId != null){
+            Optional<Prijava> optionalPrijava = prijaveRepo.findById(parentId);
+            if (optionalPrijava.isPresent()){
+                listParent.addAll(prijaveRepo.findAllByParentPrijava(optionalPrijava.get()));
+            }
+        }
+        List<Prijava> listOstecenje=new ArrayList<>();
+        if(ostecenjeId != null){
+            for (Long ostecenje : ostecenjeId) {
+                listOstecenje.addAll(prijaveRepo.findAllByTipOstecenja(ostecenje));
+            }
+        }
+        List<Prijava> listDate=new ArrayList<>();
+        if (dateFrom!=null && dateTo!=null){ // triba dodati ako posalje samo jedan datum da baci error
+            listDate=prijaveRepo.findAllByPrvoVrijemePrijaveBetween(new Timestamp(dateFrom.getTime()),new Timestamp(dateTo.getTime()));
+        }
+        List<Prijava> listLokacija=new ArrayList<>();
+        if (lat!=null && lng !=null){
+            listLokacija=prijaveRepo.findAllByLokacija(lat,lng);
+        }
+
+        List<Prijava> rez=new ArrayList<>(prijaveRepo.findAll());
+        if (!listActive.isEmpty()){
+            rez.retainAll(listActive);
+        }
+        if (!listOstecenje.isEmpty()){
+            rez.retainAll(listOstecenje);
+        }
+        if (!listParent.isEmpty()){
+            rez.retainAll(listParent);
+        }
+        if (!listDate.isEmpty()){
+            rez.retainAll(listDate);
+        }
+        if (!listLokacija.isEmpty()){
+            rez.retainAll(listLokacija);
+        }
+        return rez;
+
+
     }
 
     @Override
@@ -114,6 +145,17 @@ public class PrijavaServiceImpl implements PrijavaService {
 
         return true;
     }
+
+    @Override
+    public Prijava findById(Long id) {
+        Optional<Prijava> prijava=prijaveRepo.findById(id);
+        if (prijava.isPresent()){
+            return prijava.get();
+        }else {
+            throw new RecordNotFoundException("ne postoji prijava za dani id: "+id);
+        }
+    }
+
 
     @Override
     public boolean deletePrijava(Long id) {
