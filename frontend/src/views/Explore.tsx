@@ -3,7 +3,7 @@ import { useForm } from "antd/es/form/Form";
 import { Content } from "antd/es/layout/layout";
 import { useState } from "react";
 import { Prijava } from "../utils/types";
-import { getPrijave } from "../utils/fetch";
+import { PrijaveOptions, getPrijave } from "../utils/fetch";
 import PrijavaListItemField from "../components/PrijavaListItemField";
 import { useOstecenja } from "../hooks/useOstecenja";
 
@@ -13,10 +13,13 @@ function Explore() {
   const ostecenja = useOstecenja();
 
   function onSubmit() {
-    const options: { active?: string } = {};
+    const options: PrijaveOptions = {};
 
     if (form.getFieldValue("active") !== "both") {
       options.active = form.getFieldValue("active");
+    }
+    if (form.getFieldValue("ostecenje")) {
+      options.ostecenje_id = form.getFieldValue("ostecenje");
     }
 
     getPrijave(options).then(res => setData(res.data));
@@ -34,7 +37,7 @@ function Explore() {
         margin: "2em",
       }}>
         <Form form={form} initialValues={{ active: "true", isChild: "both" }} onFinish={onSubmit} layout="inline" style={{ justifyContent: "center", gap: "1.5em", margin: "1em 0" }}>
-          <Form.Item label="Tip">
+          <Form.Item name="ostecenje" label="Tip">
             <Select allowClear style={{ width: "21em" }}>
               {ostecenja && ostecenja.map(ostecenje => (
                 <Select.Option key={ostecenje.id}>{ostecenje.naziv}</Select.Option>
@@ -42,7 +45,7 @@ function Explore() {
             </Select>
           </Form.Item>
           <Form.Item label="Raspon datuma:" style={{ width: "28em" }}>
-            <DatePicker.RangePicker />
+            <DatePicker.RangePicker disabled />
           </Form.Item>
           <Form.Item name="active" label="Stanje prijave: ">
             <Select style={{ width: "8em" }}>
@@ -52,7 +55,7 @@ function Explore() {
             </Select>
           </Form.Item>
           <Form.Item name="isChild" label="Child prijave: ">
-            <Select style={{ width: "9em" }}>
+            <Select disabled style={{ width: "9em" }}>
               <Select.Option key="both">Oboje</Select.Option>
               <Select.Option key="true">Samo child</Select.Option>
               <Select.Option key="false">Samo parent</Select.Option>
