@@ -32,20 +32,11 @@ public class PrijaveController {
         return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave(active,parent_id)), HttpStatus.OK);
     }
 
-    // dodat u /prijave sa query opcijom   RESENOOOOOOOO BREEEEEEEE BATOOO BATICEEEEEE
-    @GetMapping("/childPrijave")
-    public ResponseEntity<Object> getChildPrijave(@RequestParam Long id){
-        return new ResponseEntity<>(ResponseData.success(prijavaService.getChildPrijave(id)), HttpStatus.OK);
-    }
-
     // provjeri ako parent_id prijava vec ima parent_prijavu  RESENOOOO BREEEEE
     @PatchMapping("/makeChild")
     public ResponseEntity<Object> makeChildPrijavu(@RequestParam Long parent_id, @RequestParam Long child_id){
         return new ResponseEntity<>(ResponseData.success(prijavaService.makeChildPrijavu(parent_id,child_id)),HttpStatus.OK);
     }
-
-    // todo
-    //@PostMapping("/createPrijava")
 
     // ova logika ce se raditi u postMapingu poslije spremanja u bazu
     @GetMapping("/closePrijave")
