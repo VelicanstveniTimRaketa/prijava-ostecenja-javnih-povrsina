@@ -15,6 +15,8 @@ import java.util.Optional;
 public interface PrijaveRepository extends JpaRepository<Prijava, Long> {
     @Query (value = "select prijave.* from prijave where vrijeme_otklona is null", nativeQuery = true)
     List<Prijava> getAllByVrijemeOtklonaIsNull();
+    @Query (value = "select prijave.* from prijave where vrijeme_otklona is not null", nativeQuery = true)
+    List<Prijava> getAllByVrijemeOtklonaIsNotNull();
     List<Prijava> findAllByParentPrijava(Prijava prijava);
 
     @Query(value = "select prijave.* from prijave natural join lokacije where " +
