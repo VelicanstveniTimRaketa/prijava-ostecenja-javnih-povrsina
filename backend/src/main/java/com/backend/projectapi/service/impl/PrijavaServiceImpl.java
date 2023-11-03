@@ -23,7 +23,6 @@ public class PrijavaServiceImpl implements PrijavaService {
         this.prijaveRepo=prijaveRepo;
     }
 
-
     @Override
     public List<Prijava> getAllPrijave(String status, Long parent_id, Long[] ostecenje_id) {
         if (StringUtils.hasText(status)){
@@ -32,14 +31,14 @@ public class PrijavaServiceImpl implements PrijavaService {
             }else if (status.equals("false")){
                 return prijaveRepo.getAllByVrijemeOtklonaIsNotNull();
             }
-        }else if (parent_id!=null){
+        }else if (parent_id != null){
             Optional<Prijava> optionalPrijava = prijaveRepo.findById(parent_id);
             if (optionalPrijava.isPresent()){
                 return prijaveRepo.findAllByParentPrijava(optionalPrijava.get());
             }else {
                 return new ArrayList<>();
             }
-        }else if(ostecenje_id!=null){
+        }else if(ostecenje_id != null){
             List<Prijava> list=new ArrayList<>();
             for (Long ostecenje : ostecenje_id) {
                 list.addAll(prijaveRepo.findAllByTipOstecenja(ostecenje));
@@ -47,7 +46,6 @@ public class PrijavaServiceImpl implements PrijavaService {
             return list;
         }
         return  prijaveRepo.findAll();
-
     }
 
     @Override

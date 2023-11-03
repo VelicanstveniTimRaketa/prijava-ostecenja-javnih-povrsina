@@ -43,7 +43,6 @@ public class Prijava {
     @OneToMany(mappedBy = "prijava", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Slika> slike;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "parent_prijava_id")
     private Prijava parentPrijava;
