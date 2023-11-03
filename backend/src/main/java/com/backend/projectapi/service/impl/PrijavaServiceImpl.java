@@ -84,5 +84,24 @@ public class PrijavaServiceImpl implements PrijavaService {
         return true;
     }
 
+    @Override
+    public Prijava updatePrijava(Prijava prijava, Long id) {
+         Optional<Prijava> optionalOldPrijava = prijaveRepo.findById(id);
+
+         if (optionalOldPrijava.isPresent()) {
+             Prijava oldPrijava = optionalOldPrijava.get();
+
+             oldPrijava.setLokacija(prijava.getLokacija());
+             oldPrijava.setSlike(prijava.getSlike());
+             oldPrijava.setParentPrijava(prijava.getParentPrijava());
+             oldPrijava.setKreator(prijava.getKreator());
+             oldPrijava.setTipOstecenja(prijava.getTipOstecenja());
+             oldPrijava.setPrvoVrijemePrijave(prijava.getPrvoVrijemePrijave());
+             oldPrijava.setVrijemeOtklona(prijava.getVrijemeOtklona());
+
+             return oldPrijava;
+         }
+    }
+
 
 }

@@ -46,4 +46,9 @@ public class PrijaveController {
     public ResponseEntity<Object> getClosePrijave(@RequestParam Double lat, @RequestParam Double lng){
         return new ResponseEntity<>(ResponseData.success(prijavaService.getClosePrijave(lat,lng)), HttpStatus.OK);
     }
+
+    @GetMapping("/updatePrijava")
+    public ResponseEntity<Object> updatePrijava(@RequestBody Prijava prijava, @RequestParam Long id){
+        return new ResponseEntity<>(ResponseData.success(prijavaService.updatePrijava(prijava, id)), HttpStatus.CREATED);
+    }
 }
