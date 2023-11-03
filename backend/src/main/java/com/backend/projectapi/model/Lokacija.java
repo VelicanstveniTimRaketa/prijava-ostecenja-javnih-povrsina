@@ -31,6 +31,6 @@ public class Lokacija {
     private Double longitute;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "lokacijaId", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "lokacija", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Prijava> prijave;
 }

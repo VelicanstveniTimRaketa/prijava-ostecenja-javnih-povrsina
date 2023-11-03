@@ -19,6 +19,7 @@ public class Slika {
     private Long Id;
 
     @NonNull
+    // private String podatak;
     private byte[] podatak; //slika
 
     @JsonIgnore

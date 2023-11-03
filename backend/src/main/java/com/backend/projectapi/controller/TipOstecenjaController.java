@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/ostecenja/tipovi")
+@RequestMapping("/api")
 public class TipOstecenjaController {
     private final TipOstecenjaService service;
     public TipOstecenjaController(TipOstecenjaService ostecenjaService){
         this.service = ostecenjaService;
     }
 
-    @GetMapping("")
+    @GetMapping("/ostecenja")
     public ResponseEntity<ResponseData<List<TipOstecenja>>> getOstecenja(){
         return new ResponseEntity<>(ResponseData.success(service.getAllTipOstecenja()), HttpStatus.OK);
     }

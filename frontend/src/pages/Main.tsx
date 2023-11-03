@@ -24,11 +24,6 @@ const items: MenuPropsWithComponent = [
     label: "Pretraga",
     component: Explore,
   },
-  {
-    key: "report",
-    label: "Prijavi štetu",
-    component: Report,
-  },
 ];
 
 function App() {
@@ -84,6 +79,7 @@ function App() {
         {items.map(item => (
           <Route key={item.key} path={item.key as string} element={<item.component />} />
         ))}
+        <Route path={"report"} element={<Report />} />
       </Routes>
     </Layout>
   );
