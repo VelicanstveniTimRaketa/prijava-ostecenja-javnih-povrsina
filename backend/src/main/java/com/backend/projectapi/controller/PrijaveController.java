@@ -51,4 +51,6 @@ public class PrijaveController {
     public ResponseEntity<Object> deletePrijava(@RequestParam Long id){
         return new ResponseEntity<>(ResponseData.success(prijavaService.deletePrijava(id)), HttpStatus.NO_CONTENT);
     }
+
+
 }
