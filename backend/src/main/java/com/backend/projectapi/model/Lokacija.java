@@ -21,12 +21,10 @@ public class Lokacija {
     private Long Id;
 
     @NonNull
-    @NotBlank
     @Column(name = "latitude",nullable = false)
     private Double latitude;
 
     @NonNull
-    @NotBlank
     @Column(name = "longitude",nullable = false)
     private Double longitude;
 
