@@ -47,8 +47,8 @@ public class PrijaveController {
         return new ResponseEntity<>(ResponseData.success(prijavaService.getClosePrijave(lat,lng)), HttpStatus.OK);
     }
 
-    @GetMapping("/updatePrijava")
-    public ResponseEntity<Object> updatePrijava(@RequestBody Prijava prijava, @RequestParam Long id){
-        return new ResponseEntity<>(ResponseData.success(prijavaService.updatePrijava(prijava, id)), HttpStatus.CREATED);
+    @DeleteMapping("/deletePrijava")
+    public ResponseEntity<> deletePrijava(@RequestParam Long id){
+        return new ResponseEntity<>(ResponseData.success(prijavaService.deletePrijava(id)), HttpStatus.NO_CONTENT);
     }
 }
