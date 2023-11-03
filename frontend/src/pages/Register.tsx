@@ -8,12 +8,7 @@ import { RuleObject } from "antd/es/form";
 import { PlusOutlined } from "@ant-design/icons";
 import LoginRegisterHeader from "../components/LoginRegisterHeader";
 import type { RcFile } from "antd/es/upload/interface";
-
-const getBase64 = (img: RcFile, callback: (url: string) => void) => {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result as string));
-  reader.readAsDataURL(img);
-};
+import { getBase64 } from "../utils/imageTransform";
 
 function Register() {
   const [form] = useForm();
@@ -31,7 +26,7 @@ function Register() {
     return Promise.reject(new Error("The new password that you entered do not match!"));
   }
 
-  const beforeUpload = (file: RcFile) => {
+  const onUpload = (file: RcFile) => {
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
     if (!isJpgOrPng) {
       message.error("You can only upload JPG/PNG file!");
@@ -41,10 +36,7 @@ function Register() {
       message.error("Image must smaller than 2MB!");
     }
     //return isJpgOrPng && isLt2M;
-    getBase64(file, (url) => {
-      console.log(5);
-      setImageUrl(url);
-    });
+    getBase64(file).then(setImageUrl);
     return false;
   };
 
@@ -91,7 +83,7 @@ function Register() {
                 name="avatar"
                 listType="picture-circle"
                 showUploadList={false}
-                beforeUpload={beforeUpload}
+                beforeUpload={onUpload}
               >
                 {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: "100%" }} /> : (
                   <div>

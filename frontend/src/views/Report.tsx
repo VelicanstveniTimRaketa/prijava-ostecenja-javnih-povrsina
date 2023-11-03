@@ -8,6 +8,11 @@ import TextArea from "antd/es/input/TextArea";
 import Upload from "antd/es/upload/Upload";
 import MapJsApi from "../components/MapJsApi";
 import { useOstecenja } from "../hooks/useOstecenja";
+import { useForm } from "antd/es/form/Form";
+import { BarebonesPrijava } from "../utils/types";
+import { RcFile } from "antd/es/upload";
+import { getBase64 } from "../utils/imageTransform";
+import { addPrijava } from "../utils/fetch";
 
 const items2: MenuProps["items"] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
   (icon, index) => {
@@ -30,12 +35,11 @@ const items2: MenuProps["items"] = [UserOutlined, LaptopOutlined, NotificationOu
 );
 
 function Report() {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
-
+  const { token: { colorBgContainer } } = theme.useToken();
+  const [form] = useForm();
   const [mapInputType, setMapInputType] = useState("onMap");
   const [location, setLocation] = useState<google.maps.LatLng | undefined>(undefined);
+  const [images, setImages] = useState<{ originFileObj: RcFile }[]>([]);
   const ostecenja = useOstecenja();
 
   function getLocation() {
@@ -68,11 +72,34 @@ function Report() {
   }
 
   function handleMapChange(e: RadioChangeEvent): void {
-    if (e.target.value == "myLocation") {
-      getLocation();
+    e.target.value == "myLocation" ? getLocation() : setMapInputType(e.target.value);
+  }
+
+  function locationValidator() {
+    return location !== undefined ? Promise.resolve() : Promise.reject();
+  }
+
+  async function onSubmit() {
+    if (!location)  {
+      console.error("no location");
       return;
     }
-    setMapInputType(e.target.value);
+    const b64 = [];
+    for (const im of images) {
+      b64.push(await getBase64(im.originFileObj));
+    }
+    console.log(b64);
+    const prijava: BarebonesPrijava = {
+      tipOstecenja: { id: Number.parseInt(form.getFieldValue("tip")) },
+      opis: form.getFieldValue("opis"),
+      lokacija: {
+        latitude: location?.lat(),
+        longitude: location?.lng()
+      },
+      slike: b64,
+    };
+
+    addPrijava(prijava).then(console.log);
   }
 
   return (
@@ -102,36 +129,38 @@ function Report() {
           }}
         >
           <Title level={2}>Nova prijava</Title>
-          <Form labelCol={{ span: "6" }} wrapperCol={{ span: "20" }} style={{ maxWidth: "40em" }}>
-            <Form.Item required label="Tip">
+          <Form id="addPrijava" form={form} onFinish={onSubmit} labelCol={{ span: "6" }} wrapperCol={{ span: "20" }} style={{ maxWidth: "40em" }}>
+            <Form.Item required name="tip" label="Tip" rules={[{ required: true, message: "Molimo označite tip oštećenja." }]}>
               <Select>
                 {ostecenja && ostecenja.map(ostecenje => (
                   <Select.Option key={ostecenje.id}>{ostecenje.naziv}</Select.Option>
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item label="Opis">
+            <Form.Item name="opis" label="Opis">
               <TextArea rows={4} />
             </Form.Item>
-            <Form.Item required label="Lokacija">
-              <Radio.Group onChange={handleMapChange}>
-                <Radio.Button defaultChecked value="onMap">Odaberi na karti</Radio.Button>
-                <Radio.Button value="address">Unesi adresu</Radio.Button>
-                <Radio.Button value="myLocation">Uzmi moju lokaciju</Radio.Button>
-              </Radio.Group>
-              <Layout style={{ margin: "1em 0" }}>
-                <MapJsApi marker={location} onClick={l => setLocation(l)} disabled={mapInputType !== "onMap"} />
-              </Layout>
+            <Form.Item required name="lokacija" label="Lokacija" rules={[{ required: true, validator: locationValidator, message: "Molimo odaberite lokaciju." }]}>
+              <div>
+                <Radio.Group defaultValue="onMap" onChange={handleMapChange}>
+                  <Radio.Button value="onMap">Odaberi na karti</Radio.Button>
+                  <Radio.Button value="address">Unesi adresu</Radio.Button>
+                  <Radio.Button value="myLocation">Uzmi moju lokaciju</Radio.Button>
+                </Radio.Group>
+                <Layout style={{ margin: "1em 0" }}>
+                  <MapJsApi marker={location} onClick={l => setLocation(l)} disabled={mapInputType !== "onMap"} />
+                </Layout>
+              </div>
             </Form.Item>
-            <Form.Item label="Slike" valuePropName="fileList" getValueFromEvent={(file) => console.log(file)}>
-              <Upload action="/upload" accept="image/jpeg, image/png" listType="picture-card">
+            <Form.Item label="Slike" name="slike" valuePropName="fileList" getValueFromEvent={v => setImages(v.fileList)}>
+              <Upload beforeUpload={() => false} accept="image/jpeg, image/png" listType="picture-card">
                 <div>
                   <PlusOutlined />
                   <div style={{ marginTop: 8 }}>Učitaj sliku</div>
                 </div>
               </Upload>
             </Form.Item>
-            <Form.Item wrapperCol={{ offset: 6 }}>
+            <Form.Item key="submit" wrapperCol={{ offset: 6 }}>
               <Button type="primary" htmlType="submit">Prijavi</Button>
             </Form.Item>
           </Form>

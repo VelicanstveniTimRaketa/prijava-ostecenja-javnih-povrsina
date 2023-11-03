@@ -32,15 +32,19 @@ export type TipOstecenja = {
   vijece: Vijece;
 }
 
-export type Prijava = {
-  id: number;
+export type BarebonesPrijava = {
+  tipOstecenja: { id: number };
   opis: string;
   lokacija: Location;
+  slike: string[];
+}
+
+export type Prijava = BarebonesPrijava & {
+  id: number;
   tipOstecenja: TipOstecenja;
   kreator?: User;
   prvoVrijemePrijave: Date;
   vrijemeOtklona?: Date;
-  slike: never[];
 }
 
 export type Response<T> = {

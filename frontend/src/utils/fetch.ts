@@ -1,4 +1,4 @@
-import { Prijava, Response, TipOstecenja } from "./types";
+import { BarebonesPrijava, Prijava, Response, TipOstecenja } from "./types";
 
 export type PrijaveOptions = {
   active?: string;
@@ -23,6 +23,15 @@ export function getOstecenja(): Promise<Response<TipOstecenja[]>> {
     fetch("/api/ostecenja")
       .then(resp => resp.json())
       .then(r => res(r))
+      .catch(error => res({ success: false, error }));
+  });
+}
+
+export function addPrijava(prijava: BarebonesPrijava): Promise<Response<never>> {
+  return new Promise(res => {
+    fetch("/api/addPrijava", { method: "POST", body: JSON.stringify(prijava) })
+      .then(resp => resp.json())
+      .then(r => console.log(r))
       .catch(error => res({ success: false, error }));
   });
 }
