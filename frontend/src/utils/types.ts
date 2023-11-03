@@ -34,6 +34,7 @@ export type TipOstecenja = {
 
 export type Prijava = {
   id: number;
+  opis: string;
   lokacija: Location;
   tipOstecenja: TipOstecenja;
   kreator?: User;
