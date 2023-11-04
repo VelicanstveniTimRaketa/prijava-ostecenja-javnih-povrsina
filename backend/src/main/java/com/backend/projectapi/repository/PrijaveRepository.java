@@ -23,8 +23,8 @@ public interface PrijaveRepository extends JpaRepository<Prijava, Long> {
             "prvo_vrijeme_prijave between cast (current_timestamp - interval '24 hours' as timestamp) and " +
             "cast (current_timestamp + interval '24 hours' as timestamp) and vrijeme_otklona is null and " +
             "latitude between (:lat - 0.00009) and (:lat + 0.00009) and longitude between (:lng - 0.00009) and " +
-            "(:lng + 0.00009)", nativeQuery = true)
-    List<Prijava> findClosePrijave (@Param("lat") Double lat, @Param("lng") Double lng);
+            "(:lng + 0.00009) and id != :ID", nativeQuery = true)
+    List<Prijava> findClosePrijave (@Param("lat") Double lat, @Param("lng") Double lng, @Param("ID") Long ID);
 
     @Query(value = "SELECT * FROM prijave  WHERE ostecenje_id = :id",nativeQuery = true)
     List<Prijava> findAllByTipOstecenja(@Param("id") Long id);

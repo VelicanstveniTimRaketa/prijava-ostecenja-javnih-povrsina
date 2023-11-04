@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Layout, Button, Typography, Form, Input, Upload, message } from "antd";
 import { Content } from "antd/es/layout/layout";
 import { useNavigate } from "react-router-dom";
@@ -6,19 +6,19 @@ import { useForm } from "antd/es/form/Form";
 import { StoreValue } from "antd/es/form/interface";
 import { RuleObject } from "antd/es/form";
 import { PlusOutlined } from "@ant-design/icons";
+import { getBase64 } from "../utils/imageTransform";
 import LoginRegisterHeader from "../components/LoginRegisterHeader";
 import type { RcFile } from "antd/es/upload/interface";
 
-const getBase64 = (img: RcFile, callback: (url: string) => void) => {
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result as string));
-  reader.readAsDataURL(img);
-};
-
 function Register() {
   const [form] = useForm();
-  const [imageUrl, setImageUrl] = useState<string>();
+  const [image, setImage] = useState<RcFile>();
+  const [imageB64, setImageB64] = useState<string>();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    image && getBase64(image).then(setImageB64);
+  }, [image]);
 
   function onSubmit() {
     navigate("/");
@@ -31,7 +31,7 @@ function Register() {
     return Promise.reject(new Error("The new password that you entered do not match!"));
   }
 
-  const beforeUpload = (file: RcFile) => {
+  const onUpload = (file: RcFile) => {
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
     if (!isJpgOrPng) {
       message.error("You can only upload JPG/PNG file!");
@@ -41,10 +41,7 @@ function Register() {
       message.error("Image must smaller than 2MB!");
     }
     //return isJpgOrPng && isLt2M;
-    getBase64(file, (url) => {
-      console.log(5);
-      setImageUrl(url);
-    });
+    setImage(file);
     return false;
   };
 
@@ -91,9 +88,9 @@ function Register() {
                 name="avatar"
                 listType="picture-circle"
                 showUploadList={false}
-                beforeUpload={beforeUpload}
+                beforeUpload={onUpload}
               >
-                {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: "100%" }} /> : (
+                {image ? <img src={imageB64} alt="avatar" style={{ width: "100%" }} /> : (
                   <div>
                     <PlusOutlined />
                     <div style={{ marginTop: 8 }}>Učitaj</div>
