@@ -3,7 +3,7 @@ import { BarebonesPrijava, Prijava, Response, TipOstecenja } from "./types";
 
 export type PrijaveOptions = {
   active?: string;
-  ostecenje_id?: string;
+  ostecenjeId?: string;
 }
 
 export function getPrijave(options?: PrijaveOptions): Promise<Response<Prijava[]>> {
@@ -38,7 +38,7 @@ export function addPrijava(prijava: BarebonesPrijava, images: RcFile[]): Promise
   return new Promise(res => {
     const data = new FormData();
     
-    data.append("data", JSON.stringify(prijava));
+    Object.entries(prijava).forEach(entry => data.append(entry[0], JSON.stringify(entry[1])));
     images.forEach(im => data.append("files", im, im.name));
 
     fetch("/api/addPrijava", { method: "POST", body: data, })

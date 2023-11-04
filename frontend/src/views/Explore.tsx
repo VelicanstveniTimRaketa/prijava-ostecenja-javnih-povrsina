@@ -19,7 +19,7 @@ function Explore() {
       options.active = form.getFieldValue("active");
     }
     if (form.getFieldValue("ostecenje")) {
-      options.ostecenje_id = form.getFieldValue("ostecenje");
+      options.ostecenjeId = form.getFieldValue("ostecenje");
     }
 
     getPrijave(options).then(res => setData(res.data));
