@@ -9,6 +9,8 @@ import { PlusOutlined } from "@ant-design/icons";
 import { UserNoID } from "../utils/types";
 
 interface UserFormProps {
+  initialData?: UserNoID;
+  noPassword?: boolean;
   onSubmit: (user: UserNoID) => void;
 }
 
@@ -55,6 +57,7 @@ function UserForm(props: UserFormProps) {
     <Form
       id="register"
       form={form}
+      initialValues={props.initialData}
       onFinish={onSubmit}
       labelCol={{ span: 7 }}
       wrapperCol={{ span: 20 }}
@@ -72,18 +75,20 @@ function UserForm(props: UserFormProps) {
       <Form.Item label="Email: " name="email" rules={[{ required: true, type: "email", message: "Molimo unesite važeći email" }]}>
         <Input />
       </Form.Item>
-      <Form.Item label="Lozinka: " name="password" hasFeedback rules={[{ required: true, message: "Molimo unesite svoju lozinku" }]}>
-        <Input.Password />
-      </Form.Item>
-      <Form.Item
-        label="Ponovite lozinku: " name="confirmPassword" hasFeedback
-        rules={[
-          { required: true, message: "Molimo unesite potvrdu lozinke" },
-          { validator: passwordValidator, message: "Lozinke se ne poklapaju" }
-        ]}
-      >
-        <Input.Password />
-      </Form.Item>
+      {!props.noPassword && <>
+        <Form.Item label="Lozinka: " name="password" hasFeedback rules={[{ required: true, message: "Molimo unesite svoju lozinku" }]}>
+          <Input.Password />
+        </Form.Item>
+        <Form.Item
+          label="Ponovite lozinku: " name="confirmPassword" hasFeedback
+          rules={[
+            { required: true, message: "Molimo unesite potvrdu lozinke" },
+            { validator: passwordValidator, message: "Lozinke se ne poklapaju" }
+          ]}
+        >
+          <Input.Password />
+        </Form.Item>
+      </>}
       <Form.Item label="Slika profila: " name="avatar" valuePropName="avatar" hasFeedback rules={[{ required: true, message: "Molimo učitajte sliku profila" }]}>
         <Upload
           name="avatar"

@@ -15,7 +15,7 @@ function EditProfile() {
     <Layout>
       <Content style={{ display: "flex", alignItems: "center", flexDirection: "column", flex: "1", width: "100%" }}>
         <Typography.Title level={2}>Promijeni podatke profila</Typography.Title>
-        <UserForm onSubmit={() => navigate("/")} />
+        <UserForm initialData={user} noPassword onSubmit={() => navigate("/")} />
       </Content>
     </Layout>
   );
