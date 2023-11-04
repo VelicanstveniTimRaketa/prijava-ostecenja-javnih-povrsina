@@ -8,13 +8,15 @@ import java.util.List;
 public class PrijavaDTO {
     private Long tipOstecenja;
     private String opis;
-    private Lokacija lokacija;
-    private List<MultipartFile> slike;
+    private Double latitude;
+    private Double longitude;
+    private MultipartFile[] slike;
 
-    public PrijavaDTO(Long tipOstecenja, String opis, Lokacija lokacija, List<MultipartFile> slike) {
+    public PrijavaDTO(Long tipOstecenja, String opis, Double latitude, Double longitude, MultipartFile[] slike) {
         this.tipOstecenja = tipOstecenja;
         this.opis = opis;
-        this.lokacija = lokacija;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.slike = slike;
     }
 
@@ -34,19 +36,27 @@ public class PrijavaDTO {
         this.opis = opis;
     }
 
-    public Lokacija getLokacija() {
-        return lokacija;
+    public Double getLatitude() {
+        return latitude;
     }
 
-    public void setLokacija(Lokacija lokacija) {
-        this.lokacija = lokacija;
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
 
-    public List<MultipartFile> getSlike() {
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public MultipartFile[] getSlike() {
         return slike;
     }
 
-    public void setSlike(List<MultipartFile> slike) {
+    public void setSlike(MultipartFile[] slike) {
         this.slike = slike;
     }
 }
