@@ -1,24 +1,24 @@
 package com.backend.projectapi.controller;
-
+import com.backend.projectapi.DTO.PrijavaDTO;
 import com.backend.projectapi.ResponseData;
-import com.backend.projectapi.model.Korisnik;
 import com.backend.projectapi.model.Prijava;
 import com.backend.projectapi.service.KorisnikService;
 import com.backend.projectapi.service.PrijavaService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import org.springframework.web.bind.annotation.*;
 
-
-import javax.print.attribute.standard.PrinterIsAcceptingJobs;
-import java.net.SocketTimeoutException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -58,6 +58,24 @@ public class PrijaveController {
     }
 
     @PostMapping("/addPrijava")
+    public ResponseEntity<Object> addPrijave(@ModelAttribute PrijavaDTO prijavaDTO, HttpServletRequest req) throws IOException {
+        String originalFilename = prijavaDTO.getSlike()[0].getOriginalFilename();
+        String uploadDirectory = "./slike";
+        String savePath = uploadDirectory + originalFilename;
+        try {
+            File file = new File(savePath);
+            Files.copy(prijavaDTO.getSlike()[0].getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("Slika spremljena na: " + savePath);
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+
+    /*
+    @PostMapping("/addPrijava")
     public ResponseEntity<Object> addPrijave(@RequestBody Prijava prijava) {
         Prijava res = prijavaService.addPrijave(prijava);
         if(res == null){
@@ -65,7 +83,7 @@ public class PrijaveController {
         }else {
             return new ResponseEntity<>(ResponseData.success(prijavaService.getClosePrijave(res.getLokacija().getLatitude(), res.getLokacija().getLongitude(), res.getId())), HttpStatus.OK);
         }
-    }
+    }*/
 
     @DeleteMapping("/deletePrijava")
     public ResponseEntity<Object> deletePrijava(@RequestParam Long id){

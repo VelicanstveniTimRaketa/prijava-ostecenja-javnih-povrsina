@@ -19,7 +19,7 @@ public class Slika {
     private Long Id;
 
     @NonNull
-    private byte[] podatak; //slika
+    private String podatak; // putanja do same slike koja se nalazi u backend folderu
 
     @JsonIgnore
     @NonNull

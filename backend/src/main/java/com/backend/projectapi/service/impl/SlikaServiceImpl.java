@@ -11,15 +11,4 @@ import java.util.Base64;
 
 @Service
 public class SlikaServiceImpl implements SlikaService {
-
-    private final SlikeRepository slikeRepo;
-    public SlikaServiceImpl(SlikeRepository slikeRepo){
-        this.slikeRepo = slikeRepo;
-    }
-    @Override
-    public void saveImage(String base64Image, Prijava prijava) {
-        byte[] imageBytes = Base64.getDecoder().decode(base64Image);
-        Slika slika = new Slika(imageBytes, prijava);
-        slikeRepo.save(slika);
-    }
 }
