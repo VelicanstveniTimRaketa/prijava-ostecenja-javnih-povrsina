@@ -28,4 +28,19 @@ public interface PrijaveRepository extends JpaRepository<Prijava, Long> {
 
     @Query(value = "SELECT * FROM prijave  WHERE ostecenje_id = :id",nativeQuery = true)
     List<Prijava> findAllByTipOstecenja(@Param("id") Long id);
+
+    @Query(value = "SELECT * FROM prijave where id = :uvjeti",nativeQuery = true)
+    List<Prijava> findOvisnoOUvjetu(@Param("uvjeti") String uvjeti);
+
+    @Query(value = "SELECT * FROM prijave  where vrijeme_otklona is null and ostecenje_id = :id",nativeQuery = true)
+    List<Prijava> findAllByTipOstecenjaAndActive(@Param("id") Long id);
+
+    @Query(value = "SELECT * FROM prijave  where vrijeme_otklona is not null and ostecenje_id = :id",nativeQuery = true)
+    List<Prijava> findAllByTipOstecenjaAndNotActive(@Param("id") Long id);
+
+    List<Prijava> findAllByPrvoVrijemePrijaveBetween(@NonNull Timestamp prvoVrijemePrijave, @NonNull Timestamp prvoVrijemePrijave2);
+
+    @Query (value = "select prijave.* from prijave natural join lokacije where latitude between (:lat - 0.00009) and (:lat + 0.00009) and longitude between (:lng - 0.00009) and (:lng + 0.00009)", nativeQuery = true)
+    List<Prijava> findAllByLokacija(@Param("lat") Double lat, @Param("lng") Double lng);
+
 }

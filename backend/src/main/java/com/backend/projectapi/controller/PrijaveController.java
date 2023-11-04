@@ -5,6 +5,7 @@ import com.backend.projectapi.model.Korisnik;
 import com.backend.projectapi.model.Prijava;
 import com.backend.projectapi.service.KorisnikService;
 import com.backend.projectapi.service.PrijavaService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.print.attribute.standard.PrinterIsAcceptingJobs;
 import java.net.SocketTimeoutException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -32,13 +34,21 @@ public class PrijaveController {
         this.prijavaService=prijavaService;
     }
 
-    // dodaj has_parent --> ? query parametar
-    // ostecenjeId ne radi kako treba
-    // sortiranje po rasponu datuma --> ? parametar pocetni i zavrsni datum
-    // priblizno lokaciji --> lat i long ? query params
+    //RADI SVE BATOOOOOOOOOO BATICEEEEEEEEEEEEEEEEEEEEEEEEE
     @GetMapping("/prijave")
-    public ResponseEntity<ResponseData<List<Prijava>>> getAllPrijave(@RequestParam(required = false) String active,@RequestParam(required = false) Long parent_id,@RequestParam(required = false) Long... ostecenjeId){
-        return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave(active,parent_id, ostecenjeId)), HttpStatus.OK);
+    public ResponseEntity<ResponseData<List<Prijava>>> getAllPrijave(@RequestParam(required = false) String active,
+                                                                     @RequestParam(required = false) Long parent_id,
+                                                                     @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date dateFrom,
+                                                                     @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date dateTo,
+                                                                     @RequestParam(required = false) Double lat,
+                                                                     @RequestParam(required = false) Double lng,
+                                                                     @RequestParam(required = false) Long... ostecenjeId){
+        return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave(active,parent_id,dateFrom,dateTo,lat,lng, ostecenjeId)), HttpStatus.OK);
+    }
+
+    @GetMapping("/prijave/{id}")
+    public ResponseEntity<Object> getPrijavaById(@PathVariable("id") Long id){
+        return new ResponseEntity<>(ResponseData.success(prijavaService.findById(id)),HttpStatus.FOUND);
     }
 
     @PatchMapping("/makeChild")
