@@ -21,3 +21,7 @@ body {
 html, body, #root {
   background: white;
 }
+
+.shadow {
+  box-shadow: 0 0 3px 0 rgba(30, 30, 30, 0.33);
+}

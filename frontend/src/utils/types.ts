@@ -11,9 +11,11 @@ export enum Page {
 }
 
 export type User = {
+  id: number;
   username: string;
   email: string;
-  id: number;
+  name: string;
+  surname: string;
 }
 
 export type Location = {
