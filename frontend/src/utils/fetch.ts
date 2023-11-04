@@ -39,7 +39,7 @@ export function addPrijava(prijava: BarebonesPrijava, images: RcFile[]): Promise
     const data = new FormData();
     
     Object.entries(prijava).forEach(entry => data.append(entry[0], JSON.stringify(entry[1])));
-    images.forEach(im => data.append("files", im, im.name));
+    images.forEach(im => data.append("slike", im, im.name));
 
     fetch("/api/addPrijava", { method: "POST", body: data, })
       .then(resp => resp.json())

@@ -56,7 +56,7 @@ function UserIcon() {
               <UserOutlined />
               <Typography>Moj profil</Typography>
             </List.Item>
-            <List.Item onClick={() => navigate("/userReports")} style={itemStyle}>
+            <List.Item onClick={() => navigate("/profile/reports")} style={itemStyle}>
               <ProfileOutlined />
               <Typography>Pregled mojih prijava</Typography>
             </List.Item>

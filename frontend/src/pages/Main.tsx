@@ -12,8 +12,7 @@ import Explore from "../views/Explore";
 import Report from "../views/Report";
 import Logo from "../components/Logo";
 import UserIcon from "../components/UserIcon";
-import Profile from "../views/Profile";
-import UserReports from "../views/UserReports";
+import ProfileRoutes from "../components/ProfileRoutes";
 
 const items: MenuPropsWithComponent = [
   {
@@ -81,9 +80,8 @@ function App() {
         {items.map(item => (
           <Route key={item.key} path={item.key as string} element={<item.component />} />
         ))}
-        <Route path="report" element={<Report />} />
-        <Route path="profile" element={<Profile />} />
-        <Route path="userReports" element={<UserReports />} />
+        <Route path="report/*" element={<Report />} />
+        <Route path="profile/*" element={<ProfileRoutes />}/>
       </Routes>
     </Layout>
   );
