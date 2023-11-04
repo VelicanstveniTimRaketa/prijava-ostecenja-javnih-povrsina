@@ -13,10 +13,15 @@ function Login() {
   const [form] = useForm();
   const navigate = useNavigate();
 
+  if (global.user) {
+    navigate("/");
+    return <div></div>;
+  }
+
   function onSubmit() {
     setGlobal({
       ...global,
-      user: { username: form.getFieldValue("username"), email: "", id: 0 }
+      user: { username: form.getFieldValue("username"), email: "mail", name: "name", surname: "surname", id: 0 }
     });
     navigate("/");
   }

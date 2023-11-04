@@ -38,14 +38,15 @@ public class PrijaveController {
 
     //RADI SVE BATOOOOOOOOOO BATICEEEEEEEEEEEEEEEEEEEEEEEEE
     @GetMapping("/prijave")
-    public ResponseEntity<ResponseData<List<Prijava>>> getAllPrijave(@RequestParam(required = false) String active,
+    public ResponseEntity<ResponseData<List<Prijava>>> getAllPrijave(@RequestParam(required = false) Long kreatorId,
+                                                                     @RequestParam(required = false) String active,
                                                                      @RequestParam(required = false) Long parent_id,
                                                                      @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date dateFrom,
                                                                      @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date dateTo,
                                                                      @RequestParam(required = false) Double lat,
                                                                      @RequestParam(required = false) Double lng,
                                                                      @RequestParam(required = false) Long... ostecenjeId){
-        return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave(active,parent_id,dateFrom,dateTo,lat,lng, ostecenjeId)), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave(kreatorId,active,parent_id,dateFrom,dateTo,lat,lng, ostecenjeId)), HttpStatus.OK);
     }
 
     @GetMapping("/prijave/{id}")

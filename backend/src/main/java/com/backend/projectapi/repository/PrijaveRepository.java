@@ -43,4 +43,6 @@ public interface PrijaveRepository extends JpaRepository<Prijava, Long> {
     @Query (value = "select prijave.* from prijave natural join lokacije where latitude between (:lat - 0.00009) and (:lat + 0.00009) and longitude between (:lng - 0.00009) and (:lng + 0.00009)", nativeQuery = true)
     List<Prijava> findAllByLokacija(@Param("lat") Double lat, @Param("lng") Double lng);
 
+    @Query(value = "SELECT * FROM prijave  where kreator_id = :id",nativeQuery = true)
+    List<Prijava> findAllByKreatorId(@Param("id") Long id);
 }

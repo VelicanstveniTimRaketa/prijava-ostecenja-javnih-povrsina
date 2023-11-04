@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface PrijavaService {
 
-    public List<Prijava> getAllPrijave(String active, Long parent_id, Date dateFrom, Date dateTo, Double lat, Double lng, Long... ostecenje_id);
+    public List<Prijava> getAllPrijave(Long kreatorId, String active, Long parent_id, Date dateFrom, Date dateTo, Double lat, Double lng, Long... ostecenje_id);
     public List<Prijava> getChildPrijave(Long id);
     public Object getClosePrijave(Double latitude, Double longitude, Long ID);
     public Prijava addPrijave(Prijava prijava);

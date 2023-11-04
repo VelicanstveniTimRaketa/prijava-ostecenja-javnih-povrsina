@@ -10,9 +10,14 @@ export enum Page {
   LOGIN
 }
 
-export type User = {
+export type UserNoID = {
   username: string;
   email: string;
+  name: string;
+  surname: string;
+}
+
+export type User = UserNoID & {
   id: number;
 }
 
@@ -33,7 +38,7 @@ export type TipOstecenja = {
 }
 
 export type BarebonesPrijava = {
-  tipOstecenja: { id: number };
+  tipOstecenja: string;
   opis: string;
   lokacija: Location;
 }
@@ -43,6 +48,7 @@ export type Prijava = BarebonesPrijava & {
   tipOstecenja: TipOstecenja;
   kreator?: User;
   prvoVrijemePrijave: Date;
+  parentPrijava?: Prijava;
   vrijemeOtklona?: Date;
   slike: string[];
 }
