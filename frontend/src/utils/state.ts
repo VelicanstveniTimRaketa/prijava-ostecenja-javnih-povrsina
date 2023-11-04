@@ -6,7 +6,9 @@ export const STATE: GlobalState = {
   user: {
     id: 2,
     username: "korisnik1",
-    email: "korisnik1@gmail.com"
+    email: "korisnik1@gmail.com",
+    name: "Korisnik",
+    surname: "Prezime",
   },
 };
 
