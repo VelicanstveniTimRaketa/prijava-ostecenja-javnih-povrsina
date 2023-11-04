@@ -42,8 +42,8 @@ public class PrijaveController {
                                                                      @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date dateTo,
                                                                      @RequestParam(required = false) Double lat,
                                                                      @RequestParam(required = false) Double lng,
-                                                                     @RequestParam(required = false) Long... ostecenjeId){
-        return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave(active,parent_id,dateFrom,dateTo,lat,lng, ostecenjeId)), HttpStatus.OK);
+                                                                     @RequestParam(required = false) Long... ostecenje_id){
+        return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave(active,parent_id,dateFrom,dateTo,lat,lng, ostecenje_id)), HttpStatus.OK);
     }
 
     @GetMapping("/prijave/{id}")
