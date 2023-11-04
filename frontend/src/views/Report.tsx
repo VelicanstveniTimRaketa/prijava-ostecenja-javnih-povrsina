@@ -84,7 +84,7 @@ function Report() {
       return;
     }
     const prijava: BarebonesPrijava = {
-      tipOstecenja: { id: Number.parseInt(form.getFieldValue("tip")) },
+      tipOstecenja: Number.parseInt(form.getFieldValue("tip")),
       opis: form.getFieldValue("opis"),
       lokacija: {
         latitude: location?.lat(),
