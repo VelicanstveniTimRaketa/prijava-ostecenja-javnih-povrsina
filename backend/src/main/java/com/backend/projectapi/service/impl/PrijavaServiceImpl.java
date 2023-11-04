@@ -41,7 +41,12 @@ public class PrijavaServiceImpl implements PrijavaService {
     }
 
     @Override
-    public List<Prijava> getAllPrijave(String active, Long parentId,Date dateFrom, Date dateTo, Double lat, Double lng, Long... ostecenjeId) {
+    public List<Prijava> getAllPrijave(Long kreatorId,String active, Long parentId,Date dateFrom, Date dateTo, Double lat, Double lng, Long... ostecenjeId) {
+
+        List<Prijava> listKreator=new ArrayList<>();
+        if (kreatorId!=null){
+            listKreator=prijaveRepo.findAllByKreatorId(kreatorId);
+        }
         List<Prijava> listActive=new ArrayList<>();
         if (StringUtils.hasText(active)){
             if (active.equals("true")){
@@ -87,6 +92,9 @@ public class PrijavaServiceImpl implements PrijavaService {
         }
         if (!listLokacija.isEmpty()){
             rez.retainAll(listLokacija);
+        }
+        if (!listKreator.isEmpty()){
+            rez.retainAll(listKreator);
         }
         return rez;
 
