@@ -38,7 +38,7 @@ export type TipOstecenja = {
 }
 
 export type BarebonesPrijava = {
-  tipOstecenja: string;
+  tipOstecenja: number;
   opis: string;
   lokacija: Location;
 }
