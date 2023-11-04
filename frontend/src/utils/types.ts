@@ -40,11 +40,14 @@ export type TipOstecenja = {
 export type BarebonesPrijava = {
   tipOstecenja: number;
   opis: string;
-  lokacija: Location;
+  latitude: number;
+  longitude: number;
 }
 
 export type Prijava = BarebonesPrijava & {
   id: number;
+  opis: string;
+  lokacija: Location;
   tipOstecenja: TipOstecenja;
   kreator?: User;
   prvoVrijemePrijave: Date;
