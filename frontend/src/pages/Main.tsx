@@ -13,6 +13,7 @@ import Report from "../views/Report";
 import Logo from "../components/Logo";
 import UserIcon from "../components/UserIcon";
 import Profile from "../views/Profile";
+import UserReports from "../views/UserReports";
 
 const items: MenuPropsWithComponent = [
   {
@@ -82,6 +83,7 @@ function App() {
         ))}
         <Route path="report" element={<Report />} />
         <Route path="profile" element={<Profile />} />
+        <Route path="userReports" element={<UserReports />} />
       </Routes>
     </Layout>
   );

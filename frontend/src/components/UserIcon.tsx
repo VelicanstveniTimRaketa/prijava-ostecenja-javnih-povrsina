@@ -56,13 +56,13 @@ function UserIcon() {
               <UserOutlined />
               <Typography>Moj profil</Typography>
             </List.Item>
-            <List.Item style={itemStyle}>
+            <List.Item onClick={() => navigate("/userReports")} style={itemStyle}>
               <ProfileOutlined />
               <Typography>Pregled mojih prijava</Typography>
             </List.Item>
             <List.Item onClick={onLogout} style={itemStyle}>
               <LogoutOutlined />
-              <Typography>Odjavi se</Typography>
+              <Typography>Odjava</Typography>
             </List.Item>
           </List>
         </Layout>

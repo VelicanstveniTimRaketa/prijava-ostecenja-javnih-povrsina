@@ -25,3 +25,7 @@ html, body, #root {
 .shadow {
   box-shadow: 0 0 3px 0 rgba(30, 30, 30, 0.33);
 }
+
+.normalCursor, .normalCursor * {
+  cursor: default !important;
+}

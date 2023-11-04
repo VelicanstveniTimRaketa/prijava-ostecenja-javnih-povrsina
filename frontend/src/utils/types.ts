@@ -45,6 +45,7 @@ export type Prijava = BarebonesPrijava & {
   tipOstecenja: TipOstecenja;
   kreator?: User;
   prvoVrijemePrijave: Date;
+  parentPrijava?: Prijava;
   vrijemeOtklona?: Date;
   slike: string[];
 }

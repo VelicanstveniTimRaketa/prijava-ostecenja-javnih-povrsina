@@ -1,11 +1,11 @@
-import { Button, Checkbox, DatePicker, Divider, Form, Layout, List, Select } from "antd";
+import { Button, DatePicker, Divider, Form, Layout, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { Content } from "antd/es/layout/layout";
 import { useState } from "react";
 import { Prijava } from "../utils/types";
 import { PrijaveOptions, getPrijave } from "../utils/fetch";
-import PrijavaListItemField from "../components/PrijavaListItemField";
 import { useOstecenja } from "../hooks/useOstecenja";
+import ReportList from "../components/ReportList";
 
 function Explore() {
   const [form] = useForm();
@@ -66,18 +66,7 @@ function Explore() {
           </Form.Item>
         </Form>
         <Divider />
-        {data && (
-          <List bordered style={{ margin: "1em 0", width: "fit-content" }}>
-            {data.map(prijava => (
-              <List.Item key={prijava.id} style={{ padding: "1.5em 2em", display: "flex", textAlign: "center" }}>
-                <PrijavaListItemField title="ID:" value={prijava.id} />
-                <PrijavaListItemField title="Tip oštećenja:" value={prijava.tipOstecenja.naziv} />
-                <PrijavaListItemField title="Prijavitelj:" value={prijava.kreator?.username || "Anoniman"} />
-                <PrijavaListItemField title="Jest povezan:" value={<Checkbox checked={true} />} />
-              </List.Item>
-            ))}
-          </List>
-        )}
+        {data && <ReportList data={data} />}
       </Content>
     </Layout>
   );
