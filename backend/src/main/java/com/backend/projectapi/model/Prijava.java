@@ -52,5 +52,4 @@ public class Prijava {
     private Timestamp prvoVrijemePrijave;
 
     private Timestamp vrijemeOtklona;
-
 }
