@@ -79,17 +79,15 @@ function Report() {
   }
 
   async function onSubmit() {
-    if (!location)  {
+    if (!location) {
       console.error("no location");
       return;
     }
     const prijava: BarebonesPrijava = {
       tipOstecenja: Number.parseInt(form.getFieldValue("tip")),
       opis: form.getFieldValue("opis"),
-      lokacija: {
-        latitude: location?.lat(),
-        longitude: location?.lng()
-      },
+      latitude: location?.lat(),
+      longitude: location?.lng(),
     };
 
     addPrijava(prijava, images.map(image => image.originFileObj)).then(console.log);
