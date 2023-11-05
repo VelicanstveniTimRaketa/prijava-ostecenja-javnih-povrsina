@@ -52,4 +52,15 @@ public class Prijava {
     private Timestamp prvoVrijemePrijave;
 
     private Timestamp vrijemeOtklona;
+
+    public Prijava(Lokacija lokacija, TipOstecenja tipOstecenja, String opis, @NonNull Korisnik kreator, List<Slika> slike, Prijava parentPrijava, @NonNull Timestamp prvoVrijemePrijave, Timestamp vrijemeOtklona) {
+        this.lokacija = lokacija;
+        this.tipOstecenja = tipOstecenja;
+        this.opis = opis;
+        this.kreator = kreator;
+        this.slike = slike;
+        this.parentPrijava = parentPrijava;
+        this.prvoVrijemePrijave = prvoVrijemePrijave;
+        this.vrijemeOtklona = vrijemeOtklona;
+    }
 }

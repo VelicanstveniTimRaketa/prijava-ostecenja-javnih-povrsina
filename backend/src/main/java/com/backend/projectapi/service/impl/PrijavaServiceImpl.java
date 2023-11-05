@@ -2,15 +2,13 @@ package com.backend.projectapi.service.impl;
 
 
 import com.backend.projectapi.DTO.PrijavaDTO;
+import com.backend.projectapi.ResponseData;
 import com.backend.projectapi.exception.RecordNotFoundException;
 import com.backend.projectapi.model.Lokacija;
 import com.backend.projectapi.model.Prijava;
 import com.backend.projectapi.model.Slika;
 import com.backend.projectapi.model.TipOstecenja;
-import com.backend.projectapi.repository.KorisniciRepository;
-import com.backend.projectapi.repository.LokacijeRepository;
-import com.backend.projectapi.repository.PrijaveRepository;
-import com.backend.projectapi.repository.TipoviOstecenjaRepository;
+import com.backend.projectapi.repository.*;
 import com.backend.projectapi.service.PrijavaService;
 import com.backend.projectapi.service.TipOstecenjaService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,12 +40,14 @@ public class PrijavaServiceImpl implements PrijavaService {
     private final LokacijeRepository lokacijRepo;
     private final TipoviOstecenjaRepository ostecenjaRepo;
     private final KorisniciRepository korisnikRepo;
+    private final SlikeRepository slikaRepo;
 
-    public PrijavaServiceImpl(PrijaveRepository prijaveRepo, LokacijeRepository lokacijRepo, TipoviOstecenjaRepository ostecenjaRepo, KorisniciRepository korisnikRepo){
+    public PrijavaServiceImpl(PrijaveRepository prijaveRepo, LokacijeRepository lokacijRepo, TipoviOstecenjaRepository ostecenjaRepo, KorisniciRepository korisnikRepo, SlikeRepository slikaRepo){
         this.prijaveRepo = prijaveRepo;
         this.lokacijRepo = lokacijRepo;
         this.ostecenjaRepo = ostecenjaRepo;
         this.korisnikRepo = korisnikRepo;
+        this.slikaRepo=slikaRepo;
     }
 
     @Override
@@ -132,10 +132,39 @@ public class PrijavaServiceImpl implements PrijavaService {
 
     @Override
     public Object addPrijave(PrijavaDTO prijavaDTO, HttpServletRequest req) {
-        String originalFilename = prijavaDTO.getSlike()[0].getOriginalFilename();
-        String uploadDirectory = "backend/src/main/resources/slike/";
+        List<Slika> slike= new ArrayList<>();
+        /*
+        for(MultipartFile slika:prijavaDTO.getSlike()) {
+            slike.add(new Slika(slika.getOriginalFilename(),));
+        }
+
+         */
+        Lokacija lok=new Lokacija(prijavaDTO.getLatitude(), prijavaDTO.getLongitude());
+        lokacijRepo.save(lok);
+
+        Prijava prijava=new Prijava(
+                lok,
+                ostecenjaRepo.findById(prijavaDTO.getTipOstecenja()).get(),
+                prijavaDTO.getOpis(),
+                korisnikRepo.findById(1L).get(),
+                null,
+                null,
+                new Timestamp(System.currentTimeMillis()),
+                null);
+
+        Long id = prijaveRepo.save(prijava).getId();
+
+        String path= addSlike(prijavaDTO.getSlike(), id);
+        System.out.println(path);
+
+        return null;
+    }
+
+    public String addSlike(MultipartFile[] slike,Long id){
+
+        String uploadDirectory = "backend/src/main/resources/slike/"+(id.toString())+"/";
         try {
-            for(MultipartFile slika:prijavaDTO.getSlike()) {
+            for(MultipartFile slika:slike) {
                 String savePath =uploadDirectory+slika.getOriginalFilename();
                 File file = new File(savePath);
                 if (!file.exists()) {
@@ -143,15 +172,12 @@ public class PrijavaServiceImpl implements PrijavaService {
                 }
                 Files.copy(slika.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 System.out.println("Slika spremljena na: " + savePath);
+                //slikaRepo.save(new Slika(savePath,))
             }
         } catch (IOException e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new RecordNotFoundException("kurcina");
         }
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    public Object addSlike(MultipartFile[] slike,Long id){
-        return null;
+        return uploadDirectory;
     }
 
     @Override

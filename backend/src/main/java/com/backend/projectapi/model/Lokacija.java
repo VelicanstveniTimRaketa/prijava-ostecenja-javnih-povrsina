@@ -31,4 +31,6 @@ public class Lokacija {
     @JsonIgnore
     @OneToMany(mappedBy = "lokacija", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Prijava> prijave;
+
+
 }
