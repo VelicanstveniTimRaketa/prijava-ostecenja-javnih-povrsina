@@ -45,4 +45,5 @@ public interface PrijaveRepository extends JpaRepository<Prijava, Long> {
 
     @Query(value = "SELECT * FROM prijave  where kreator_id = :id",nativeQuery = true)
     List<Prijava> findAllByKreatorId(@Param("id") Long id);
+
 }
