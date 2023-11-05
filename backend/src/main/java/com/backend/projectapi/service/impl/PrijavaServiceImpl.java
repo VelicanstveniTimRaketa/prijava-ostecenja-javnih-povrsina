@@ -1,9 +1,11 @@
 package com.backend.projectapi.service.impl;
 
 
+import com.backend.projectapi.DTO.PrijavaDTO;
 import com.backend.projectapi.exception.RecordNotFoundException;
 import com.backend.projectapi.model.Lokacija;
 import com.backend.projectapi.model.Prijava;
+import com.backend.projectapi.model.Slika;
 import com.backend.projectapi.model.TipOstecenja;
 import com.backend.projectapi.repository.KorisniciRepository;
 import com.backend.projectapi.repository.LokacijeRepository;
@@ -11,12 +13,20 @@ import com.backend.projectapi.repository.PrijaveRepository;
 import com.backend.projectapi.repository.TipoviOstecenjaRepository;
 import com.backend.projectapi.service.PrijavaService;
 import com.backend.projectapi.service.TipOstecenjaService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
 import org.springframework.data.jpa.repository.query.JSqlParserUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -121,21 +131,27 @@ public class PrijavaServiceImpl implements PrijavaService {
     }
 
     @Override
-    public Prijava addPrijave(Prijava prijava) {
-        prijava.setLokacija(lokacijRepo.save(prijava.getLokacija()));
-
-        System.out.println(prijava.getSlike());
-        Optional<TipOstecenja> tipOstecenja = ostecenjaRepo.findById(prijava.getTipOstecenja().getId());
-        if(tipOstecenja.isEmpty()){
-            return null;
-        }else {
-            prijava.setTipOstecenja(tipOstecenja.get());
+    public Object addPrijave(PrijavaDTO prijavaDTO, HttpServletRequest req) {
+        String originalFilename = prijavaDTO.getSlike()[0].getOriginalFilename();
+        String uploadDirectory = "backend/src/main/resources/slike/";
+        try {
+            for(MultipartFile slika:prijavaDTO.getSlike()) {
+                String savePath =uploadDirectory+slika.getOriginalFilename();
+                File file = new File(savePath);
+                if (!file.exists()) {
+                    file.mkdirs();
+                }
+                Files.copy(slika.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                System.out.println("Slika spremljena na: " + savePath);
+            }
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        prijava.setPrvoVrijemePrijave(new Timestamp(System.currentTimeMillis()));
-        // ovaj dio ce se mijenjat kad napravimo autentifikaciju i autrizaciju - tada ce kreator bit
-        // trenutno ulogirani korisnik
-        prijava.setKreator(korisnikRepo.findById(1L).get());
-        return prijaveRepo.save(prijava);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public Object addSlike(MultipartFile[] slike,Long id){
+        return null;
     }
 
     @Override

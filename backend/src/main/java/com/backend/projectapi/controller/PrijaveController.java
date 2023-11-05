@@ -57,17 +57,8 @@ public class PrijaveController {
     // napraviti pohranjivanje svih slika koje se posalju jer trenutno radi samo za getSlike()[0]
     @PostMapping("/addPrijava")
     public ResponseEntity<Object> addPrijave(@ModelAttribute PrijavaDTO prijavaDTO, HttpServletRequest req) throws IOException {
-        String originalFilename = prijavaDTO.getSlike()[0].getOriginalFilename();
-        String uploadDirectory = "./slike";
-        String savePath = uploadDirectory + originalFilename;
-        try {
-            File file = new File(savePath);
-            Files.copy(prijavaDTO.getSlike()[0].getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            System.out.println("Slika spremljena na: " + savePath);
-        } catch (IOException e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
+        System.out.println("u controlleru smo");
+        return new ResponseEntity<>(ResponseData.success(prijavaService.addPrijave(prijavaDTO,req)),HttpStatus.OK);
     }
 
 
