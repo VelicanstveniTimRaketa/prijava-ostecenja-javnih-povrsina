@@ -150,7 +150,7 @@ public class PrijavaServiceImpl implements PrijavaService {
 
     public List<Slika> addSlike(MultipartFile[] slike, Prijava prijava){
         List<Slika> savedSlike = new LinkedList<>();
-        String uploadDirectory = "backend/src/main/resources/slike/"+(prijava.getId().toString())+"/";
+        String uploadDirectory = "backend/src/main/resources/static/"+(prijava.getId().toString())+"/";
         try {
             for(MultipartFile slika:slike) {
                 String savePath =uploadDirectory+slika.getOriginalFilename();
