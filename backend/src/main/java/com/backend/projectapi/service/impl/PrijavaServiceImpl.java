@@ -27,10 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PrijavaServiceImpl implements PrijavaService {
@@ -107,8 +104,6 @@ public class PrijavaServiceImpl implements PrijavaService {
             rez.retainAll(listKreator);
         }
         return rez;
-
-
     }
 
     @Override
@@ -122,7 +117,7 @@ public class PrijavaServiceImpl implements PrijavaService {
     }
 
     @Override
-    public Object getClosePrijave(Double latitude, Double longitude, Long ID) {
+    public List<Prijava> getClosePrijave(Double latitude, Double longitude, Long ID) {
         List<Prijava> closePrijave= prijaveRepo.findClosePrijave(latitude,longitude, ID);
         if (closePrijave.isEmpty()){
             return new ArrayList<>();
@@ -131,14 +126,7 @@ public class PrijavaServiceImpl implements PrijavaService {
     }
 
     @Override
-    public Object addPrijave(PrijavaDTO prijavaDTO, HttpServletRequest req) {
-        List<Slika> slike= new ArrayList<>();
-        /*
-        for(MultipartFile slika:prijavaDTO.getSlike()) {
-            slike.add(new Slika(slika.getOriginalFilename(),));
-        }
-
-         */
+    public List<Prijava> addPrijave(PrijavaDTO prijavaDTO, HttpServletRequest req) {
         Lokacija lok=new Lokacija(prijavaDTO.getLatitude(), prijavaDTO.getLongitude());
         lokacijRepo.save(lok);
 
@@ -152,17 +140,17 @@ public class PrijavaServiceImpl implements PrijavaService {
                 new Timestamp(System.currentTimeMillis()),
                 null);
 
-        Long id = prijaveRepo.save(prijava).getId();
-
-        String path= addSlike(prijavaDTO.getSlike(), id);
-        System.out.println(path);
-
-        return null;
+        //Long id = prijaveRepo.save(prijava).getId();
+        Prijava prijavaSaved = prijaveRepo.save(prijava);
+        List<Slika> savedSlike = addSlike(prijavaDTO.getSlike(), prijavaSaved);
+        prijavaSaved.setSlike(savedSlike);
+        prijaveRepo.save(prijavaSaved);
+        return getClosePrijave(prijavaDTO.getLatitude(), prijavaDTO.getLongitude(), prijavaSaved.getId());
     }
 
-    public String addSlike(MultipartFile[] slike,Long id){
-
-        String uploadDirectory = "backend/src/main/resources/slike/"+(id.toString())+"/";
+    public List<Slika> addSlike(MultipartFile[] slike, Prijava prijava){
+        List<Slika> savedSlike = new LinkedList<>();
+        String uploadDirectory = "backend/src/main/resources/slike/"+(prijava.getId().toString())+"/";
         try {
             for(MultipartFile slika:slike) {
                 String savePath =uploadDirectory+slika.getOriginalFilename();
@@ -172,12 +160,12 @@ public class PrijavaServiceImpl implements PrijavaService {
                 }
                 Files.copy(slika.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 System.out.println("Slika spremljena na: " + savePath);
-                //slikaRepo.save(new Slika(savePath,))
+                savedSlike.add(slikaRepo.save(new Slika(savePath, prijava)));
             }
         } catch (IOException e) {
             throw new RecordNotFoundException("kurcina");
         }
-        return uploadDirectory;
+        return savedSlike;
     }
 
     @Override
@@ -206,7 +194,6 @@ public class PrijavaServiceImpl implements PrijavaService {
         }
     }
 
-
     @Override
     public boolean deletePrijava(Long id) {
         Optional<Prijava> optionalPrijava = prijaveRepo.findById(id);
@@ -217,9 +204,6 @@ public class PrijavaServiceImpl implements PrijavaService {
             prijaveRepo.delete(prijava);
             return true;
         }
-
         return false;
     }
-
-
 }

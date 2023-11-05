@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +27,6 @@ public class PrijaveController {
         this.prijavaService=prijavaService;
     }
 
-    //RADI SVE BATOOOOOOOOOO BATICEEEEEEEEEEEEEEEEEEEEEEEEE
     @GetMapping("/prijave")
     public ResponseEntity<ResponseData<List<Prijava>>> getAllPrijave(@RequestParam(required = false) Long kreatorId,
                                                                      @RequestParam(required = false) String active,
@@ -53,26 +49,11 @@ public class PrijaveController {
         return new ResponseEntity<>(ResponseData.success(prijavaService.makeChildPrijavu(parent_id,child_id)),HttpStatus.OK);
     }
 
-    // izdvojiti u service layer
-    // napraviti pohranjivanje svih slika koje se posalju jer trenutno radi samo za getSlike()[0]
     @PostMapping("/addPrijava")
     public ResponseEntity<Object> addPrijave(@ModelAttribute PrijavaDTO prijavaDTO, HttpServletRequest req) throws IOException {
         System.out.println("u controlleru smo");
         return new ResponseEntity<>(ResponseData.success(prijavaService.addPrijave(prijavaDTO,req)),HttpStatus.OK);
     }
-
-
-
-    /*
-    @PostMapping("/addPrijava")
-    public ResponseEntity<Object> addPrijave(@RequestBody Prijava prijava) {
-        Prijava res = prijavaService.addPrijave(prijava);
-        if(res == null){
-            return new ResponseEntity<>(ResponseData.error(List.of("Invalid params!")), HttpStatus.BAD_REQUEST);
-        }else {
-            return new ResponseEntity<>(ResponseData.success(prijavaService.getClosePrijave(res.getLokacija().getLatitude(), res.getLokacija().getLongitude(), res.getId())), HttpStatus.OK);
-        }
-    }*/
 
     @DeleteMapping("/deletePrijava")
     public ResponseEntity<Object> deletePrijava(@RequestParam Long id){
