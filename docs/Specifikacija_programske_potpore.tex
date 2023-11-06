@@ -430,7 +430,33 @@
 				
 				\textbf{\textit{dio 1. revizije}}\\
 				
+				
 				\textit{Nacrtati sekvencijske dijagrame koji modeliraju najvažnije dijelove sustava (max. 4 dijagrama). Ukoliko postoji nedoumica oko odabira, razjasniti s asistentom. Uz svaki dijagram napisati detaljni opis dijagrama.}
+				\\
+				\\
+				\textbf{TODO: ako treba prenijeti dokumentaciju u wiki pa nacrtati specificirane dijagrame obrazaca uporabe i sekvencijske}
+				\\
+				\\
+				\textbf{Obrasci uporabe UC02, UC03, UC13, UC14 - unos nove prijave, pregled postojećih prijava, povezivanje na postojeću prijavu, uvid u aktivne prijave sa karte}\\
+				Korisnik (prijavljeni ili anonimni) može podnijeti novu prijavu sustavu. Korisnik odabire opciju unosa nove prijave nakon čega poslužitelj vraća formu za upis podataka prijave. 
+				Korisnik šalje prijavu te sustav provjerava unos korisnika i provjerava u postoje li vremenski i prostorno bliske aktivne prijave te ako postoje, vraća formu korisniku gdje se može spojiti na neku od bliskih prijava. 
+				Korisnik šalje poslužitelju hoće li se i na koju povezati te poslužitelj sprema novu prijavu u bazu podataka. Korisnik također može poslati zahtjev za pregledom svih postojećih prijava uz opcionalne filtere po temi i lokaciji na što poslužitelj reagira dohvaćanjem tih podataka iz baze te slanjem istih korisniku. 
+				Korisnik također može kliknuti na neku od aktivnih prijava na karti na što se poslužitelju šalje zahtjev na koji on reagira dohvaćanjem detalja te prijave iz baze podataka te odgovaranjem korisniku istima.
+				
+				
+				\textbf{Obrazac uporabe UC01 - registracija korisnika u sustav}\\
+				Neprijavljeni korisnik može poslati zahtjev za registracijom na što poslužitelj odgovara formom za registraciju. Kad korisnik pošalje podatke, poslužitelj ih validira te sprema u bazu podataka.
+
+				\textbf{Obrazac uporabe UC05, UC06, UC07, UC10 - uređivanje podataka prijave, brisanje prijave, pregled korisnika, brisanje korisničkog računa, pregled gradskih ureda}\\
+				Adminisistrator može poslati zahtjev poslužitelju za uređivanje podataka iz pojedine prijave na što poslužitelj zahtjeva podatke te prijave iz baze te ih u formi za uređivanje vraća administratoru. Nakon uređivanja administrator šalje nove podatke poslužitelju na što ih on sprema u bazu.
+				Administrator također može poslati poslužitelju zahtjev za brisanjem prijave na što poslužitelj briše prijavu iz baze.
+				Osim toga, administrator ima uvid i u sve registrirane korisnike kao liste koju na zahtjev poslužitelj zahtijeva iz baze te vraća administratoru.
+				Osim korisnika, na isti način administrator može pregledati i gradske urede.
+
+				\textbf{Obrazac uporabe UC04, UC08, UC11, UC15 - prijava korisnika u sustav, pregled osobnih podataka, pregled povijesti vlastitih prijava, mijenjanje sadržaja aktivne prijave}\\
+				Registrirani korisnik može poslati zatjev za prijavom u sustav na što poslužitelj odgovara formom za prijavu. Kad korisnik prijavu pošalje, poslužitelj ju validira uz pomoć baze podataka te obaviještava korisnika o uspiješnosti prijave. Prijavljeni korisnik može poslati poslužitelju zahtjev za pregledom povijesti vlastitih prijava na što ih poslužitelj dohvaća iz baze podataka te ih vraća korisniku. Na isti način prijavljeni korisnik može pregledati osobne podatke.
+				Ukoliko prijavljeni korisnik želi mijenati svoju aktivnu prijavu, može odabrati jednu iz liste aktivnih prijava na što se poslužitelju šalje zahtjev za uređivanjem iste. Poslužitelj tad dohvaća podatke te prijave iz baze podataka te korisniku šalje formu s podacima prijave. Korisnik tad uređuje podatke te ih šalje poslužitelju na što ih poslužitelj validira te sprema u bazu podataka.
+
 				\eject
 	
 		\section{Ostali zahtjevi}
