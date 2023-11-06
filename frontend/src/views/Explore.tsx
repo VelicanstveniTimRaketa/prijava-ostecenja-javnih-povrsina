@@ -5,6 +5,8 @@ import { useState } from "react";
 import { Prijava } from "../utils/types";
 import { PrijaveOptions, getPrijave } from "../utils/fetch";
 import { useOstecenja } from "../hooks/useOstecenja";
+import { Dayjs } from "dayjs";
+import locale from "antd/es/date-picker/locale/hr_HR";
 import ReportList from "../components/ReportList";
 
 function Explore() {
@@ -20,6 +22,11 @@ function Explore() {
     }
     if (form.getFieldValue("ostecenje")) {
       options.ostecenjeId = form.getFieldValue("ostecenje");
+    }
+    if (form.getFieldValue("dates")) {
+      const dates: Dayjs[] = form.getFieldValue("dates");
+      options.dateFrom = dates[0].toISOString();
+      options.dateTo = dates[1].toISOString();
     }
 
     getPrijave(options).then(res => setData(res.data));
@@ -44,21 +51,14 @@ function Explore() {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item label="Raspon datuma:" style={{ width: "28em" }}>
-            <DatePicker.RangePicker disabled />
+          <Form.Item name="dates" label="Raspon datuma:" style={{ width: "28em" }}>
+            <DatePicker.RangePicker locale={locale} />
           </Form.Item>
           <Form.Item name="active" label="Stanje prijave: ">
             <Select style={{ width: "8em" }}>
               <Select.Option key="true">Otvorena</Select.Option>
               <Select.Option key="false">Zatvorena</Select.Option>
               <Select.Option key="both">Oboje</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item name="isChild" label="Child prijave: ">
-            <Select disabled style={{ width: "9em" }}>
-              <Select.Option key="both">Oboje</Select.Option>
-              <Select.Option key="true">Samo child</Select.Option>
-              <Select.Option key="false">Samo parent</Select.Option>
             </Select>
           </Form.Item>
           <Form.Item>

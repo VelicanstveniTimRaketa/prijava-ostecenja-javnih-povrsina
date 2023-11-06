@@ -1,12 +1,14 @@
-import { List, Checkbox } from "antd";
+import { List, Checkbox, Button } from "antd";
 import PrijavaListItemField from "./PrijavaListItemField";
 import { Prijava } from "../utils/types";
+import { useNavigate } from "react-router";
 
 interface ReportListProps {
   data: Prijava[];
 }
 
 function ReportList(props: ReportListProps) {
+  const navigate = useNavigate();
   return (
     <List bordered style={{ margin: "1em 0", width: "fit-content" }}>
       {props.data.map(prijava => (
@@ -14,8 +16,8 @@ function ReportList(props: ReportListProps) {
           <PrijavaListItemField title="ID:" value={prijava.id} />
           <PrijavaListItemField title="Tip oštećenja:" value={prijava.tipOstecenja.naziv} />
           <PrijavaListItemField title="Prijavitelj:" value={prijava.kreator?.username || "Anoniman"} />
-          <PrijavaListItemField title="Povezan:" value={<Checkbox className="normalCursor" checked={!!prijava.parentPrijava} />} />
           <PrijavaListItemField title="Otklonjeno:" value={<Checkbox className="normalCursor" checked={!!prijava.vrijemeOtklona} />} />
+          <Button style={{ marginLeft: "2em" }} onClick={() => navigate(prijava.id)} type="primary">Detalji</Button>
         </List.Item>
       ))}
     </List>
