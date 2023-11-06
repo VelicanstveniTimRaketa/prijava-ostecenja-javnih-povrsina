@@ -1,19 +1,20 @@
+import { useContext, useEffect } from "react";
 import { Route, Routes } from "react-router";
+import { useNavigate } from "react-router";
+import { StateContext } from "../utils/state";
 import Profile from "../views/Profile";
 import UserReports from "../views/UserReports";
-import { useNavigate } from "react-router";
-import { useContext } from "react";
-import { StateContext } from "../utils/state";
 import EditProfile from "../views/EditProfile";
 
 function ProfileRoutes () {
   const { global } = useContext(StateContext);
   const navigate = useNavigate();
 
-  if (!global.user) {
-    navigate("/login");
-    return <div></div>;
-  }
+  useEffect(() => {
+    if (!global.user) navigate("/login");
+  }, [global.user, navigate]);
+
+  if (!global.user) return <div></div>;
 
   return (
     <Routes>

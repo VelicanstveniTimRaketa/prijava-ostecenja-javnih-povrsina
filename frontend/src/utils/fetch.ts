@@ -4,7 +4,18 @@ import { BarebonesPrijava, Prijava, Response, TipOstecenja } from "./types";
 export type PrijaveOptions = {
   active?: string;
   ostecenjeId?: string;
+  dateFrom?: string;
+  dateTo?: string;
 };
+
+export function getPrijava(id: number): Promise<Response<Prijava>> {
+  return new Promise((res) => {
+    fetch("/api/prijave/" + id)
+      .then((resp) => resp.json())
+      .then((r) => res(r))
+      .catch((error) => res({ success: false, error }));
+  });
+}
 
 export function getPrijave(
   options?: PrijaveOptions

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { StateContext } from "../utils/state";
 import { Button, Layout, Menu } from "antd";
 import { Header } from "antd/es/layout/layout";
@@ -9,7 +9,8 @@ import { MenuPropsWithComponent } from "../utils/types";
 import { Route, Routes } from "react-router";
 import WelcomeView from "../views/WelcomeView";
 import Explore from "../views/Explore";
-import Report from "../views/Report";
+import NewReport from "../views/NewReport";
+import Report from "../pages/Report";
 import Logo from "../components/Logo";
 import UserIcon from "../components/UserIcon";
 import ProfileRoutes from "../components/ProfileRoutes";
@@ -29,13 +30,8 @@ const items: MenuPropsWithComponent = [
 
 function App() {
   const { global } = useContext(StateContext);
-  const [currentPage, setPage] = useState(window.location.pathname.split("/")[1]);
   const navigate = useNavigate();
-
-  function navigateToPage(page: string) {
-    setPage(page);
-    navigate(page);
-  }
+  const currentPage = window.location.pathname.split("/")[1];
 
   return (
     <Layout>
@@ -55,11 +51,11 @@ function App() {
           <Menu
             style={{ display: "flex", padding: "0 1em" }}
             mode="horizontal"
-            onClick={info => navigateToPage(info.key)}
+            onClick={info => navigate(info.key)}
             selectedKeys={[currentPage]}
             items={items}
           />
-          <Button type="primary" size="large" shape="round" icon={<PlusOutlined />} onClick={() => navigateToPage("report")}>
+          <Button type="primary" size="large" shape="round" icon={<PlusOutlined />} onClick={() => navigate("report")}>
             Prijavi štetu
           </Button>
         </Layout>
@@ -80,7 +76,8 @@ function App() {
         {items.map(item => (
           <Route key={item.key} path={item.key as string} element={<item.component />} />
         ))}
-        <Route path="report/*" element={<Report />} />
+        <Route path="report" element={<NewReport />} />
+        <Route path="report/:id" element={<Report />} />
         <Route path="profile/*" element={<ProfileRoutes />}/>
       </Routes>
     </Layout>
