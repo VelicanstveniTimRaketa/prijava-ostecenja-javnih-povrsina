@@ -5,3 +5,14 @@ frontend/dist
 frontend/node_modules
 frontend/.env
 backend/target
+
+docs/*.aux
+docs/*.lof
+docs/*.log
+docs/*.lot
+docs/*.out
+docs/*.pdf
+docs/*.synctex.gz
+docs/*.toc
+docs/*.fdb_latexmk
+docs/*.fls
