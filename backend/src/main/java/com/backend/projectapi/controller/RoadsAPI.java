@@ -12,7 +12,6 @@ import org.springframework.web.client.RestTemplate;
  * ovo ce kasnije postati dio SERVICE koda
  */
 @RestController
-@RequestMapping("test/api")
 public class RoadsAPI {
 
     /**
