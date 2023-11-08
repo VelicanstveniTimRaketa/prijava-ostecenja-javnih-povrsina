@@ -2,7 +2,7 @@ import { Layout, Button, Typography, Form, Input } from "antd";
 import { Content } from "antd/es/layout/layout";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "antd/es/form/Form";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { StateContext } from "../utils/state";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
@@ -13,10 +13,11 @@ function Login() {
   const [form] = useForm();
   const navigate = useNavigate();
 
-  if (global.user) {
-    navigate("/");
-    return <div></div>;
-  }
+  useEffect(() => {
+    if (global.user) navigate("/");
+  }, [global.user, navigate]);
+
+  if (global.user) return <div></div>;
 
   function onSubmit() {
     setGlobal({
