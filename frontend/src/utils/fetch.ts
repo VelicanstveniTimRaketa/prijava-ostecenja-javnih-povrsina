@@ -6,6 +6,8 @@ export type PrijaveOptions = {
   ostecenjeId?: string;
   dateFrom?: string;
   dateTo?: string;
+  lat?: string;
+  lng?: string;
 };
 
 export function getPrijava(id: number): Promise<Response<Prijava>> {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import Layout from "antd/es/layout";
+import React from "react";
 
 const containerStyle = {
   width: "500px",
@@ -14,8 +15,10 @@ const defaultCenter = {
 };
 
 interface MapJsApiProps {
-  marker?: google.maps.LatLng | google.maps.LatLngLiteral;
+  style?: React.CSSProperties;
   center?: google.maps.LatLng | google.maps.LatLngLiteral;
+  marker?: google.maps.LatLng | google.maps.LatLngLiteral;
+  secondaryMarkers?: (google.maps.LatLng | google.maps.LatLngLiteral)[];
   zoom?: number;
   disabled?: boolean;
   onClick?: (point: google.maps.LatLng) => void;
@@ -56,7 +59,7 @@ function MapJsApi(props: MapJsApiProps) {
   }
 
   return (
-    <Layout style={{ ...containerStyle, borderRadius: "1em" }}>
+    <Layout className="shadow" style={{ ...props.style, ...containerStyle, borderRadius: "1em" }}>
       {isLoaded && (
         <GoogleMap
           mapContainerStyle={containerStyle}
@@ -70,6 +73,11 @@ function MapJsApi(props: MapJsApiProps) {
           {props.marker && (
             <Marker position={props.marker}></Marker>
           )}
+          {props.secondaryMarkers && props.secondaryMarkers.map((marker, i) => (
+            <React.Fragment key={i}>
+              <Marker position={marker}></Marker>
+            </React.Fragment>
+          ))}
         </GoogleMap>
       )}
     </Layout>

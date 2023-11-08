@@ -26,7 +26,7 @@ export type Location = {
   longitude: number;
 }
 
-export type Vijece = {
+export type Odbor = {
   id: number;
   naziv: string;
 }
@@ -34,7 +34,7 @@ export type Vijece = {
 export type TipOstecenja = {
   id: number;
   naziv: string;
-  vijece: Vijece;
+  vijece: Odbor;
 }
 
 export type BarebonesPrijava = {

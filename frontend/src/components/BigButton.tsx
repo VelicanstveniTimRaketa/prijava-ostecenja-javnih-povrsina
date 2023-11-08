@@ -4,10 +4,12 @@ interface BigButtonProps {
   bold?: boolean;
 }
 
-function BigButton(props: BigButtonProps & ButtonProps) {
+function BigButton(props: ButtonProps & BigButtonProps) {
+  const buttonProps = { ...props };
+  delete buttonProps.bold;
   return (
     <Button
-      {...props}
+      {...buttonProps}
       size="large"
       shape="round"
       type="primary"

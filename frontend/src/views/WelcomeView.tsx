@@ -36,7 +36,7 @@ function WelcomeView() {
           <BigButton onClick={() => navigate("report")} bold>Prijavi</BigButton>
         </Layout>
       </Content>
-      <Layout style={{ flex: 1, height: "500px", background: colorBgContainer }}>
+      <Layout style={{ flex: 1, height: "fit-content", background: colorBgContainer }}>
         <MapJsApi />
       </Layout>
     </Layout>
