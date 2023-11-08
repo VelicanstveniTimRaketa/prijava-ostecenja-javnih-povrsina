@@ -44,7 +44,7 @@ export type BarebonesPrijava = {
   longitude: number;
 }
 
-export type Prijava = BarebonesPrijava & {
+export type Prijava = {
   id: number;
   opis: string;
   lokacija: Location;

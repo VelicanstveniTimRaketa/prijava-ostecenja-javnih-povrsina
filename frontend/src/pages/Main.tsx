@@ -10,7 +10,7 @@ import { Route, Routes } from "react-router";
 import WelcomeView from "../views/WelcomeView";
 import Explore from "../views/Explore";
 import NewReport from "../views/NewReport";
-import Report from "../pages/Report";
+import Report from "./NewReport";
 import Logo from "../components/Logo";
 import UserIcon from "../components/UserIcon";
 import ProfileRoutes from "../components/ProfileRoutes";
@@ -77,7 +77,7 @@ function App() {
           <Route key={item.key} path={item.key as string} element={<item.component />} />
         ))}
         <Route path="report" element={<NewReport />} />
-        <Route path="report/:id" element={<Report />} />
+        <Route path="search/:id" element={<Report />} />
         <Route path="profile/*" element={<ProfileRoutes />}/>
       </Routes>
     </Layout>

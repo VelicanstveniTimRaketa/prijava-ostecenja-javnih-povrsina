@@ -8,15 +8,17 @@ const containerStyle = {
   overflow: "hidden",
 };
 
-const center = {
+const defaultCenter = {
   lat: 45.8131275535915,
   lng: 15.977296829223633,
 };
 
 interface MapJsApiProps {
-  marker?: google.maps.LatLng;
-  onClick?: (point: google.maps.LatLng) => void;
+  marker?: google.maps.LatLng | google.maps.LatLngLiteral;
+  center?: google.maps.LatLng | google.maps.LatLngLiteral;
+  zoom?: number;
   disabled?: boolean;
+  onClick?: (point: google.maps.LatLng) => void;
 }
 
 function MapJsApi(props: MapJsApiProps) {
@@ -58,14 +60,16 @@ function MapJsApi(props: MapJsApiProps) {
       {isLoaded && (
         <GoogleMap
           mapContainerStyle={containerStyle}
-          center={center}
-          zoom={11}
+          center={props.center || defaultCenter}
+          zoom={props.zoom || 11}
           onLoad={map => setMap(map)}
           onUnmount={() => setMap(null)}
           options={{ fullscreenControl: false, streetViewControl: false }}
           onClick={handleMapClick}
         >
-          {props.marker && <Marker position={props.marker}></Marker>}
+          {props.marker && (
+            <Marker position={props.marker}></Marker>
+          )}
         </GoogleMap>
       )}
     </Layout>

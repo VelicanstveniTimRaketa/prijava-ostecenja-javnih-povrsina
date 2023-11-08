@@ -1,13 +1,13 @@
-import Button from "antd/es/button";
+import Button, { ButtonProps } from "antd/es/button";
 
 interface BigButtonProps {
   bold?: boolean;
-  children: string;
 }
 
-function BigButton(props: BigButtonProps) {
+function BigButton(props: BigButtonProps & ButtonProps) {
   return (
     <Button
+      {...props}
       size="large"
       shape="round"
       type="primary"
