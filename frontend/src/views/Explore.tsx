@@ -84,7 +84,7 @@ function Explore() {
           <Form.Item name="dates" label="Raspon datuma:" style={{ width: "28em" }}>
             <DatePicker.RangePicker locale={locale} />
           </Form.Item>
-          <Form.Item name="lokacija" label="Približna lokacija: ">
+          <Form.Item label="Približna lokacija: ">
             <div style={{ position: "relative", width: "8em" }}>
               <Button
                 type="dashed"
