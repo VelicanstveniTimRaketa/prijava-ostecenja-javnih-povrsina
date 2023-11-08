@@ -42,11 +42,11 @@ function UserForm(props: UserFormProps) {
   const onUpload = (file: RcFile) => {
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
     if (!isJpgOrPng) {
-      message.error("You can only upload JPG/PNG file!");
+      message.error("Moguće je jedino uploadati JPG/PNG dototeke!");
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
-      message.error("Image must smaller than 2MB!");
+      message.error("Slika mora biti manja od 2MB!");
     }
     //return isJpgOrPng && isLt2M;
     setImage(file);

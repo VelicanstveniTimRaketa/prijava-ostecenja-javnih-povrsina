@@ -1,7 +1,7 @@
 import { Button, Layout } from "antd";
 import { Prijava } from "../utils/types";
-import MapJsApi from "./MapJsApi";
 import { useNavigate } from "react-router-dom";
+import MapJsApi from "./MapJsApi";
 
 interface ReportViewProps {
   prijava: Prijava;
@@ -10,6 +10,11 @@ interface ReportViewProps {
 function ReportView(props: ReportViewProps) {
   const { prijava } = props;
   const navigate = useNavigate();
+
+  const marker = {
+    lat: prijava.lokacija.latitude,
+    lng: prijava.lokacija.longitude
+  };
 
   return (
     <Layout style={{ margin: "2em" }}>
@@ -28,7 +33,11 @@ function ReportView(props: ReportViewProps) {
           <Button style={{ margin: "2em 0" }} onClick={() => navigate(-1)}>Natrag</Button>
         </div>
         <div>
-          <MapJsApi />
+          <MapJsApi 
+            zoom={16}
+            center={marker}
+            marker={marker}
+          />
         </div>
       </div>
     </Layout>
