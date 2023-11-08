@@ -29,3 +29,17 @@ html, body, #root {
 .normalCursor, .normalCursor * {
   cursor: default !important;
 }
+
+.iconHover {
+  color: rgba(0, 0, 0, 0.0);
+  transition: 200ms;
+}
+
+.parentIconHover:hover > .iconHover {
+  color: rgba(0, 0, 0, 0.25);
+}
+
+
+.iconHover:hover {
+  color: rgba(0, 0, 0, 0.5) !important;
+}

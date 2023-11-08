@@ -10,7 +10,7 @@ import { Route, Routes } from "react-router";
 import WelcomeView from "../views/WelcomeView";
 import Explore from "../views/Explore";
 import NewReport from "../views/NewReport";
-import Report from "./NewReport";
+import Report from "./Report";
 import Logo from "../components/Logo";
 import UserIcon from "../components/UserIcon";
 import ProfileRoutes from "../components/ProfileRoutes";
