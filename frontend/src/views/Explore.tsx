@@ -24,6 +24,7 @@ function Explore() {
   const [form] = useForm();
   const [data, setData] = useState<Prijava[]>();
   const [location, setLocation] = useState<google.maps.LatLng | undefined>(undefined);
+  const [selectedPrijava, setSelectedPrijava] = useState<Prijava>();
   const [locationActive, toggleLocation, ref] = useToggleable(false);
   const ostecenja = useOstecenja();
 
@@ -48,6 +49,11 @@ function Explore() {
 
     getPrijave(options).then(res => setData(res.data));
   }
+
+  const selectedPrijavaSpot = selectedPrijava && {
+    lat: selectedPrijava.lokacija.latitude,
+    lng: selectedPrijava.lokacija.longitude
+  };
 
   return (
     <Layout style={{ display: "flex", alignItems: "center" }}>
@@ -102,20 +108,20 @@ function Explore() {
                   />
                 )}
               </Button>
-              {locationActive && (
-                <div
-                  ref={ref}
-                  style={{
-                    position: "absolute",
-                    zIndex: 1,
-                    right: 0,
-                    top: "100%",
-                    width: "15em",
-                    marginTop: "1em",
-                  }}>
-                  <MapJsApi marker={location} onClick={setLocation} />
-                </div>
-              )}
+              <div
+                ref={ref}
+                style={{
+                  position: "absolute",
+                  zIndex: locationActive ? 10 : -1,
+                  opacity: locationActive ? 1 : 0,
+                  transition: "200ms",
+                  right: 0,
+                  top: "100%",
+                  width: "15em",
+                  marginTop: "1em",
+                }}>
+                <MapJsApi marker={location} onClick={setLocation} />
+              </div>
             </div>
           </Form.Item>
           <Form.Item name="active" label="Stanje prijave: ">
@@ -133,10 +139,13 @@ function Explore() {
         {data && <>
           <Typography.Title level={5} style={{ margin: "0.5em" }}>Broj pronađenih prijava: {data.length}</Typography.Title>
           <div style={{ display: "flex" }}>
-            <ReportList data={data} />
+            <ReportList onClick={p => setSelectedPrijava({ ...p })} data={data} />
             <MapJsApi
               style={{ display: "flex", position: "sticky", top: "30vh", margin: "1em 2em" }}
-              secondaryMarkers={data.map(p => ({ lat: p.lokacija.latitude, lng: p.lokacija.longitude }))}
+              marker={selectedPrijava && selectedPrijavaSpot}
+              center={selectedPrijava && selectedPrijavaSpot}
+              zoom={selectedPrijava && 15}
+              secondaryMarkers={selectedPrijava ? undefined : data.map(p => ({ lat: p.lokacija.latitude, lng: p.lokacija.longitude }))}
             />
           </div>
         </>}

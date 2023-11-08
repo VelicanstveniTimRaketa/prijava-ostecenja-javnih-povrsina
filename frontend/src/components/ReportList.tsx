@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 interface ReportListProps {
   data: Prijava[];
+  onClick?: (p: Prijava) => void;
 }
 
 function ReportList(props: ReportListProps) {
@@ -12,7 +13,13 @@ function ReportList(props: ReportListProps) {
   return (
     <List bordered style={{ margin: "1em 0", width: "fit-content", height: "fit-content" }}>
       {props.data.map(prijava => (
-        <List.Item key={prijava.id} style={{ padding: "1.5em 2em", display: "flex", textAlign: "center" }}>
+        <List.Item
+          key={prijava.id}
+          title={props.onClick ? "Klikni za prikaz lokacije na karti!" : undefined}
+          className={props.onClick ? "reportListItemHover" : ""}
+          onClick={() => props.onClick && props.onClick(prijava)}
+          style={{ padding: "1.5em 2em", display: "flex", textAlign: "center" }}
+        >
           <PrijavaListItemField title="ID:" value={prijava.id} />
           <PrijavaListItemField title="Tip oštećenja:" value={prijava.tipOstecenja.naziv} />
           <PrijavaListItemField title="Prijavitelj:" value={prijava.kreator?.username || "Anoniman"} />

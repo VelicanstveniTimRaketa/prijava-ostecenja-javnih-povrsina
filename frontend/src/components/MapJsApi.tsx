@@ -59,7 +59,7 @@ function MapJsApi(props: MapJsApiProps) {
   }
 
   return (
-    <Layout style={{ ...props.style, ...containerStyle, borderRadius: "1em" }}>
+    <Layout className="shadow" style={{ ...props.style, ...containerStyle, borderRadius: "1em" }}>
       {isLoaded && (
         <GoogleMap
           mapContainerStyle={containerStyle}
