@@ -10,7 +10,7 @@ interface ReportListProps {
 function ReportList(props: ReportListProps) {
   const navigate = useNavigate();
   return (
-    <List bordered style={{ margin: "1em 0", width: "fit-content" }}>
+    <List bordered style={{ margin: "1em 0", width: "fit-content", height: "fit-content" }}>
       {props.data.map(prijava => (
         <List.Item key={prijava.id} style={{ padding: "1.5em 2em", display: "flex", textAlign: "center" }}>
           <PrijavaListItemField title="ID:" value={prijava.id} />

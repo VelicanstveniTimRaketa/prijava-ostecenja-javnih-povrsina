@@ -131,8 +131,14 @@ function Explore() {
         </Form>
         <Divider />
         {data && <>
-          <Typography.Title level={5} style={{ margin: "0.5em" }}>Pronađeni broj prijava: {data.length}</Typography.Title>
-          <ReportList data={data} />
+          <Typography.Title level={5} style={{ margin: "0.5em" }}>Broj pronađenih prijava: {data.length}</Typography.Title>
+          <div style={{ display: "flex" }}>
+            <ReportList data={data} />
+            <MapJsApi
+              style={{ display: "flex", position: "sticky", top: "30vh", margin: "1em 2em" }}
+              secondaryMarkers={data.map(p => ({ lat: p.lokacija.latitude, lng: p.lokacija.longitude }))}
+            />
+          </div>
         </>}
       </Content>
     </Layout>
