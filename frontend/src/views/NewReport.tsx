@@ -1,8 +1,9 @@
-import { Button, Breadcrumb, Layout, Menu, MenuProps, Form, theme, Select, Radio, RadioChangeEvent, notification } from "antd";
+import { Button, Breadcrumb, Layout, Menu, MenuProps, Form, theme, Select, Radio, RadioChangeEvent, notification, Input } from "antd";
 import { LaptopOutlined, NotificationOutlined, UserOutlined, PlusOutlined } from "@ant-design/icons";
 import { Content } from "antd/es/layout/layout";
 import { createElement, useState } from "react";
 import { useOstecenja } from "../hooks/useOstecenja";
+import { useGradskiUredi } from "../hooks/useGradskiUredi";
 import { useForm } from "antd/es/form/Form";
 import { BarebonesPrijava } from "../utils/types";
 import { RcFile } from "antd/es/upload";
@@ -40,6 +41,7 @@ function NewReport() {
   const [location, setLocation] = useState<google.maps.LatLng | undefined>(undefined);
   const [images, setImages] = useState<{ originFileObj: RcFile }[]>([]);
   const ostecenja = useOstecenja();
+  const uredi = useGradskiUredi();
 
   function getLocation() {
     if (navigator.geolocation) {
@@ -84,8 +86,9 @@ function NewReport() {
       return;
     }
     const prijava: BarebonesPrijava = {
-      tipOstecenja: Number.parseInt(form.getFieldValue("tip")),
+      naziv: form.getFieldValue("reportName"),
       opis: form.getFieldValue("opis"),
+      ured: Number.parseInt(form.getFieldValue("ured")),
       latitude: location?.lat(),
       longitude: location?.lng(),
     };
@@ -121,15 +124,34 @@ function NewReport() {
         >
           <Title level={2}>Nova prijava</Title>
           <Form id="addPrijava" form={form} onFinish={onSubmit} labelCol={{ span: "6" }} wrapperCol={{ span: "20" }} style={{ maxWidth: "40em" }}>
-            <Form.Item required name="tip" label="Tip" rules={[{ required: true, message: "Molimo označite tip oštećenja." }]}>
+            <Form.Item required name="reportName" label="Naziv: ">
+              <Input />
+            </Form.Item>
+            <Form.Item name="opis" label="Opis: ">
+              <TextArea rows={4} />
+            </Form.Item>
+            <Form.Item required name="ostecenja" label="Tip oštećenja" rules={[{ required: true, message: "Molimo označite tip oštećenja." }]}>
               <Select>
                 {ostecenja && ostecenja.map(ostecenje => (
                   <Select.Option key={ostecenje.id}>{ostecenje.naziv}</Select.Option>
                 ))}
               </Select>
             </Form.Item>
-            <Form.Item name="opis" label="Opis">
-              <TextArea rows={4} />
+            <Form.Item required label="Gradski ured" rules={[{ required: true, message: "Molimo označite gradski ured." }]}
+              shouldUpdate={(prevValues, currentValues) => prevValues.ostecenja !== currentValues.ostecenja}
+            >
+              {({ getFieldValue }) => {
+                const filtriraniUredi = uredi?.filter(ured => ured.id == getFieldValue("ostecenja")) ;
+                return (
+                  <Form.Item name="ured">
+                    <Select disabled={!getFieldValue("ostecenja")}>
+                      {filtriraniUredi && filtriraniUredi.map(ostecenje => (
+                        <Select.Option key={ostecenje.id}>{ostecenje.naziv}</Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                );
+              }}
             </Form.Item>
             <Form.Item required name="lokacija" label="Lokacija" rules={[{ required: true, validator: locationValidator, message: "Molimo odaberite lokaciju." }]}>
               <div>

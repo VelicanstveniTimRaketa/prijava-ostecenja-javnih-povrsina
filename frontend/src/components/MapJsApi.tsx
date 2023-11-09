@@ -67,6 +67,7 @@ function MapJsApi(props: MapJsApiProps) {
           zoom={props.zoom || 11}
           onLoad={map => setMap(map)}
           onUnmount={() => setMap(null)}
+          
           options={{ fullscreenControl: false, streetViewControl: false }}
           onClick={handleMapClick}
         >

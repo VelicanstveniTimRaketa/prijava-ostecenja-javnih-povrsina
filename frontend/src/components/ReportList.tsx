@@ -21,9 +21,10 @@ function ReportList(props: ReportListProps) {
           style={{ padding: "1.5em 2em", display: "flex", textAlign: "center" }}
         >
           <PrijavaListItemField title="ID:" value={prijava.id} />
-          <PrijavaListItemField title="Tip oštećenja:" value={prijava.tipOstecenja.naziv} />
+          <PrijavaListItemField title="Naziv:" value={prijava.naziv} />
           <PrijavaListItemField title="Prijavitelj:" value={prijava.kreator?.username || "Anoniman"} />
           <PrijavaListItemField title="Otklonjeno:" value={<Checkbox className="normalCursor" checked={!!prijava.vrijemeOtklona} />} />
+          <PrijavaListItemField title="Naziv:" value={prijava.prvoVrijemePrijave.toLocaleDateString()} />
           <Button style={{ marginLeft: "2em" }} onClick={() => navigate(prijava.id.toString())} type="primary">Detalji</Button>
         </List.Item>
       ))}

@@ -39,8 +39,8 @@ function Explore() {
     }
     if (form.getFieldValue("dates")) {
       const dates: Dayjs[] = form.getFieldValue("dates");
-      options.dateFrom = dates[0].toISOString();
-      options.dateTo = dates[1].toISOString();
+      options.dateFrom = dates[0].format("YYYY-MM-DD");
+      options.dateTo = dates[1].format("YYYY-MM-DD");
     }
     if (location) {
       options.lat = location.lat().toString();
@@ -81,7 +81,7 @@ function Explore() {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item name="dates" label="Raspon datuma:" style={{ width: "28em" }}>
+          <Form.Item name="dates" label="Prijavljeni između:" style={{ width: "29em" }}>
             <DatePicker.RangePicker locale={locale} />
           </Form.Item>
           <Form.Item label="Približna lokacija: ">
