@@ -4,10 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
-import org.hibernate.annotations.UuidGenerator;
-
 import java.util.List;
-import java.util.UUID;
+
 
 @Entity
 @Getter
@@ -39,6 +37,9 @@ public class Korisnik {
 
     @NonNull
     private String role;
+
+    @Column
+    private String active;
 
     @ManyToOne
     @JoinColumn(name = "vijeceId")
