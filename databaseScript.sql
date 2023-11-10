@@ -1,18 +1,18 @@
-insert into public.korisnici values
-                                 (1, 'guest@gmail.com', 'guest'),
-                                 (2, 'korisnik1@gmail.com', 'korisnik1'),
-                                 (3, 'korisnik2@gmail.com', 'korisnik2'),
-                                 (4, 'korisnik3@gmail.com', 'korisnik3'),
-                                 (5, 'korisnik4@gmail.com', 'korisnik4');
+insert into public.korisnici (id,email,username,ime,prezime,password_hash,role,token) values
+                                                                                          (1, 'guest@gmail.com', 'guest','josip','Sare','','',''),
+                                                                                          (2, 'korisnik1@gmail.com', 'korisnik1','bigD','Najev','','',''),
+                                                                                          (3, 'korisnik2@gmail.com', 'korisnik2','smallD','Zoricic','','',''),
+                                                                                          (4, 'korisnik3@gmail.com', 'korisnik3','Nikola','Boticelli','','',''),
+                                                                                          (5, 'korisnik4@gmail.com', 'korisnik4','Ivan','Elezinjo','','','');
 
-insert into public.lokacije (id, latitude, longitude) values
-                                                          (1, 45.81505, 15.98195),
-                                                          (2, 45.3271, 14.4422),
-                                                          (3, 45.5550, 18.6955),
-                                                          (4, 43.5147, 16.4435),
-                                                          (5, 45.4929, 15.5553),
-                                                          (6, 45.81509, 15.98190),
-                                                          (7, 45.81502, 15.98196);
+insert into public.lokacije (lokacija_id, latitude, longitude) values
+                                                                   (1, 45.81505, 15.98195),
+                                                                   (2, 45.3271, 14.4422),
+                                                                   (3, 45.5550, 18.6955),
+                                                                   (4, 43.5147, 16.4435),
+                                                                   (5, 45.4929, 15.5553),
+                                                                   (6, 45.81509, 15.98190),
+                                                                   (7, 45.81502, 15.98196);
 
 insert into public.vijeca (id, naziv) values
                                           (1, 'Vijece za ceste'),
@@ -42,4 +42,5 @@ insert into public.prijave
                                                                                                                (12, 3,'', 3, 1, current_timestamp - '10 days' :: interval, 2 , null);
 
 
-select * from prijave
+select * from korisnici;
+select prijave.* from prijave natural join lokacije where latitude between (45.3271 - 0.00009) and (45.3271 + 0.00009) and longitude between (14.4422 - 0.00009) and (14.4422 + 0.00009);
