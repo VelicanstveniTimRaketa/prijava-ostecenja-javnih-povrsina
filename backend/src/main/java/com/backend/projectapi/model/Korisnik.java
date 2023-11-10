@@ -42,8 +42,8 @@ public class Korisnik {
     private String active;
 
     @ManyToOne
-    @JoinColumn(name = "vijeceId")
-    private Vijece vijece;
+    @JoinColumn(name = "uredId")
+    private GradskiUred ured;
 
     @NonNull
     @Email
