@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, Libraries, Marker, useJsApiLoader } from "@react-google-maps/api";
 import Layout from "antd/es/layout";
 import React from "react";
 
@@ -14,6 +14,8 @@ const defaultCenter = {
   lng: 15.977296829223633,
 };
 
+const libraries = ["places"] as Libraries;
+
 interface MapJsApiProps {
   style?: React.CSSProperties;
   center?: google.maps.LatLng | google.maps.LatLngLiteral;
@@ -27,6 +29,7 @@ interface MapJsApiProps {
 function MapJsApi(props: MapJsApiProps) {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
+    libraries,
     googleMapsApiKey: import.meta.env.VITE_MAPS_API_KEY
   });
 
@@ -67,7 +70,6 @@ function MapJsApi(props: MapJsApiProps) {
           zoom={props.zoom || 11}
           onLoad={map => setMap(map)}
           onUnmount={() => setMap(null)}
-          
           options={{ fullscreenControl: false, streetViewControl: false }}
           onClick={handleMapClick}
         >

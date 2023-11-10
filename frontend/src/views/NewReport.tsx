@@ -1,7 +1,7 @@
-import { Button, Breadcrumb, Layout, Menu, MenuProps, Form, theme, Select, Radio, RadioChangeEvent, notification, Input } from "antd";
+import { Button, Breadcrumb, Layout, Menu, MenuProps, Form, theme, Select, Radio, notification, Input } from "antd";
 import { LaptopOutlined, NotificationOutlined, UserOutlined, PlusOutlined } from "@ant-design/icons";
 import { Content } from "antd/es/layout/layout";
-import { createElement, useState } from "react";
+import { createElement, useEffect, useState } from "react";
 import { useOstecenja } from "../hooks/useOstecenja";
 import { useGradskiUredi } from "../hooks/useGradskiUredi";
 import { useForm } from "antd/es/form/Form";
@@ -13,6 +13,7 @@ import Title from "antd/es/typography/Title";
 import TextArea from "antd/es/input/TextArea";
 import Upload from "antd/es/upload/Upload";
 import MapJsApi from "../components/MapJsApi";
+import PlacesInput from "../components/PlacesInput";
 
 const items2: MenuProps["items"] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
   (icon, index) => {
@@ -39,6 +40,7 @@ function NewReport() {
   const [form] = useForm();
   const [mapInputType, setMapInputType] = useState("onMap");
   const [location, setLocation] = useState<google.maps.LatLng | undefined>(undefined);
+  const [center, setCenter] = useState<google.maps.LatLng | undefined>(undefined);
   const [images, setImages] = useState<{ originFileObj: RcFile }[]>([]);
   const ostecenja = useOstecenja();
   const uredi = useGradskiUredi();
@@ -72,9 +74,9 @@ function NewReport() {
     }
   }
 
-  function handleMapChange(e: RadioChangeEvent): void {
-    e.target.value == "myLocation" ? getLocation() : setMapInputType(e.target.value);
-  }
+  useEffect(() => {
+    if (mapInputType === "myLocation") getLocation();
+  }, [mapInputType]);
 
   function locationValidator() {
     return location !== undefined ? Promise.resolve() : Promise.reject();
@@ -155,13 +157,14 @@ function NewReport() {
             </Form.Item>
             <Form.Item required name="lokacija" label="Lokacija" rules={[{ required: true, validator: locationValidator, message: "Molimo odaberite lokaciju." }]}>
               <div>
-                <Radio.Group defaultValue="onMap" onChange={handleMapChange}>
+                <Radio.Group value={mapInputType} onChange={e => setMapInputType(e.target.value)}>
                   <Radio.Button value="onMap">Odaberi na karti</Radio.Button>
                   <Radio.Button value="address">Unesi adresu</Radio.Button>
                   <Radio.Button value="myLocation">Uzmi moju lokaciju</Radio.Button>
                 </Radio.Group>
+                {mapInputType === "address" && <PlacesInput onClick={l => { setLocation(l); setCenter(l); setMapInputType("onMap"); }} />}
                 <Layout style={{ margin: "1em 0" }}>
-                  <MapJsApi marker={location} onClick={l => setLocation(l)} disabled={mapInputType !== "onMap"} />
+                  <MapJsApi marker={location} center={center} onClick={l => setLocation(l)} disabled={mapInputType !== "onMap"} />
                 </Layout>
               </div>
             </Form.Item>

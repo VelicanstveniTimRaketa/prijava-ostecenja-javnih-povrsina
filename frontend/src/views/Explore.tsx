@@ -39,8 +39,8 @@ function Explore() {
     }
     if (form.getFieldValue("dates")) {
       const dates: Dayjs[] = form.getFieldValue("dates");
-      options.dateFrom = dates[0].format("YYYY-MM-DD");
-      options.dateTo = dates[1].format("YYYY-MM-DD");
+      options.dateFrom = dates[0].toISOString();
+      options.dateTo = dates[1].toISOString();
     }
     if (location) {
       options.lat = location.lat().toString();
@@ -81,8 +81,8 @@ function Explore() {
               ))}
             </Select>
           </Form.Item>
-          <Form.Item name="dates" label="Prijavljeni između:" style={{ width: "29em" }}>
-            <DatePicker.RangePicker locale={locale} />
+          <Form.Item name="dates" label="Prijavljeni između:" style={{ width: "40em" }}>
+            <DatePicker.RangePicker showTime locale={locale} />
           </Form.Item>
           <Form.Item label="Približna lokacija: ">
             <div style={{ position: "relative", width: "8em" }}>
@@ -142,8 +142,8 @@ function Explore() {
             <ReportList onClick={p => setSelectedPrijava({ ...p })} data={data} />
             <MapJsApi
               style={{ display: "flex", position: "sticky", top: "30vh", margin: "1em 2em" }}
-              marker={selectedPrijava && selectedPrijavaSpot}
-              center={selectedPrijava && selectedPrijavaSpot}
+              marker={selectedPrijavaSpot}
+              center={selectedPrijavaSpot}
               zoom={selectedPrijava && 15}
               secondaryMarkers={selectedPrijava ? undefined : data.map(p => ({ lat: p.lokacija.latitude, lng: p.lokacija.longitude }))}
             />
