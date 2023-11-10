@@ -30,7 +30,7 @@ public class Korisnik {
     private String prezime;
 
     @NonNull
-    private String passwordHash; //nez jeli ovo triba biti string ili nesto drugo
+    private String passwordHash;
 
     @NonNull
     private String token;
@@ -38,7 +38,7 @@ public class Korisnik {
     @NonNull
     private String role;
 
-    @Column
+    @Column(columnDefinition = "VARCHAR(6) DEFAULT 'true'")
     private String active;
 
     @ManyToOne
