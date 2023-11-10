@@ -133,7 +133,7 @@ function NewReport() {
               <TextArea rows={4} />
             </Form.Item>
             <Form.Item required name="ostecenja" label="Tip oštećenja" rules={[{ required: true, message: "Molimo označite tip oštećenja." }]}>
-              <Select>
+              <Select onChange={() => form.setFieldValue("ured", undefined)}>
                 {ostecenja && ostecenja.map(ostecenje => (
                   <Select.Option key={ostecenje.id}>{ostecenje.naziv}</Select.Option>
                 ))}
