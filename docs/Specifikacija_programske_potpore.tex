@@ -417,6 +417,85 @@
 						\end{packed_item}
 					\end{packed_item}
 					
+					\noindent \underbar{\textbf{UC16 - Pregled dobivenih prijava}}
+					\begin{packed_item}
+	
+						\item \textbf{Glavni sudionik: }Gradski ured
+						\item  \textbf{Cilj:} Pregledati sve zaprimljene prijave
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Postojanje zaprimljenih prijava
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+	
+							\item Gradski ured bira izabire pregled svih aktivnih prijava
+							\item Sustav mu iz baze podataka omogući uvid u sve prijave namijenjene njemu
+						\end{packed_enum}
+						
+						\item  \textbf{Opis mogućih odstupanja:}
+						
+						\item[] \begin{packed_item}
+	
+							\item[2.a] Nepostojanje prijava namijenjenih njemu
+							\item[] \begin{packed_enum}
+								
+								\item Sustav mu javlja da trenutno nema aktivnih prijava	
+							\end{packed_enum}
+						\end{packed_item}
+					\end{packed_item}
+					
+					\noindent \underbar{\textbf{UC17 - Prihvaćanje ili odbijanje zaprimljene prijave}}
+					\begin{packed_item}
+	
+						\item \textbf{Glavni sudionik: }Gradski ured
+						\item  \textbf{Cilj:} Privatiti ili odbiti prijavu iz pregleda prijava
+						\item  \textbf{Sudionici:} Baza podataka, Gradski uredi
+						\item  \textbf{Preduvjet:} -
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+	
+							\item Gradski ured u pregledu svih prijava bira za pojedinu prijavu hoće li je prihvatiti ili odbiti
+							\item U slučaju prihvaćanja prijave, ta se ista uklanja it popisa aktivnih drugim uredima za koje je bila namijenjena
+						\end{packed_enum}
+						
+					\end{packed_item}
+					
+					\noindent \underbar{\textbf{UC18 - Promjena statusa određene prijave}}
+					\begin{packed_item}
+	
+						\item \textbf{Glavni sudionik: }Gradski ured
+						\item  \textbf{Cilj:} Promijeniti status prihvaćene prijave
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Prihvat određene prijave
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+	
+							\item Gradski ured za prihvaćaenu prijavu mijenja njen status ovisno je li uspješno odrađena ili ne
+							\item Status se zapisuje u bazu podatka
+							\item U slučaju neuspješno odrađene prijave, ta se ista vraća u popis aktivnih svim uredima za koje je i prije bila namijenjena
+						\end{packed_enum}
+						
+					\end{packed_item}
+					
+					\noindent \underbar{\textbf{UC19 - Povezivanje nepovezanih prijava}}
+					\begin{packed_item}
+	
+						\item \textbf{Glavni sudionik: }Gradski ured
+						\item  \textbf{Cilj:} Promijeniti sadržaj vlastite aktivne prijave
+						\item  \textbf{Sudionici:} Baza podataka, Korisnik (inicjaitaor prijave)
+						\item  \textbf{Preduvjet:} -
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+	
+							\item Gradski ured iz pregleda prijava odabire prijave koje želi povezati
+							\item Svaki prijavitelj čija je prijava povezana na druge sada to vidi u sustavu
+						\end{packed_enum}
+						
+					\end{packed_item}
+					
 					
 				
 				
@@ -476,6 +555,3 @@
 			\item Aplikacije treba biti prilagođena i desktop uređajima kao i mobilnim uređajima
 			\end{packed_item}
 			 
-			 
-			 
-	
