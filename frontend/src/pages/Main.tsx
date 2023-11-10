@@ -10,10 +10,11 @@ import { Route, Routes } from "react-router";
 import WelcomeView from "../views/WelcomeView";
 import Explore from "../views/Explore";
 import NewReport from "../views/NewReport";
-import Report from "./Report";
+import Report from "../pages/Report";
 import Logo from "../components/Logo";
 import UserIcon from "../components/UserIcon";
 import ProfileRoutes from "../components/ProfileRoutes";
+import GradskiUredi from "../components/GradskiUredi";
 
 const items: MenuPropsWithComponent = [
   {
@@ -25,6 +26,11 @@ const items: MenuPropsWithComponent = [
     key: "search",
     label: "Pretraga",
     component: Explore,
+  },
+  {
+    key: "offices",
+    label: "Gradski uredi",
+    component: GradskiUredi,
   },
 ];
 
@@ -49,7 +55,7 @@ function App() {
         <Layout style={{ display: "flex", flexDirection: "row", background: "white", alignItems: "center" }}>
           <Logo />
           <Menu
-            style={{ display: "flex", padding: "0 1em" }}
+            style={{ display: "flex", padding: "0 1em", minWidth: "fit-content" }}
             mode="horizontal"
             onClick={info => navigate(info.key)}
             selectedKeys={[currentPage]}

@@ -26,32 +26,34 @@ export type Location = {
   longitude: number;
 }
 
-export type Odbor = {
+export type GradskiUred = {
   id: number;
   naziv: string;
+  ostecenje: TipOstecenja;
 }
 
 export type TipOstecenja = {
   id: number;
   naziv: string;
-  vijece: Odbor;
 }
 
 export type BarebonesPrijava = {
-  tipOstecenja: number;
+  naziv: string;
   opis: string;
+  ured: number;
   latitude: number;
   longitude: number;
 }
 
 export type Prijava = {
   id: number;
+  naziv: string;
   opis: string;
   lokacija: Location;
-  tipOstecenja: TipOstecenja;
+  ured: GradskiUred;
   kreator?: User;
-  prvoVrijemePrijave: Date;
   parentPrijava?: Prijava;
+  prvoVrijemePrijave: Date;
   vrijemeOtklona?: Date;
   slike: string[];
 }

@@ -1,5 +1,5 @@
 import { RcFile } from "antd/es/upload";
-import { BarebonesPrijava, Prijava, Response, TipOstecenja } from "./types";
+import { BarebonesPrijava, GradskiUred, Prijava, Response, TipOstecenja } from "./types";
 
 export type PrijaveOptions = {
   active?: string;
@@ -25,7 +25,14 @@ export function getPrijave(
   return new Promise((res) => {
     fetch("/api/prijave?" + new URLSearchParams(options))
       .then((resp) => resp.json())
-      .then((r) => res(r))
+      .then((r) => {
+        r.data = r.data.map((val: Prijava) => ({
+          ...val,
+          prvoVrijemePrijave: new Date(val.prvoVrijemePrijave),
+          vrijemeOtklona: val.vrijemeOtklona && new Date(val.vrijemeOtklona),
+        }));
+        res(r);
+      })
       .catch((error) => res({ success: false, error }));
   });
 }
@@ -42,6 +49,15 @@ export function getUserPrijave(id: string): Promise<Response<Prijava[]>> {
 export function getOstecenja(): Promise<Response<TipOstecenja[]>> {
   return new Promise((res) => {
     fetch("/api/ostecenja")
+      .then((resp) => resp.json())
+      .then((r) => res(r))
+      .catch((error) => res({ success: false, error }));
+  });
+}
+
+export function getGradskiUredi(): Promise<Response<GradskiUred[]>> {
+  return new Promise((res) => {
+    fetch("/api/uredi")
       .then((resp) => resp.json())
       .then((r) => res(r))
       .catch((error) => res({ success: false, error }));

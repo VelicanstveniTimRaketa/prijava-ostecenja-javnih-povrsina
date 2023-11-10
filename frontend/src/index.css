@@ -11,6 +11,10 @@
   -webkit-text-size-adjust: 100%;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
   display: flex;
