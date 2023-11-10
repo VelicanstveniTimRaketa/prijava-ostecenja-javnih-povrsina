@@ -37,6 +37,8 @@
 					\item Odabrati aktivne prijave na karti
 					\item Imati uvid u sve prijave u sustavu
 					\item Pregledati povijet svojih prijava
+					\item Kreirati novi gradski ured
+					\item Zatražiti ulazak u određeni gradski ured
 					\item Filtrirati pregled prijava po lokaciji i temi
 					\item Mijenjati podatke aktivne prijave u povijesti prijava
 				\end{packed_enum}
@@ -53,6 +55,17 @@
 					\item Brisati prijave
 					\item Imati uvid u popis svih gradskih ureda
 					\item Uklanjati (brisati) korisničke profile
+				\end{packed_enum}
+				
+				\item \underbar{Gradski ured (inicijator) može:}
+				
+				\begin{packed_enum}
+					
+					\item Pregledati popis aktivnih prijava namijenjenih njemu
+					\item Prihvatiti (ili odbiti) određenu prijavu
+					\item Spojiti nepovezane prijave
+					\item Promijeniti status prihvaćene prijave
+					\item Prihvatiti (ili odbiti ulazak) korisnika u taj ured
 				\end{packed_enum}
 				
 				\item  \underbar{Neregistrirani korisnik (incijator) može:}
@@ -492,6 +505,74 @@
 	
 							\item Gradski ured iz pregleda prijava odabire prijave koje želi povezati
 							\item Svaki prijavitelj čija je prijava povezana na druge sada to vidi u sustavu
+						\end{packed_enum}
+						
+					\end{packed_item}
+					
+					\pagebreak
+					
+					\noindent \underbar{\textbf{UC20 - Prihvaćanje zahtjeva ulaska u gradski ured}}
+					\begin{packed_item}
+	
+						\item \textbf{Glavni sudionik: }Gradski ured
+						\item  \textbf{Cilj:} Prihvatiti ili odbiti zahtjev kroisnika za ulazak u  gradski ured
+						\item  \textbf{Sudionici:} Baza podataka, Korisnik (inicjaitaor prijave)
+						\item  \textbf{Preduvjet:} Poslan zahtjev za ulazak u gradski ured
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+	
+							\item Gradski ured gleda poslane zahtjeve vezane za učlanjenje korisnika u taj određeni ured
+							\item U slučaju da zahtjevi postoje gradski ured bira hoće li prihvatiti novog člana ili ne
+
+						\end{packed_enum}
+						
+						\item  \textbf{Opis mogućih odstupanja:}
+						
+						\item[] \begin{packed_item}
+	
+							\item[1.a] Nepostojanje aktivnih zahtjeva za ulazak u ured
+							\item[] \begin{packed_enum}
+								
+								\item Sustav javlja da trenutno nema poslanih zahtjeva	
+							\end{packed_enum}
+						\end{packed_item}
+						
+					\end{packed_item}
+					
+					\noindent \underbar{\textbf{UC21 - Slanje zahtjeva za ulazak u gradski ured}}
+					\begin{packed_item}
+	
+						\item \textbf{Glavni sudionik: }Registrirani korisnik
+						\item  \textbf{Cilj:} Poslati određenom gradskom uredu zahtjev za ulaz u isti
+						\item  \textbf{Sudionici:} Baza podataka, Gradski ured
+						\item  \textbf{Preduvjet:} -
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+	
+							\item Korisnik odabire u tražilici određeni gradski ured
+							\item Pri pronalasku traženog ureda korisnik šalje zahtjev za ulaz u isti
+
+						\end{packed_enum}
+						
+					\end{packed_item}
+					
+					\noindent \underbar{\textbf{UC22 - Stvaranje novog gradskog ureda}}
+					\begin{packed_item}
+	
+						\item \textbf{Glavni sudionik: }Registrirani korisnik
+						\item  \textbf{Cilj:} Kreirati novi gradski ured
+						\item  \textbf{Sudionici:} Baza podataka, Administrator
+						\item  \textbf{Preduvjet:} -
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+	
+							\item Korisnik odabire opciju kreiraj gradski ured
+							\item Pri kreiranju novog gradskog ureda unosi podatke za isti
+							\item Na temelju podataka administrator i baza podataka prihvaćaju ili odbijaju zahtjev za kreiranjem ureda
+
 						\end{packed_enum}
 						
 					\end{packed_item}
