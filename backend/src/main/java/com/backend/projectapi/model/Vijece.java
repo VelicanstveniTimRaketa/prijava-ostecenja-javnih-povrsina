@@ -3,7 +3,10 @@ package com.backend.projectapi.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jdk.dynalink.linker.LinkerServices;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -26,4 +29,8 @@ public class Vijece {
     @JsonIgnore
     @OneToOne(mappedBy = "vijece")
     private TipOstecenja tipOstecenja;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "vijece",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Korisnik> korisnikList;
 }

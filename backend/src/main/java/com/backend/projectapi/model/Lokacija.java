@@ -17,7 +17,7 @@ import java.util.List;
 public class Lokacija {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id", insertable = false, updatable = false, nullable = false)
+    @Column(name="lokacija_id", insertable = false, updatable = false, nullable = false)
     private Long Id;
 
     @NonNull

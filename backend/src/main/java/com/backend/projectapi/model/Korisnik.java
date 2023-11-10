@@ -26,8 +26,26 @@ public class Korisnik {
     private String username;
 
     @NonNull
-    @Email
+    private String ime;
 
+    @NonNull
+    private String prezime;
+
+    @NonNull
+    private String passwordHash; //nez jeli ovo triba biti string ili nesto drugo
+
+    @NonNull
+    private String token;
+
+    @NonNull
+    private String role;
+
+    @ManyToOne
+    @JoinColumn(name = "vijeceId")
+    private Vijece vijece;
+
+    @NonNull
+    @Email
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
