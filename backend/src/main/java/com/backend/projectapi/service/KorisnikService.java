@@ -8,4 +8,6 @@ public interface KorisnikService {
     public List<Korisnik> getAllUsers(Long id);
 
     Boolean addNewKorisnik(Korisnik korisnik);
+
+    Object deleteUser(Long id);
 }

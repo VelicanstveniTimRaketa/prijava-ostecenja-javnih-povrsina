@@ -21,6 +21,12 @@ public class KorisnikController {
         return new ResponseEntity<>(ResponseData.success(service.getAllUsers(id)), HttpStatus.OK);
         //return new ResponseEntity<>(service.getAllUsers(), HttpStatus.OK);
     }
+
+    @PatchMapping("/deleteKorisnici")
+    public ResponseEntity<ResponseData<Object>> deleteUser(@RequestParam Long id){
+        return new ResponseEntity<>(ResponseData.success(service.deleteUser(id)),HttpStatus.OK);
+    }
+
     /*
 
     @PutMapping("/korisnici/add")

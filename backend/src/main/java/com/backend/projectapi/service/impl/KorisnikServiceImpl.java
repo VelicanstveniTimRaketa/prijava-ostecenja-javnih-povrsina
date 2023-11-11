@@ -44,4 +44,17 @@ public class KorisnikServiceImpl implements KorisnikService {
             return true;
         }
     }
+
+    @Override
+    public Object deleteUser(Long id) {
+        Optional<Korisnik> myb_korisnik=korisniciRepo.findById(id);
+        if (myb_korisnik.isPresent()){
+            Korisnik korisnik=myb_korisnik.get();
+            korisnik.setActive("false");
+            korisniciRepo.save(korisnik);
+            return true;
+        }else{
+            return new RecordNotFoundException("korisnik sa danim id-em :"+id+" ne postoji");
+        }
+    }
 }
