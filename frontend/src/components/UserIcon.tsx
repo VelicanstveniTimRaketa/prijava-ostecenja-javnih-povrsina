@@ -5,7 +5,7 @@ import { StateContext } from "../utils/state";
 import { useNavigate } from "react-router";
 import { useToggleable } from "../hooks/useToggleable";
 import Avatar from "antd/es/avatar/avatar";
-import ClickableList from "./ClickableList";
+import FloatingList from "./FloatingList";
 
 function UserIcon() {
   const { global, setGlobal } = useContext(StateContext);
@@ -39,7 +39,7 @@ function UserIcon() {
     <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
       <Typography.Title level={5} style={{ margin: "0 1em" }}>{global.user?.username}</Typography.Title>
       <Avatar onClick={toggle} icon={<UserOutlined />} />
-      {active && <ClickableList data={items} />}
+      {active && <FloatingList data={items} />}
     </div>
   );
 }

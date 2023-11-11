@@ -25,7 +25,7 @@ function ReportView(props: ReportViewProps) {
           <div style={{ fontWeight: "bold" }}>Opis:</div>
           <div>{prijava.opis ? prijava.opis : "<prazan>"}</div>
           <div style={{ fontWeight: "bold" }}>Tip oštećenja:</div>
-          <div>{prijava.tipOstecenja.naziv}</div>
+          <div>{prijava.ured.ostecenje.naziv}</div>
           <div style={{ fontWeight: "bold" }}>Parent:</div>
           <div>{prijava.parentPrijava ? prijava.parentPrijava.id : "<nema>"}</div>
           <div style={{ fontWeight: "bold" }}>Slike:</div>
