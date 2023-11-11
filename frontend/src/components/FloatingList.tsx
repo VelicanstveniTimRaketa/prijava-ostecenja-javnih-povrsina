@@ -3,12 +3,12 @@ import { Layout, List, Typography } from "antd";
 interface FloatingListProps {
   data: {
     text: string;
-    icon: React.ReactNode;
-    onClick: () => void;
+    icon?: React.ReactNode;
+    onClick?: () => void;
   }[];
 }
 
-function ClickableList(props: FloatingListProps) {
+function FloatingList(props: FloatingListProps) {
   return (
     <Layout
       className="shadow"
@@ -38,4 +38,4 @@ function ClickableList(props: FloatingListProps) {
   );
 }
 
-export default ClickableList;
+export default FloatingList;
