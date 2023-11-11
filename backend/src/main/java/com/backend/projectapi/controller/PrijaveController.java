@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
+import java.sql.Timestamp;
+
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -30,8 +33,8 @@ public class PrijaveController {
     public ResponseEntity<ResponseData<List<Prijava>>> getAllPrijave(@RequestParam(required = false) Long kreatorId,
                                                                      @RequestParam(required = false) String active,
                                                                      @RequestParam(required = false) Long parent_id,
-                                                                     @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date dateFrom,
-                                                                     @RequestParam(required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date dateTo,
+                                                                     @RequestParam(required = false) ZonedDateTime dateFrom,
+                                                                     @RequestParam(required = false) ZonedDateTime dateTo,
                                                                      @RequestParam(required = false) Double lat,
                                                                      @RequestParam(required = false) Double lng,
                                                                      @RequestParam(required = false) Long... ostecenjeId){

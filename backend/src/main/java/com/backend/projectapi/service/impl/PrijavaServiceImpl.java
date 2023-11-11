@@ -20,6 +20,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import java.time.LocalDateTime;
+import java.time.LocalDate;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 @Service
@@ -48,18 +52,23 @@ public class PrijavaServiceImpl implements PrijavaService {
     }
 
     @Override
-    public List<Prijava> getAllPrijave(Long kreatorId,String active, Long parentId,Date dateFrom, Date dateTo, Double lat, Double lng, Long... ostecenjeId) {
+    public List<Prijava> getAllPrijave(Long kreatorId, String active, Long parentId, ZonedDateTime dateFrom, ZonedDateTime dateTo, Double lat, Double lng, Long... ostecenjeId) {
+
+        List<Prijava> rez=new ArrayList<>(prijaveRepo.findAll());
 
         List<Prijava> listKreator=new ArrayList<>();
         if (kreatorId!=null){
             listKreator=prijaveRepo.findAllByKreatorId(kreatorId);
+            rez.retainAll(listKreator);
         }
         List<Prijava> listActive=new ArrayList<>();
         if (StringUtils.hasText(active)){
             if (active.equals("true")){
                 listActive.addAll(prijaveRepo.getAllByVrijemeOtklonaIsNull());
+                rez.retainAll(listActive);
             }else if (active.equals("false")){
                 listActive.addAll(prijaveRepo.getAllByVrijemeOtklonaIsNotNull());
+                rez.retainAll(listActive);
             }
         }
         List<Prijava> listParent=new ArrayList<>();
@@ -67,42 +76,27 @@ public class PrijavaServiceImpl implements PrijavaService {
             Optional<Prijava> optionalPrijava = prijaveRepo.findById(parentId);
             if (optionalPrijava.isPresent()){
                 listParent.addAll(prijaveRepo.findAllByParentPrijava(optionalPrijava.get()));
+                rez.retainAll(listParent);
             }
         }
         List<Prijava> listOstecenje=new ArrayList<>();
         if(ostecenjeId != null){
             for (Long ostecenje : ostecenjeId) {
                 listOstecenje.addAll(prijaveRepo.findAllByTipOstecenja(ostecenje));
+                rez.retainAll(listOstecenje);
             }
         }
         List<Prijava> listDate=new ArrayList<>();
         if (dateFrom!=null && dateTo!=null){ // triba dodati ako posalje samo jedan datum da baci error
-            listDate=prijaveRepo.findAllByPrvoVrijemePrijaveBetween(new Timestamp(dateFrom.getTime()),new Timestamp(dateTo.getTime()));
+            listDate=prijaveRepo.findAllByPrvoVrijemePrijaveBetween(dateFrom,dateTo);
+            rez.retainAll(listDate);
         }
         List<Prijava> listLokacija=new ArrayList<>();
         if (lat!=null && lng !=null){
             listLokacija=prijaveRepo.findAllByLokacija(lat,lng);
-        }
-
-        List<Prijava> rez=new ArrayList<>(prijaveRepo.findAll());
-        if (!listActive.isEmpty()){
-            rez.retainAll(listActive);
-        }
-        if (!listOstecenje.isEmpty()){
-            rez.retainAll(listOstecenje);
-        }
-        if (!listParent.isEmpty()){
-            rez.retainAll(listParent);
-        }
-        if (!listDate.isEmpty()){
-            rez.retainAll(listDate);
-        }
-        if (!listLokacija.isEmpty()){
             rez.retainAll(listLokacija);
         }
-        if (!listKreator.isEmpty()){
-            rez.retainAll(listKreator);
-        }
+
         return rez;
     }
 
@@ -137,7 +131,7 @@ public class PrijavaServiceImpl implements PrijavaService {
                 korisnikRepo.findById(1L).get(),
                 null,
                 null,
-                new Timestamp(System.currentTimeMillis()),
+                ZonedDateTime.now(),
                 null);
 
         //Long id = prijaveRepo.save(prijava).getId();

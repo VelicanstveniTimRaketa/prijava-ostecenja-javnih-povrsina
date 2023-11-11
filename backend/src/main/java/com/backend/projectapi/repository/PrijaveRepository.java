@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +40,9 @@ public interface PrijaveRepository extends JpaRepository<Prijava, Long> {
     @Query(value = "SELECT * FROM prijave  where vrijeme_otklona is not null and ostecenje_id = :id",nativeQuery = true)
     List<Prijava> findAllByTipOstecenjaAndNotActive(@Param("id") Long id);
 
-    List<Prijava> findAllByPrvoVrijemePrijaveBetween(@NonNull Timestamp prvoVrijemePrijave, @NonNull Timestamp prvoVrijemePrijave2);
+    //WHERE timestamp_with_zone AT TIME ZONE 'UTC' = '2023-01-01T12:34:56.789Z'::timestamptz AT TIME ZONE 'UTC';
+    @Query(value = "select * from prijave where prvo_vrijeme_prijave AT TIME ZONE 'CET' between :prvoVrijemePrijave and :prvoVrijemePrijave2",nativeQuery = true)
+    List<Prijava> findAllByPrvoVrijemePrijaveBetween(@NonNull ZonedDateTime prvoVrijemePrijave, @NonNull ZonedDateTime prvoVrijemePrijave2);
 
     @Query (value = "select prijave.* from prijave natural join lokacije where latitude between (:lat - 0.00009) and (:lat + 0.00009) and longitude between (:lng - 0.00009) and (:lng + 0.00009)", nativeQuery = true)
     List<Prijava> findAllByLokacija(@Param("lat") Double lat, @Param("lng") Double lng);

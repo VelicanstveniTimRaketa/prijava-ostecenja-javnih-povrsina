@@ -7,6 +7,8 @@ import lombok.extern.java.Log;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,11 +51,11 @@ public class Prijava {
     private Prijava parentPrijava;
 
     @NonNull
-    private Timestamp prvoVrijemePrijave;
+    private ZonedDateTime prvoVrijemePrijave;
 
-    private Timestamp vrijemeOtklona;
+    private ZonedDateTime vrijemeOtklona;
 
-    public Prijava(Lokacija lokacija, TipOstecenja tipOstecenja, String opis, @NonNull Korisnik kreator, List<Slika> slike, Prijava parentPrijava, @NonNull Timestamp prvoVrijemePrijave, Timestamp vrijemeOtklona) {
+    public Prijava(Lokacija lokacija, TipOstecenja tipOstecenja, String opis, @NonNull Korisnik kreator, List<Slika> slike, Prijava parentPrijava, @NonNull ZonedDateTime prvoVrijemePrijave, ZonedDateTime vrijemeOtklona) {
         this.lokacija = lokacija;
         this.tipOstecenja = tipOstecenja;
         this.opis = opis;
