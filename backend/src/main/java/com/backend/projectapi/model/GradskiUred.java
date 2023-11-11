@@ -3,7 +3,6 @@ package com.backend.projectapi.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jdk.dynalink.linker.LinkerServices;
 import lombok.*;
 
 import java.util.List;
@@ -13,8 +12,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @RequiredArgsConstructor
-@Table(name = "vijeca")
-public class Vijece {
+@Table(name = "gradski_uredi")
+public class GradskiUred {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,10 +26,10 @@ public class Vijece {
     private String naziv;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "vijece")
+    @OneToOne(mappedBy = "ured")
     private TipOstecenja tipOstecenja;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "vijece",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "ured",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Korisnik> korisnikList;
 }

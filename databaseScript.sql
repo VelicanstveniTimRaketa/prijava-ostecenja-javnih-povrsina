@@ -14,17 +14,17 @@ insert into public.lokacije (lokacija_id, latitude, longitude) values
                                                                    (6, 45.81509, 15.98190),
                                                                    (7, 45.81502, 15.98196);
 
-insert into public.vijeca (id, naziv) values
-                                          (1, 'Vijece za ceste'),
-                                          (2, 'Vijece za vodovod'),
-                                          (3, 'Vijece za elektriku'),
-                                          (4, 'Vijece za cijevi');
+insert into public.gradski_uredi (id, naziv) values
+                                                 (1, 'Vijece za ceste'),
+                                                 (2, 'Vijece za vodovod'),
+                                                 (3, 'Vijece za elektriku'),
+                                                 (4, 'Vijece za cijevi');
 
-insert into public.tipovi_ostecenja (id, vijece_id, naziv) values
-                                                               (1, 1, 'Oštećenje cestovne površine'),
-                                                               (2, 2, 'Oštećenje cijevi na javnoj površini'),
-                                                               (3, 3, 'Oštećenje elektrike nad cestom'),
-                                                               (4, 4, 'Oštećenje vodovoda ispod javne površine');
+insert into public.tipovi_ostecenja (id, ured_id, naziv) values
+                                                             (1, 1, 'Oštećenje cestovne površine'),
+                                                             (2, 2, 'Oštećenje cijevi na javnoj površini'),
+                                                             (3, 3, 'Oštećenje elektrike nad cestom'),
+                                                             (4, 4, 'Oštećenje vodovoda ispod javne površine');
 
 insert into public.prijave
 (id, ostecenje_id,opis, lokacija_id, kreator_id, prvo_vrijeme_prijave, parent_prijava_id, vrijeme_otklona) values

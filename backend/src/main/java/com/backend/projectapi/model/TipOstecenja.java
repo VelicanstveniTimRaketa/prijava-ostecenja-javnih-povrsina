@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -23,8 +22,8 @@ public class TipOstecenja {
     private String naziv;
 
     @OneToOne
-    @JoinColumn(name = "vijeceId", referencedColumnName = "id")
-    private Vijece vijece;
+    @JoinColumn(name = "uredId", referencedColumnName = "id")
+    private GradskiUred ured;
 
     @JsonIgnore
     @OneToMany(mappedBy = "tipOstecenja", cascade = CascadeType.ALL,orphanRemoval = true)
