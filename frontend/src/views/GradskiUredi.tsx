@@ -1,13 +1,15 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Button, Divider, Row, Typography } from "antd";
 import { Content } from "antd/es/layout/layout";
 import { useGradskiUredi } from "../hooks/useGradskiUredi";
 import { StateContext } from "../utils/state";
-import CustomList from "./CustomList";
+import CustomList from "../components/CustomList";
+import NewGradskiUred from "../components/NewGradskiUred";
 
 function GradskiUredi() {
   const { global } = useContext(StateContext);
   const uredi = useGradskiUredi();
+  const [newUred, setNewUred] = useState(false);
 
   const items = uredi?.map(ured => {
     const button = <Button style={{ marginLeft: "2em" }} onClick={() => { }} type="primary">Prijavi se</Button>;
@@ -25,7 +27,7 @@ function GradskiUredi() {
 
 
   return (
-    <Content style={{ display: "flex", margin: "2em", textAlign: "center" }}>
+    <Content style={{ display: "flex", margin: "2em" }}>
       <Row style={{ justifyContent: "space-around", flex: 1 }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 2 }}>
           <Typography.Title level={3}>Lista ureda</Typography.Title>
@@ -34,8 +36,9 @@ function GradskiUredi() {
         {global.user &&
           <>
             <Divider type="vertical" style={{ minHeight: "100%" }} />
-            <div style={{ display: "flex", flex: 1, marginTop: "10em", justifyContent: "center" }}>
-              <Button type="primary">Novi gradski ured</Button>
+            <div style={{ display: "flex", flex: 1, marginTop: "8em", justifyContent: "center" }}>
+              {!newUred && <Button onClick={() => setNewUred(true)} type="primary">Novi gradski ured</Button>}
+              {newUred && <NewGradskiUred />}
             </div>
           </>
         }
