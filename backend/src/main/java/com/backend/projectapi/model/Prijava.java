@@ -25,6 +25,9 @@ public class Prijava {
     @Column(name="id", insertable = false, updatable = false, nullable = false)
     private Long Id;
 
+    @Column(name = "naziv")
+    private String naziv;
+
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "lokacijaId")

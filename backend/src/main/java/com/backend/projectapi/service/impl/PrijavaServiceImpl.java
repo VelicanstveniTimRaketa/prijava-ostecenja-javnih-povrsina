@@ -123,7 +123,6 @@ public class PrijavaServiceImpl implements PrijavaService {
     public List<Prijava> addPrijave(PrijavaDTO prijavaDTO, HttpServletRequest req) {
         Lokacija lok=new Lokacija(prijavaDTO.getLatitude(), prijavaDTO.getLongitude());
         lokacijRepo.save(lok);
-
         Prijava prijava=new Prijava(
                 lok,
                 ostecenjaRepo.findById(prijavaDTO.getTipOstecenja()).get(),

@@ -3,21 +3,32 @@ package com.backend.projectapi.DTO;
 import com.backend.projectapi.model.Lokacija;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.print.event.PrintJobAttributeEvent;
 import java.util.List;
 
 public class PrijavaDTO {
     private Long tipOstecenja;
+    private String naziv;
     private String opis;
     private Double latitude;
     private Double longitude;
     private MultipartFile[] slike;
 
-    public PrijavaDTO(Long tipOstecenja, String opis, Double latitude, Double longitude, MultipartFile[] slike) {
+    public PrijavaDTO(Long tipOstecenja, String naziv, String opis, Double latitude, Double longitude, MultipartFile[] slike) {
         this.tipOstecenja = tipOstecenja;
+        this.naziv = naziv;
         this.opis = opis;
         this.latitude = latitude;
         this.longitude = longitude;
         this.slike = slike;
+    }
+
+    public String getNaziv() {
+        return naziv;
+    }
+
+    public void setNaziv(String naziv) {
+        this.naziv = naziv;
     }
 
     public Long getTipOstecenja() {

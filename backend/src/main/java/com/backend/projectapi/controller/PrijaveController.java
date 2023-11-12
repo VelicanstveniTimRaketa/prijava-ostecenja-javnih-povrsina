@@ -5,7 +5,6 @@ import com.backend.projectapi.model.Prijava;
 import com.backend.projectapi.service.KorisnikService;
 import com.backend.projectapi.service.PrijavaService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
-import java.sql.Timestamp;
 
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -54,6 +51,8 @@ public class PrijaveController {
     @PostMapping("/addPrijava")
     public ResponseEntity<Object> addPrijave(@ModelAttribute PrijavaDTO prijavaDTO, HttpServletRequest req) throws IOException {
         System.out.println("u controlleru smo");
+        System.out.println(prijavaDTO.getOpis());
+        System.out.println(prijavaDTO.getTipOstecenja());
         return new ResponseEntity<>(ResponseData.success(prijavaService.addPrijave(prijavaDTO,req)),HttpStatus.OK);
     }
 
