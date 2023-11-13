@@ -24,7 +24,7 @@ export type Location = {
 export type GradskiUred = {
   id: number;
   naziv: string;
-  ostecenje: TipOstecenja;
+  tipOstecenja: TipOstecenja;
 }
 
 export type TipOstecenja = {
