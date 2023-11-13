@@ -14,17 +14,18 @@ insert into public.lokacije (lokacija_id, latitude, longitude) values
                                                                    (default, 45.81509, 15.98190),
                                                                    (default, 45.81502, 15.98196);
 
-insert into public.gradski_uredi (id, naziv) values
-                                                 (default, 'Vijece za ceste'),
-                                                 (default, 'Vijece za vodovod'),
-                                                 (default, 'Vijece za elektriku'),
-                                                 (default, 'Vijece za cijevi');
+insert into public.tipovi_ostecenja (id, naziv) values
+                                                             (default, 'Oštećenje cestovne površine'),
+                                                             (default, 'Oštećenje cijevi na javnoj površini'),
+                                                             (default, 'Oštećenje elektrike nad cestom'),
+                                                             (default, 'Oštećenje vodovoda ispod javne površine');
 
-insert into public.tipovi_ostecenja (id, ured_id, naziv) values
-                                                             (default, 1, 'Oštećenje cestovne površine'),
-                                                             (default, 2, 'Oštećenje cijevi na javnoj površini'),
-                                                             (default, 3, 'Oštećenje elektrike nad cestom'),
-                                                             (default, 4, 'Oštećenje vodovoda ispod javne površine');
+insert into public.gradski_uredi (id, ostecenje_id, naziv) values
+                                                 (default, 1, 'Vijece za ceste'),
+                                                 (default, 2, 'Vijece za vodovod'),
+                                                 (default, 3, 'Vijece za elektriku'),
+                                                 (default, 4, 'Vijece za cijevi');
+
 
 insert into public.prijave
 (id, ostecenje_id,opis, lokacija_id, kreator_id, prvo_vrijeme_prijave, parent_prijava_id, vrijeme_otklona) values

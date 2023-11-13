@@ -21,10 +21,6 @@ public class TipOstecenja {
     @NonNull
     private String naziv;
 
-    @OneToOne
-    @JoinColumn(name = "uredId", referencedColumnName = "id")
-    private GradskiUred ured;
-
     @JsonIgnore
     @OneToMany(mappedBy = "tipOstecenja", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Prijava> prijave;
