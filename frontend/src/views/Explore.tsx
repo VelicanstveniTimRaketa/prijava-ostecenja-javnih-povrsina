@@ -45,7 +45,7 @@ function Explore() {
     }
     if (location) {
       options.lat = location.lat().toString();
-      options.lng = location.lat().toString();
+      options.lng = location.lng().toString();
     }
 
     getPrijave(options).then(res => setData(res.data));
