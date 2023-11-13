@@ -14,7 +14,7 @@ import Report from "../pages/Report";
 import Logo from "../components/Logo";
 import UserIcon from "../components/UserIcon";
 import ProfileRoutes from "../components/ProfileRoutes";
-import GradskiUredi from "../components/GradskiUredi";
+import GradskiUredi from "../views/GradskiUredi";
 
 const items: MenuPropsWithComponent = [
   {

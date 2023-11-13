@@ -18,8 +18,8 @@ function ReportList(props: ReportListProps) {
       { title: "ID:", value: prijava.id },
       { title: "Naziv:", value: prijava.naziv },
       { title: "Prijavitelj:", value: prijava.kreator?.username || "Anoniman" },
+      { title: "Datum prijave:", value: prijava.prvoVrijemePrijave.toLocaleDateString() },
       { title: "Otklonjeno:", value: <Checkbox className="normalCursor" checked={!!prijava.vrijemeOtklona} /> },
-      { title: "Naziv:", value: prijava.prvoVrijemePrijave.toLocaleDateString() },
       { value: <Button style={{ marginLeft: "2em" }} onClick={() => navigate(prijava.id.toString())} type="primary">Detalji</Button>}
     ]
   }));

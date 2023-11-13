@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Form, Input, Upload, Button, message } from "antd";
+import { Form, Input, Upload, Button, message, Row } from "antd";
 import { RuleObject } from "antd/es/form";
 import { useForm } from "antd/es/form/Form";
 import { StoreValue } from "antd/es/form/interface";
@@ -63,24 +63,28 @@ function UserForm(props: UserFormProps) {
       wrapperCol={{ span: 20 }}
       style={{ width: "100%", maxWidth: "32em" }}
     >
-      <Form.Item label="Korisničko ime: " name="username" rules={[{ required: true, message: "Molimo unesite svoje korisničko ime" }]}>
+      <Form.Item label="Korisničko ime:" name="username" rules={[{ required: true, message: "Molimo unesite svoje korisničko ime" }]}>
         <Input autoFocus />
       </Form.Item>
-      <Form.Item label="Ime: " name="name" rules={[{ required: true, message: "Molimo unesite svoje ime" }]}>
-        <Input />
+      <Form.Item required label="Ime i prezime:">
+        <Row style={{ gap: "0.5em" }}>
+          <Form.Item name="name" style={{ flex: 1, marginBottom: 0 }} rules={[{ required: true, message: "Molimo unesite svoje ime" }]}>
+            <Input placeholder="Ime" />
+          </Form.Item>
+          <Form.Item name="surname" style={{ flex: 1, marginBottom: 0 }} rules={[{ required: true, message: "Molimo unesite svoje prezime" }]}>
+            <Input placeholder="Prezime" />
+          </Form.Item>
+        </Row>
       </Form.Item>
-      <Form.Item label="Prezime: " name="surname" rules={[{ required: true, message: "Molimo unesite svoje prezime" }]}>
-        <Input />
-      </Form.Item>
-      <Form.Item label="Email: " name="email" rules={[{ required: true, type: "email", message: "Molimo unesite važeći email" }]}>
+      <Form.Item label="Email:" name="email" rules={[{ required: true, type: "email", message: "Molimo unesite važeći email" }]}>
         <Input />
       </Form.Item>
       {!props.noPassword && <>
-        <Form.Item label="Lozinka: " name="password" hasFeedback rules={[{ required: true, message: "Molimo unesite svoju lozinku" }]}>
+        <Form.Item label="Lozinka:" name="password" hasFeedback rules={[{ required: true, message: "Molimo unesite svoju lozinku" }]}>
           <Input.Password />
         </Form.Item>
         <Form.Item
-          label="Ponovite lozinku: " name="confirmPassword" hasFeedback
+          label="Ponovite lozinku:" name="confirmPassword" hasFeedback
           rules={[
             { required: true, message: "Molimo unesite potvrdu lozinke" },
             { validator: passwordValidator, message: "Lozinke se ne poklapaju" }
@@ -89,7 +93,7 @@ function UserForm(props: UserFormProps) {
           <Input.Password />
         </Form.Item>
       </>}
-      <Form.Item label="Slika profila: " name="avatar" valuePropName="avatar" hasFeedback rules={[{ required: true, message: "Molimo učitajte sliku profila" }]}>
+      <Form.Item label="Slika profila:" name="avatar" valuePropName="avatar" hasFeedback rules={[{ required: true, message: "Molimo učitajte sliku profila" }]}>
         <Upload
           name="avatar"
           listType="picture-circle"
