@@ -19,7 +19,7 @@ function GradskiUredi() {
       items: [
         { title: "ID:", value: ured.id },
         { title: "Naziv:", value: ured.naziv },
-        { title: "Oštećenje:", value: ured.ostecenje?.naziv },
+        { title: "Oštećenje:", value: ured.tipOstecenja?.naziv },
         ...(global.user ? [{ value: button }] : [])
       ]
     };
