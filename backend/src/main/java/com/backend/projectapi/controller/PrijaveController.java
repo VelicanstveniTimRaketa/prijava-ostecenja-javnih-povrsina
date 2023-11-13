@@ -52,7 +52,10 @@ public class PrijaveController {
     public ResponseEntity<Object> addPrijave(@ModelAttribute PrijavaDTO prijavaDTO, HttpServletRequest req) throws IOException {
         System.out.println("u controlleru smo");
         System.out.println(prijavaDTO.getOpis());
-        System.out.println(prijavaDTO.getTipOstecenja());
+        System.out.println(prijavaDTO.getNaziv());
+        System.out.println(prijavaDTO.getUred());
+        System.out.println(prijavaDTO.getLatitude());
+        System.out.println(prijavaDTO.getLongitude());
         return new ResponseEntity<>(ResponseData.success(prijavaService.addPrijave(prijavaDTO,req)),HttpStatus.OK);
     }
 

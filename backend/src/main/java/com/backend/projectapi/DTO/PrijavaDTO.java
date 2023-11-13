@@ -7,17 +7,17 @@ import javax.print.event.PrintJobAttributeEvent;
 import java.util.List;
 
 public class PrijavaDTO {
-    private Long tipOstecenja;
+    private Long ured;
     private String naziv;
     private String opis;
     private Double latitude;
     private Double longitude;
     private MultipartFile[] slike;
 
-    public PrijavaDTO(Long tipOstecenja, String naziv, String opis, Double latitude, Double longitude, MultipartFile[] slike) {
-        this.tipOstecenja = tipOstecenja;
+    public PrijavaDTO(String naziv, String opis, Long uredId, Double latitude, Double longitude, MultipartFile[] slike) {
         this.naziv = naziv;
         this.opis = opis;
+        this.ured = uredId;
         this.latitude = latitude;
         this.longitude = longitude;
         this.slike = slike;
@@ -31,12 +31,12 @@ public class PrijavaDTO {
         this.naziv = naziv;
     }
 
-    public Long getTipOstecenja() {
-        return tipOstecenja;
+    public Long getUred() {
+        return ured;
     }
 
-    public void setTipOstecenja(Long tipOstecenja) {
-        this.tipOstecenja = tipOstecenja;
+    public void setUred(Long ured) {
+        this.ured = ured;
     }
 
     public String getOpis() {

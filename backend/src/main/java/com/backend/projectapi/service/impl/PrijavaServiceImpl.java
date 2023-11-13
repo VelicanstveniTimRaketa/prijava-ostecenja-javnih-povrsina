@@ -39,14 +39,14 @@ public class PrijavaServiceImpl implements PrijavaService {
 
     private final PrijaveRepository prijaveRepo;
     private final LokacijeRepository lokacijRepo;
-    private final TipoviOstecenjaRepository ostecenjaRepo;
+    private final GradskiUrediRepository gradskiUrediRepo;
     private final KorisniciRepository korisnikRepo;
     private final SlikeRepository slikaRepo;
 
-    public PrijavaServiceImpl(PrijaveRepository prijaveRepo, LokacijeRepository lokacijRepo, TipoviOstecenjaRepository ostecenjaRepo, KorisniciRepository korisnikRepo, SlikeRepository slikaRepo){
+    public PrijavaServiceImpl(PrijaveRepository prijaveRepo, LokacijeRepository lokacijRepo, GradskiUrediRepository gradskiUrediRepo, KorisniciRepository korisnikRepo, SlikeRepository slikaRepo){
         this.prijaveRepo = prijaveRepo;
         this.lokacijRepo = lokacijRepo;
-        this.ostecenjaRepo = ostecenjaRepo;
+        this.gradskiUrediRepo = gradskiUrediRepo;
         this.korisnikRepo = korisnikRepo;
         this.slikaRepo=slikaRepo;
     }
@@ -125,7 +125,8 @@ public class PrijavaServiceImpl implements PrijavaService {
         lokacijRepo.save(lok);
         Prijava prijava=new Prijava(
                 lok,
-                ostecenjaRepo.findById(prijavaDTO.getTipOstecenja()).get(),
+                prijavaDTO.getNaziv(),
+                gradskiUrediRepo.findById(prijavaDTO.getUred()).get().getTipOstecenja(),
                 prijavaDTO.getOpis(),
                 korisnikRepo.findById(1L).get(),
                 null,
@@ -135,9 +136,11 @@ public class PrijavaServiceImpl implements PrijavaService {
 
         //Long id = prijaveRepo.save(prijava).getId();
         Prijava prijavaSaved = prijaveRepo.save(prijava);
-        List<Slika> savedSlike = addSlike(prijavaDTO.getSlike(), prijavaSaved);
-        prijavaSaved.setSlike(savedSlike);
-        prijaveRepo.save(prijavaSaved);
+        if(prijavaDTO.getSlike() != null){
+            List<Slika> savedSlike = addSlike(prijavaDTO.getSlike(), prijavaSaved);
+            prijavaSaved.setSlike(savedSlike);
+            prijaveRepo.save(prijavaSaved);
+        }
         return getClosePrijave(prijavaDTO.getLatitude(), prijavaDTO.getLongitude(), prijavaSaved.getId());
     }
 

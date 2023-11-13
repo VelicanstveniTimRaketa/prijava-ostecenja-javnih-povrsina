@@ -1,5 +1,6 @@
 package com.backend.projectapi.model;
 
+import com.backend.projectapi.service.TipOstecenjaService;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -58,8 +59,9 @@ public class Prijava {
 
     private ZonedDateTime vrijemeOtklona;
 
-    public Prijava(Lokacija lokacija, TipOstecenja tipOstecenja, String opis, @NonNull Korisnik kreator, List<Slika> slike, Prijava parentPrijava, @NonNull ZonedDateTime prvoVrijemePrijave, ZonedDateTime vrijemeOtklona) {
+    public Prijava(Lokacija lokacija, String naziv, TipOstecenja tipOstecenja, String opis, @NonNull Korisnik kreator, List<Slika> slike, Prijava parentPrijava, @NonNull ZonedDateTime prvoVrijemePrijave, ZonedDateTime vrijemeOtklona) {
         this.lokacija = lokacija;
+        this.naziv = naziv;
         this.tipOstecenja = tipOstecenja;
         this.opis = opis;
         this.kreator = kreator;
