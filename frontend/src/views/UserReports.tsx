@@ -6,6 +6,7 @@ import { Typography } from "antd";
 import { Content } from "antd/es/layout/layout";
 import ReportList from "../components/ReportList";
 import MapJsApi from "../components/MapJsApi";
+import { locationToGoogle } from "../utils/location";
 
 function UserReports() {
   const [data, setData] = useState<Prijava[]>();
@@ -13,10 +14,7 @@ function UserReports() {
   const { global: { user } } = useContext(StateContext);
   if (!user) throw TypeError();
 
-  const selectedPrijavaSpot = selectedPrijava && {
-    lat: selectedPrijava.lokacija.latitude,
-    lng: selectedPrijava.lokacija.longitude
-  };
+  const selectedPrijavaSpot = selectedPrijava && locationToGoogle(selectedPrijava.lokacija);
 
   useEffect(() => {
     getPrijave({ kreatorId: user.id.toString() }).then(res => setData(res.data));
@@ -33,7 +31,7 @@ function UserReports() {
             marker={selectedPrijavaSpot}
             center={selectedPrijavaSpot}
             zoom={selectedPrijava && 15}
-            secondaryMarkers={selectedPrijava ? undefined : data.map(p => ({ lat: p.lokacija.latitude, lng: p.lokacija.longitude }))}
+            secondaryMarkers={selectedPrijava ? undefined : data.map(p => locationToGoogle(p.lokacija))}
           />
         </div>
       }

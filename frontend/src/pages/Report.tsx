@@ -4,6 +4,7 @@ import { getPrijava } from "../utils/fetch";
 import { Prijava } from "../utils/types";
 import { Button, Layout } from "antd";
 import MapJsApi from "../components/MapJsApi";
+import { locationToGoogle } from "../utils/location";
 
 interface ReportProps {
   enableEditing?: boolean
@@ -36,10 +37,7 @@ function Report(props: ReportProps) {
   if (isIdBad) return <div></div>;
   if (!prijava) return <div>Loading</div>;
 
-  const marker = {
-    lat: prijava.lokacija.latitude,
-    lng: prijava.lokacija.longitude
-  };
+  const marker = locationToGoogle(prijava.lokacija);
 
   return (
     <Layout style={{ margin: "2em" }}>
