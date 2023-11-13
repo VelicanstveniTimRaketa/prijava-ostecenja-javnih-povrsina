@@ -5,6 +5,7 @@ import { StateContext } from "../utils/state";
 import Profile from "../views/Profile";
 import UserReports from "../views/UserReports";
 import EditProfile from "../views/EditProfile";
+import Report from "../pages/Report";
 
 function ProfileRoutes () {
   const { global } = useContext(StateContext);
@@ -20,6 +21,7 @@ function ProfileRoutes () {
     <Routes>
       <Route path="" element={<Profile />} />
       <Route path="reports" element={<UserReports />} />
+      <Route path="reports/:id" element={<Report enableEditing={true} />} />
       <Route path="edit" element={<EditProfile />} />
     </Routes>
   );

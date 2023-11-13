@@ -11,6 +11,7 @@ import { useToggleable } from "../hooks/useToggleable";
 import locale from "antd/es/date-picker/locale/hr_HR";
 import ReportList from "../components/ReportList";
 import MapJsApi from "../components/MapJsApi";
+import { locationToGoogle } from "../utils/location";
 
 const styleLocationActive = {
   color: "green",
@@ -50,10 +51,7 @@ function Explore() {
     getPrijave(options).then(res => setData(res.data));
   }
 
-  const selectedPrijavaSpot = selectedPrijava && {
-    lat: selectedPrijava.lokacija.latitude,
-    lng: selectedPrijava.lokacija.longitude
-  };
+  const selectedPrijavaSpot = selectedPrijava && locationToGoogle(selectedPrijava.lokacija);
 
   return (
     <Layout style={{ display: "flex", alignItems: "center" }}>
@@ -145,7 +143,7 @@ function Explore() {
               marker={selectedPrijavaSpot}
               center={selectedPrijavaSpot}
               zoom={selectedPrijava && 15}
-              secondaryMarkers={selectedPrijava ? undefined : data.map(p => ({ lat: p.lokacija.latitude, lng: p.lokacija.longitude }))}
+              secondaryMarkers={selectedPrijava ? undefined : data.map(p => locationToGoogle(p.lokacija))}
             />
           </div>
         </>}

@@ -2,6 +2,7 @@ import { RcFile } from "antd/es/upload";
 import { BarebonesPrijava, GradskiUred, Prijava, Response, TipOstecenja } from "./types";
 
 export type PrijaveOptions = {
+  kreatorId?: string;
   active?: string;
   ostecenjeId?: string;
   dateFrom?: string;

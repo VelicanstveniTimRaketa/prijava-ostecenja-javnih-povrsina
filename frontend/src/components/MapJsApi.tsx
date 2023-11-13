@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, CSSProperties, Fragment } from "react";
 import { GoogleMap, Libraries, Marker, useJsApiLoader } from "@react-google-maps/api";
 import Layout from "antd/es/layout";
-import React from "react";
 
 const containerStyle = {
   width: "500px",
@@ -17,7 +16,7 @@ const defaultCenter = {
 const libraries = ["places"] as Libraries;
 
 interface MapJsApiProps {
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   center?: google.maps.LatLng | google.maps.LatLngLiteral;
   marker?: google.maps.LatLng | google.maps.LatLngLiteral;
   secondaryMarkers?: (google.maps.LatLng | google.maps.LatLngLiteral)[];
@@ -77,9 +76,9 @@ function MapJsApi(props: MapJsApiProps) {
             <Marker position={props.marker}></Marker>
           )}
           {props.secondaryMarkers && props.secondaryMarkers.map((marker, i) => (
-            <React.Fragment key={i}>
+            <Fragment key={i}>
               <Marker position={marker}></Marker>
-            </React.Fragment>
+            </Fragment>
           ))}
         </GoogleMap>
       )}

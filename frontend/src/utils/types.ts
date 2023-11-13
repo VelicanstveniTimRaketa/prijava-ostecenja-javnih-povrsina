@@ -1,13 +1,7 @@
 import { MenuProps } from "antd";
 
 export type GlobalState = {
-  page: Page,
   user?: User,
-}
-
-export enum Page {
-  MAIN,
-  LOGIN
 }
 
 export type UserNoID = {
@@ -19,6 +13,7 @@ export type UserNoID = {
 
 export type User = UserNoID & {
   id: number;
+  isAdmin: boolean;
 }
 
 export type Location = {

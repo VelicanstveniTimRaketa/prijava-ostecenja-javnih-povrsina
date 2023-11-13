@@ -83,8 +83,8 @@ function App() {
           <Route key={item.key} path={item.key as string} element={<item.component />} />
         ))}
         <Route path="report" element={<NewReport />} />
-        <Route path="search/:id" element={<Report />} />
-        <Route path="profile/*" element={<ProfileRoutes />}/>
+        <Route path="search/:id" element={<Report enableEditing={global.user?.isAdmin} />} />
+        <Route path="profile/*" element={<ProfileRoutes />} />
       </Routes>
     </Layout>
   );
