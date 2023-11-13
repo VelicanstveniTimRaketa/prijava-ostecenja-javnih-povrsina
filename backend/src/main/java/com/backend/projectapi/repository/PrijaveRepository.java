@@ -24,8 +24,8 @@ public interface PrijaveRepository extends JpaRepository<Prijava, Long> {
     @Query(value = "select prijave.* from prijave natural join lokacije where " +
             "prvo_vrijeme_prijave between cast (current_timestamp - interval '24 hours' as timestamp) and " +
             "cast (current_timestamp + interval '24 hours' as timestamp) and vrijeme_otklona is null and " +
-            "latitude between (:lat - 0.00009) and (:lat + 0.00009) and longitude between (:lng - 0.00009) and " +
-            "(:lng + 0.00009) and id != :ID", nativeQuery = true)
+            "latitude between (:lat - 0.0005) and (:lat + 0.0005) and longitude between (:lng - 0.0005) and " +
+            "(:lng + 0.0005) and id != :ID", nativeQuery = true)
     List<Prijava> findClosePrijave (@Param("lat") Double lat, @Param("lng") Double lng, @Param("ID") Long ID);
 
     @Query(value = "SELECT * FROM prijave  WHERE ostecenje_id = :id",nativeQuery = true)
@@ -44,7 +44,7 @@ public interface PrijaveRepository extends JpaRepository<Prijava, Long> {
     @Query(value = "select * from prijave where prvo_vrijeme_prijave AT TIME ZONE 'CET' between :prvoVrijemePrijave and :prvoVrijemePrijave2",nativeQuery = true)
     List<Prijava> findAllByPrvoVrijemePrijaveBetween(@NonNull ZonedDateTime prvoVrijemePrijave, @NonNull ZonedDateTime prvoVrijemePrijave2);
 
-    @Query (value = "select prijave.* from prijave natural join lokacije where latitude between (:lat - 0.00009) and (:lat + 0.00009) and longitude between (:lng - 0.00009) and (:lng + 0.00009)", nativeQuery = true)
+    @Query (value = "select prijave.* from prijave natural join lokacije where latitude between (:lat - 0.0005) and (:lat + 0.0005) and longitude between (:lng - 0.0005) and (:lng + 0.0005)", nativeQuery = true)
     List<Prijava> findAllByLokacija(@Param("lat") Double lat, @Param("lng") Double lng);
 
     @Query(value = "SELECT * FROM prijave  where kreator_id = :id",nativeQuery = true)
