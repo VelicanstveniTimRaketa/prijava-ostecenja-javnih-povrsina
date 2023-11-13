@@ -2,9 +2,6 @@ import { MenuProps } from "antd";
 
 export type GlobalState = {
   user?: User,
-  cache: {
-    report?: Report,
-  },
 }
 
 export type UserNoID = {
@@ -16,6 +13,7 @@ export type UserNoID = {
 
 export type User = UserNoID & {
   id: number;
+  isAdmin: boolean;
 }
 
 export type Location = {

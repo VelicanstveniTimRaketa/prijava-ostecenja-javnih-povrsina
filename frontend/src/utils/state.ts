@@ -8,8 +8,8 @@ export const STATE: GlobalState = {
     email: "korisnik1@gmail.com",
     name: "Korisnik",
     surname: "Prezime",
+    isAdmin: false,
   },
-  cache: {},
 };
 
 export const StateContext = createContext<{
