@@ -159,7 +159,7 @@ public class PrijavaServiceImpl implements PrijavaService {
                 savedSlike.add(slikaRepo.save(new Slika(savePath, prijava)));
             }
         } catch (IOException e) {
-            throw new RecordNotFoundException("kurcina");
+            throw new RecordNotFoundException("Record not found");
         }
         return savedSlike;
     }
