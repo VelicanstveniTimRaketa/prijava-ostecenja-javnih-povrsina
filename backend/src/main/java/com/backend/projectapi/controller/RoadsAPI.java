@@ -23,7 +23,7 @@ public class RoadsAPI {
      */
     @GetMapping()
     public String nearestRoad(@RequestParam(required = false) String address, @RequestParam(required = false) String lat, @RequestParam(required = false) String lng){
-        String mapsAPIkey="AIzaSyDvl5jScXppKWZFz6vaPtasP7pPGutq8T8";
+        String mapsAPIkey="";
         RestTemplate restTemplate=new RestTemplate();
         StringBuilder points=new StringBuilder();
 
