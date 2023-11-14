@@ -43,6 +43,7 @@ public class PrijavaDTO {
         return opis;
     }
 
+
     public void setOpis(String opis) {
         this.opis = opis;
     }

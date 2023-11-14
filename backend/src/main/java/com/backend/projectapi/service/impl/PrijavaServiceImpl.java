@@ -144,6 +144,8 @@ public class PrijavaServiceImpl implements PrijavaService {
         return getClosePrijave(prijavaDTO.getLatitude(), prijavaDTO.getLongitude(), prijavaSaved.getId());
     }
 
+
+
     public List<Slika> addSlike(MultipartFile[] slike, Prijava prijava){
         List<Slika> savedSlike = new LinkedList<>();
         String uploadDirectory = "backend/src/main/resources/static/"+(prijava.getId().toString())+"/";
@@ -151,9 +153,7 @@ public class PrijavaServiceImpl implements PrijavaService {
             for(MultipartFile slika:slike) {
                 String savePath =uploadDirectory+slika.getOriginalFilename();
                 File file = new File(savePath);
-                if (!file.exists()) {
-                    file.mkdirs();
-                }
+                file.mkdirs();
                 Files.copy(slika.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 System.out.println("Slika spremljena na: " + savePath);
                 savedSlike.add(slikaRepo.save(new Slika(savePath, prijava)));
@@ -202,4 +202,25 @@ public class PrijavaServiceImpl implements PrijavaService {
         }
         return false;
     }
+
+    @Override
+    public Object updatePrijava(Long id, PrijavaDTO prijavaDTO,MultipartFile[] slike) {
+        Optional<Prijava> optionalPrijava=prijaveRepo.findById(id);
+        if (optionalPrijava.isEmpty()){
+            throw new RecordNotFoundException("ne postoji prijava za dani id: "+id);
+        }
+        Prijava newPrijava=optionalPrijava.get();
+
+        newPrijava.setNaziv(prijavaDTO.getNaziv());
+        newPrijava.setOpis(prijavaDTO.getOpis());
+        newPrijava.setTipOstecenja(gradskiUrediRepo.findById(prijavaDTO.getUred()).get().getTipOstecenja());
+        Lokacija lok=new Lokacija(prijavaDTO.getLatitude(), prijavaDTO.getLongitude());
+        lokacijRepo.save(lok);
+        newPrijava.setLokacija(lok);List<Slika> savedSlike = addSlike(prijavaDTO.getSlike(), newPrijava);
+        newPrijava.setSlike(savedSlike);
+
+        prijaveRepo.save(newPrijava);
+        return true;
+    }
+
 }

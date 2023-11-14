@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -22,6 +23,6 @@ public interface PrijavaService {
     public Object addPrijave(PrijavaDTO prijavaDTO, HttpServletRequest req);
     Boolean makeChildPrijavu(Long parent_id, Long child_id);
     Prijava findById(Long id);
-
     boolean deletePrijava(Long id);
+    Object updatePrijava(Long id, PrijavaDTO prijavaDTO, MultipartFile[] slike);
 }
