@@ -577,15 +577,86 @@
 						
 					\end{packed_item}
 					
+					\noindent \underbar{\textbf{UC23 - Uređivanje osobnih podataka}}
+					\begin{packed_item}
+	
+						\item \textbf{Glavni sudionik: }Klijent
+						\item  \textbf{Cilj:} Promijeniti osobne podatke u bazi podataka
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} -
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+	
+							\item Korisnik bira opciju uređavanje osobnih podataka
+							\item Mijenja podatak, te se novi zapisuje u bazu podataka
+
+						\end{packed_enum}
+						\item  \textbf{Opis mogućih odstupanja:}
+						
+						\item[] \begin{packed_item}
+	
+							\item[2.a] Unos neispravnog podatka
+							\item[] \begin{packed_enum}
+								
+								\item Baza podatka mu dojavljuje o grešci i traži ga da promijeni unos	
+								\item Korisnik odustaje od unosa ili prepravlja unos podataka
+							\end{packed_enum}
+						\end{packed_item}
+						
+					\end{packed_item}
 					
-				
+					\noindent \underbar{\textbf{UC24 - UC24- Praćanje prijave jedinstvenim ID-om}}
+					\begin{packed_item}
+	
+						\item \textbf{Glavni sudionik: }Neregistrirani korisnik
+						\item  \textbf{Cilj:} Pregledati svou prijavu unosom jedinstvenog broja
+						\item  \textbf{Sudionici:} Baza podataka
+						\item  \textbf{Preduvjet:} Postojanje jedinstvenog broja
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+	
+							\item Neregistrirani korisnik u tražilicu unosi ID koji je dobio pri unosu prijave
+							\item Sustav mu pokaže njegovu prijavu i status ako je unesen broj važeći
+						\end{packed_enum}
+						\item  \textbf{Opis mogućih odstupanja:}
+						
+						\item[] \begin{packed_item}
+	
+							\item[1.a] Unos neispravnog podatka
+							\item[] \begin{packed_enum}
+								
+								\item Baza podatka mu dojavljuje o grešci i traži ga unese ispravan ID ili da odustane od prijave
+								\item Korisnik bira opciju odustani ili opet unosi ID	
+							\end{packed_enum}
+						\end{packed_item}
+						
+					\end{packed_item}
+						
 				
 					
 				\subsubsection{Dijagrami obrazaca uporabe}
 					
-					\textit{Prikazati odnos aktora i obrazaca uporabe odgovarajućim UML dijagramom. Nije nužno nacrtati sve na jednom dijagramu. Modelirati po razinama apstrakcije i skupovima srodnih funkcionalnosti.}
-				\eject		
+					\begin{figure}[H]
+			\includegraphics[scale=0.8]{slike/obrazac_nereg.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Dijagram obrasca uporabe - Opće funkcionalnosti korisnika i neregistriranog korisnika}
+		\end{figure}
+		
+		
+		\begin{figure}[H]
+			\includegraphics[scale=0.8]{slike/obrazac_registereduser.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Dijagram obrasca uporabe - Funkcionalnosti registriranog korisnika (administrator i klijent)}
+		\end{figure}		
 				
+				
+				\begin{figure}[H]
+			\includegraphics[scale=0.8]{slike/obrazac_gradski.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Dijagram obrasca uporabe - Funkcionalnosti gradskog ureda}
+		\end{figure}
 			\subsection{Sekvencijski dijagrami}
 				
 				\textbf{\textit{dio 1. revizije}}\\
