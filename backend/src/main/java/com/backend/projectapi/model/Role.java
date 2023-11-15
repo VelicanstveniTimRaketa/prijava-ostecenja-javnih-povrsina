@@ -1,2 +1,3 @@
-package com.backend.projectapi.model;public enum Role {
+package com.backend.projectapi.model;
+public enum Role {
 }
