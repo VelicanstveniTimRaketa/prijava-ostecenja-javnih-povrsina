@@ -20,7 +20,7 @@ import java.util.List;
 @Table(name = "korisnici")
 public class Korisnik implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", nullable = false)
     private Long Id;
 

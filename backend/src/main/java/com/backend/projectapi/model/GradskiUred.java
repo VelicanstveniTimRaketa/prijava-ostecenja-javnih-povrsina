@@ -17,7 +17,7 @@ import java.util.List;
 public class GradskiUred {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", insertable = false, updatable = false, nullable = false)
     private Long id;
 

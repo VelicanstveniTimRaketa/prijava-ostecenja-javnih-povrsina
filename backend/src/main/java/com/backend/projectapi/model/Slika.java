@@ -14,7 +14,7 @@ import java.util.UUID;
 @Table(name = "slike")
 public class Slika {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", insertable = false, updatable = false, nullable = false)
     private Long Id;
 
