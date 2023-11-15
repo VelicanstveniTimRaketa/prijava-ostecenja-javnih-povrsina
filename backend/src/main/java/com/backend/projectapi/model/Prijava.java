@@ -22,7 +22,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Prijava {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name="id", insertable = false, updatable = false, nullable = false)
     private Long Id;
 
