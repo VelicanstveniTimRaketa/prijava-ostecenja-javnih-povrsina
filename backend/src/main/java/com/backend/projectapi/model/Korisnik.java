@@ -68,7 +68,7 @@ public class Korisnik implements UserDetails {
 
     @Override
     public @NonNull String getUsername(){
-        return username;
+        return email;
     }
 
     @Override
