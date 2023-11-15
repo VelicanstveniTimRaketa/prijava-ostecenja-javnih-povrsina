@@ -7,9 +7,6 @@ import com.backend.projectapi.config.AuthenticationService;
 import com.backend.projectapi.config.RegisterRequest;
 import com.backend.projectapi.model.Korisnik;
 import com.backend.projectapi.service.KorisnikService;
-import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,16 +37,14 @@ public class KorisnikController {
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
     ){
-        //return ResponseEntity.ok(authService.register(request));
-        return null;
+        return ResponseEntity.ok(authService.register(request));
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(
         @RequestBody AuthenticationRequest request
     ){
-        //return ResponseEntity.ok(authService.authenticate(request));
-        return null;
+        return ResponseEntity.ok(authService.authenticate(request));
     }
 
 }
