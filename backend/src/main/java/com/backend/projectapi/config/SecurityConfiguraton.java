@@ -25,10 +25,8 @@ public class SecurityConfiguraton {
         http
                 .csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(auth->auth
-                        .requestMatchers("/login","/register")
-                        .permitAll() // svi korisnici mogu pristupiti /login i /register
                         .anyRequest()
-                        .authenticated())
+                        .permitAll())
                 .sessionManagement(sess->sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFiter, UsernamePasswordAuthenticationFilter.class);

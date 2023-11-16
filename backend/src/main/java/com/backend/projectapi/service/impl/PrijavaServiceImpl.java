@@ -13,6 +13,7 @@ import com.backend.projectapi.service.PrijavaService;
 import com.backend.projectapi.service.TipOstecenjaService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.data.jpa.repository.query.JSqlParserUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -145,7 +146,7 @@ public class PrijavaServiceImpl implements PrijavaService {
     }
 
 
-
+//todo change file creating system in case of adding new photos through updating PRIJAVA
     public List<Slika> addSlike(MultipartFile[] slike, Prijava prijava){
         List<Slika> savedSlike = new LinkedList<>();
         String uploadDirectory = "backend/src/main/resources/static/"+(prijava.getId().toString())+"/";
@@ -154,6 +155,7 @@ public class PrijavaServiceImpl implements PrijavaService {
                 String savePath =uploadDirectory+slika.getOriginalFilename();
                 File file = new File(savePath);
                 file.mkdirs();
+                FileUtils.cleanDirectory(file);
                 Files.copy(slika.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 System.out.println("Slika spremljena na: " + savePath);
                 savedSlike.add(slikaRepo.save(new Slika(savePath, prijava)));
@@ -216,7 +218,8 @@ public class PrijavaServiceImpl implements PrijavaService {
         newPrijava.setTipOstecenja(gradskiUrediRepo.findById(prijavaDTO.getUred()).get().getTipOstecenja());
         Lokacija lok=new Lokacija(prijavaDTO.getLatitude(), prijavaDTO.getLongitude());
         lokacijRepo.save(lok);
-        newPrijava.setLokacija(lok);List<Slika> savedSlike = addSlike(prijavaDTO.getSlike(), newPrijava);
+        newPrijava.setLokacija(lok);
+        List<Slika> savedSlike = addSlike(prijavaDTO.getSlike(), newPrijava);
         newPrijava.setSlike(savedSlike);
 
         prijaveRepo.save(newPrijava);
