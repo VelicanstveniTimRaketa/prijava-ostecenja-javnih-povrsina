@@ -36,6 +36,8 @@ public class AuthenticationService {
 
         if(korisnikRepo.findByEmail(req.getEmail()).isPresent()){
             throw new RecordNotFoundException("Korisnik s danim emailom već postoji.");
+        }else if(korisnikRepo.findByUsername(req.getUsername()).isPresent()){
+            throw new RecordNotFoundException("Korisnik s danim usernameom već postoji.");
         }
         korisnikRepo.save(korisnik);
         var jwtToken = jwtService.generateToken(korisnik);
