@@ -1,9 +1,9 @@
-.idea
-.vscode
+**/.idea
+**/.vscode
 **/.DS_Store
+**/.env
 frontend/dist
 frontend/node_modules
-frontend/.env
 backend/target
 
 docs/*.aux
