@@ -2,11 +2,11 @@
 FROM openjdk:17-alpine AS builder
 
 # Kopiranje izvornog koda u container
-COPY ../../.mvn .mvn
-COPY ../../.env .env
-COPY ../../mvnw .
-COPY ../../pom.xml .
-COPY ../../src src
+COPY .mvn .mvn
+COPY .env .env
+COPY mvnw .
+COPY pom.xml .
+COPY src src
 RUN chmod +x mvnw
 
 # Pokretanje builda
