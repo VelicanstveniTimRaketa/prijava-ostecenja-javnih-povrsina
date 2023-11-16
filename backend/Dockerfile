@@ -9,6 +9,8 @@ COPY pom.xml .
 COPY src src
 RUN chmod +x mvnw
 
+RUN --mount=type=secret,id=_env,dst=/etc/secrets/.env cat /etc/secrets/.env
+
 # Pokretanje builda
 RUN ./mvnw clean package
 
