@@ -13,6 +13,7 @@ import com.backend.projectapi.service.PrijavaService;
 import com.backend.projectapi.service.TipOstecenjaService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.data.jpa.repository.query.JSqlParserUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -154,6 +155,7 @@ public class PrijavaServiceImpl implements PrijavaService {
                 String savePath =uploadDirectory+slika.getOriginalFilename();
                 File file = new File(savePath);
                 file.mkdirs();
+                FileUtils.cleanDirectory(file);
                 Files.copy(slika.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 System.out.println("Slika spremljena na: " + savePath);
                 savedSlike.add(slikaRepo.save(new Slika(savePath, prijava)));
