@@ -1,23 +1,36 @@
 import { RcFile } from "antd/es/upload";
-import { BarebonesPrijava, GradskiUred, Prijava, Response, TipOstecenja } from "./types";
+import { BarebonesPrijava, GradskiUred, Prijava, PrijaveOptions, Response, TipOstecenja, UserLogin, UserRegiser } from "./types";
 
-export type PrijaveOptions = {
-  kreatorId?: string;
-  active?: string;
-  ostecenjeId?: string;
-  dateFrom?: string;
-  dateTo?: string;
-  lat?: string;
-  lng?: string;
-};
+function requestGet<T>(path: string, params?: Record<string, string>, token?: string): Promise<Response<T>> {
+  const headers = token ? { Authorization: "Bearer " + token } : undefined;
+  let fullPath = path;
+  if (params) fullPath += "?" + new URLSearchParams(params);
+  
+  return new Promise(res => {
+    fetch(fullPath, { headers })
+      .then((resp) => resp.bodyUsed ? resp.json() : Promise.resolve({}))
+      .then(res)
+      .catch((error) => res({ success: false, error }));
+  });
+}
 
-export function getPrijava(id: number): Promise<Response<Prijava>> {
-  return new Promise((res) => {
-    fetch("/api/prijave/" + id)
-      .then((resp) => resp.json())
+
+function requestPost<T>(path: string, data: unknown, token?: string): Promise<Response<T>> {
+  const headers: HeadersInit = {
+    "Content-Type": "application/json",
+  };
+  if (token) headers.Authorization = "Bearer " + token;
+
+  return new Promise(res => {
+    fetch(path, { method: "POST", body: JSON.stringify(data), headers })
+      .then((resp) => resp.bodyUsed ? resp.json() : Promise.resolve({}))
       .then((r) => res(r))
       .catch((error) => res({ success: false, error }));
   });
+}
+
+export function getPrijava(id: number): Promise<Response<Prijava>> {
+    return requestGet("/api/prijave/" + id);
 }
 
 export function getPrijave(
@@ -37,34 +50,6 @@ export function getPrijave(
       .catch((error) => res({ success: false, error }));
   });
 }
-
-export function getUserPrijave(id: string): Promise<Response<Prijava[]>> {
-  return new Promise((res) => {
-    fetch("/api/prijave?" + new URLSearchParams({ id }))
-      .then((resp) => resp.json())
-      .then((r) => res(r))
-      .catch((error) => res({ success: false, error }));
-  });
-}
-
-export function getOstecenja(): Promise<Response<TipOstecenja[]>> {
-  return new Promise((res) => {
-    fetch("/api/ostecenja")
-      .then((resp) => resp.json())
-      .then((r) => res(r))
-      .catch((error) => res({ success: false, error }));
-  });
-}
-
-export function getGradskiUredi(): Promise<Response<GradskiUred[]>> {
-  return new Promise((res) => {
-    fetch("/api/uredi")
-      .then((resp) => resp.json())
-      .then((r) => res(r))
-      .catch((error) => res({ success: false, error }));
-  });
-}
-
 export function addPrijava(
   prijava: BarebonesPrijava,
   images: RcFile[]
@@ -82,4 +67,24 @@ export function addPrijava(
       .then((r) => console.log(r))
       .catch((error) => res({ success: false, error }));
   });
+}
+
+export function getUserPrijave(id: string): Promise<Response<Prijava[]>> {
+  return requestGet("/api/prijave",  { id });
+}
+
+export function getOstecenja(): Promise<Response<TipOstecenja[]>> {
+  return requestGet("/api/ostecenja");
+}
+
+export function getGradskiUredi(): Promise<Response<GradskiUred[]>> {
+  return requestGet("/api/uredi");
+}
+
+export function login(data: UserLogin): Promise<Response<never>> {
+  return requestPost("/api/login", data);
+}
+
+export function register(data: UserRegiser): Promise<Response<never>> {
+  return requestPost("/api/register", data);
 }

@@ -6,12 +6,13 @@ import { StoreValue } from "antd/es/form/interface";
 import { RcFile } from "antd/es/upload";
 import { getBase64 } from "../utils/imageTransform";
 import { PlusOutlined } from "@ant-design/icons";
-import { UserNoID } from "../utils/types";
+import { UserBase, UserRegiser } from "../utils/types";
+import { hash } from "../utils/hasher";
 
 interface UserFormProps {
-  initialData?: UserNoID;
+  initialData?: UserBase;
   noPassword?: boolean;
-  onSubmit: (user: UserNoID) => void;
+  onSubmit: (user: UserRegiser) => void;
 }
 
 function UserForm(props: UserFormProps) {
@@ -23,12 +24,15 @@ function UserForm(props: UserFormProps) {
     image && getBase64(image).then(setImageB64);
   }, [image]);
 
-  function onSubmit() {
+  async function onSubmit() {
+    const passwordHash = await hash(form.getFieldValue("password"));
+
     props.onSubmit({
       username: form.getFieldValue("username"),
       email: form.getFieldValue("email"),
-      name: form.getFieldValue("name"),
-      surname: form.getFieldValue("surname"),
+      ime: form.getFieldValue("name"),
+      prezime: form.getFieldValue("surname"),
+      password: passwordHash,
     });
   }
 
@@ -80,7 +84,10 @@ function UserForm(props: UserFormProps) {
         <Input />
       </Form.Item>
       {!props.noPassword && <>
-        <Form.Item label="Lozinka:" name="password" hasFeedback rules={[{ required: true, message: "Molimo unesite svoju lozinku" }]}>
+        <Form.Item label="Lozinka:" name="password" hasFeedback rules={[
+          { required: true, message: "Molimo unesite svoju lozinku" },
+          { min: 8, message: "Lozinka mora imati barem 8 znakova" }
+        ]}>
           <Input.Password />
         </Form.Item>
         <Form.Item
@@ -93,7 +100,7 @@ function UserForm(props: UserFormProps) {
           <Input.Password />
         </Form.Item>
       </>}
-      <Form.Item label="Slika profila:" name="avatar" valuePropName="avatar" hasFeedback rules={[{ required: true, message: "Molimo učitajte sliku profila" }]}>
+      <Form.Item label="Slika profila:" name="avatar" valuePropName="avatar" hasFeedback rules={[{ message: "Molimo učitajte sliku profila" }]}>
         <Upload
           name="avatar"
           listType="picture-circle"

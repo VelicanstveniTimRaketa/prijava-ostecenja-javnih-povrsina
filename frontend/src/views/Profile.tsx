@@ -32,7 +32,7 @@ function Profile() {
             </Layout>
           </div>
           <div style={{ flexDirection: "column" }}>
-            <Typography.Title level={1} style={{ marginTop: 0 }}>{user.name} {user.surname}</Typography.Title>
+            <Typography.Title level={1} style={{ marginTop: 0 }}>{user.ime} {user.prezime}</Typography.Title>
             <Typography.Title level={3} style={{ margin: 0 }}>{user.username}</Typography.Title>
             <Typography.Title level={3} style={{ margin: 0, fontWeight: "normal" }}>{user.email}</Typography.Title>
             <Button onClick={() => navigate("edit")} style={{ marginTop: "2em" }} icon={<EditOutlined />}>Izmijeni profil</Button>
