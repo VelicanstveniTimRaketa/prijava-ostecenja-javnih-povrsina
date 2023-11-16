@@ -8,6 +8,9 @@ class BackendApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.out.println("#############");
+		System.out.println(System.getenv("DB_URL"));
+
 	}
 
 }
