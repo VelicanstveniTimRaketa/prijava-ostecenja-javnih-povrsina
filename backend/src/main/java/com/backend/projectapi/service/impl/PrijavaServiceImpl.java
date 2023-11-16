@@ -145,7 +145,7 @@ public class PrijavaServiceImpl implements PrijavaService {
     }
 
 
-
+//todo change file creating system in case of adding new photos through updating PRIJAVA
     public List<Slika> addSlike(MultipartFile[] slike, Prijava prijava){
         List<Slika> savedSlike = new LinkedList<>();
         String uploadDirectory = "backend/src/main/resources/static/"+(prijava.getId().toString())+"/";
@@ -216,7 +216,8 @@ public class PrijavaServiceImpl implements PrijavaService {
         newPrijava.setTipOstecenja(gradskiUrediRepo.findById(prijavaDTO.getUred()).get().getTipOstecenja());
         Lokacija lok=new Lokacija(prijavaDTO.getLatitude(), prijavaDTO.getLongitude());
         lokacijRepo.save(lok);
-        newPrijava.setLokacija(lok);List<Slika> savedSlike = addSlike(prijavaDTO.getSlike(), newPrijava);
+        newPrijava.setLokacija(lok);
+        List<Slika> savedSlike = addSlike(prijavaDTO.getSlike(), newPrijava);
         newPrijava.setSlike(savedSlike);
 
         prijaveRepo.save(newPrijava);
