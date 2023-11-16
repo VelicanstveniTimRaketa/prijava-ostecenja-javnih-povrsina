@@ -77,9 +77,9 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>io.github.cdimascio</groupId>
-			<artifactId>dotenv-java</artifactId>
-			<version>3.0.0</version>
+			<groupId>me.paulschwarz</groupId>
+			<artifactId>spring-dotenv</artifactId>
+			<version>4.0.0</version>
 		</dependency>
 
 	</dependencies>
