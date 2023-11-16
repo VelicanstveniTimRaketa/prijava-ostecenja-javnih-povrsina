@@ -1,5 +1,5 @@
 import { RcFile } from "antd/es/upload";
-import { BarebonesPrijava, GradskiUred, Prijava, PrijaveOptions, Response, TipOstecenja, UserLogin, UserRegiser } from "./types";
+import { BarebonesPrijava, GradskiUred, LoginData, Prijava, PrijaveOptions, Response, TipOstecenja, UserLogin, UserRegiser } from "./types";
 
 function requestGet<T>(path: string, params?: Record<string, string>, token?: string): Promise<Response<T>> {
   const headers = token ? { Authorization: "Bearer " + token } : undefined;
@@ -8,12 +8,11 @@ function requestGet<T>(path: string, params?: Record<string, string>, token?: st
   
   return new Promise(res => {
     fetch(fullPath, { headers })
-      .then((resp) => resp.bodyUsed ? resp.json() : Promise.resolve({}))
+      .then(resp => resp.json())
       .then(res)
-      .catch((error) => res({ success: false, error }));
+      .catch((error) => res({ success: false, errors: [error.toString()] }));
   });
 }
-
 
 function requestPost<T>(path: string, data: unknown, token?: string): Promise<Response<T>> {
   const headers: HeadersInit = {
@@ -23,9 +22,9 @@ function requestPost<T>(path: string, data: unknown, token?: string): Promise<Re
 
   return new Promise(res => {
     fetch(path, { method: "POST", body: JSON.stringify(data), headers })
-      .then((resp) => resp.bodyUsed ? resp.json() : Promise.resolve({}))
-      .then((r) => res(r))
-      .catch((error) => res({ success: false, error }));
+      .then(resp => resp.json())
+      .then(res)
+      .catch((error) => res({ success: false, errors: [error.toString()] }));
   });
 }
 
@@ -47,7 +46,7 @@ export function getPrijave(
         }));
         res(r);
       })
-      .catch((error) => res({ success: false, error }));
+      .catch((error) => res({ success: false, errors: [error] }));
   });
 }
 export function addPrijava(
@@ -65,7 +64,7 @@ export function addPrijava(
     fetch("/api/addPrijava", { method: "POST", body: data })
       .then((resp) => resp.json())
       .then((r) => console.log(r))
-      .catch((error) => res({ success: false, error }));
+      .catch((error) => res({ success: false, errors: [error] }));
   });
 }
 
@@ -81,10 +80,10 @@ export function getGradskiUredi(): Promise<Response<GradskiUred[]>> {
   return requestGet("/api/uredi");
 }
 
-export function login(data: UserLogin): Promise<Response<never>> {
+export function login(data: UserLogin): Promise<Response<LoginData>> {
   return requestPost("/api/login", data);
 }
 
-export function register(data: UserRegiser): Promise<Response<never>> {
+export function register(data: UserRegiser): Promise<Response<LoginData>> {
   return requestPost("/api/register", data);
 }

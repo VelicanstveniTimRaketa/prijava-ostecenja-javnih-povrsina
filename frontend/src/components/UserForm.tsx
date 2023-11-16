@@ -7,7 +7,6 @@ import { RcFile } from "antd/es/upload";
 import { getBase64 } from "../utils/imageTransform";
 import { PlusOutlined } from "@ant-design/icons";
 import { UserBase, UserRegiser } from "../utils/types";
-import { hash } from "../utils/hasher";
 
 interface UserFormProps {
   initialData?: UserBase;
@@ -25,14 +24,12 @@ function UserForm(props: UserFormProps) {
   }, [image]);
 
   async function onSubmit() {
-    const passwordHash = await hash(form.getFieldValue("password"));
-
     props.onSubmit({
       username: form.getFieldValue("username"),
       email: form.getFieldValue("email"),
       ime: form.getFieldValue("name"),
       prezime: form.getFieldValue("surname"),
-      password: passwordHash,
+      password: form.getFieldValue("password"),
     });
   }
 
@@ -40,13 +37,13 @@ function UserForm(props: UserFormProps) {
     if (!value || form.getFieldValue("password") === value) {
       return Promise.resolve();
     }
-    return Promise.reject(new Error("The new password that you entered do not match!"));
+    return Promise.reject();
   }
 
   const onUpload = (file: RcFile) => {
     const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
     if (!isJpgOrPng) {
-      message.error("Moguće je jedino uploadati JPG/PNG dototeke!");
+      message.error("Moguće je jedino uploadati JPG/PNG datoteke!");
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {

@@ -28,6 +28,7 @@ export type UserRole = "USER" | "ADMIN";
 export type User = UserBase & {
   id: number;
   role: UserRole;
+  ured?: GradskiUred;
 }
 
 export type Location = {
@@ -79,8 +80,13 @@ export type PrijaveOptions = {
 
 export type Response<T> = {
   success: boolean;
-  error?: string[];
+  errors?: string[];
   data?: T;
+}
+
+export type LoginData = {
+  token: string;
+  korisnik: User;
 }
 
 // this is some vile black magic fr
