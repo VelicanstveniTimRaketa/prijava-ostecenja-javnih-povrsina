@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -34,17 +35,18 @@ public class KorisnikController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
+    public ResponseEntity<ResponseData<Object>> register(
             @RequestBody RegisterRequest request
     ){
-        return ResponseEntity.ok(authService.register(request));
+
+        return new ResponseEntity<>(ResponseData.success(authService.register(request)),HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(
+    public ResponseEntity<ResponseData<Object>> login(
         @RequestBody AuthenticationRequest request
     ){
-        return ResponseEntity.ok(authService.authenticate(request));
+        return new ResponseEntity<>(ResponseData.success(authService.authenticate(request)),HttpStatus.OK);
     }
 
 }
