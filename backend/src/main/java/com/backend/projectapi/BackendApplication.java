@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BackendApplication {
 
 	public static void main(String[] args) {
+		System.out.println("#############");
+		System.out.println(System.getenv("DB_URL"));
 		SpringApplication.run(BackendApplication.class, args);
 	}
 
