@@ -1,12 +1,15 @@
 package com.backend.projectapi.config;
 
+import com.backend.projectapi.exception.RecordNotFoundException;
 import com.backend.projectapi.model.Korisnik;
 import com.backend.projectapi.model.Role;
 import com.backend.projectapi.repository.KorisniciRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,26 +30,36 @@ public class AuthenticationService {
                 .password(encoder.encode(req.getPassword()))
                 .build();
 
+        if(korisnikRepo.findByEmail(req.getEmail()).isPresent()){
+            throw new RecordNotFoundException("Korisnik s danim emailom već postoji.");
+        }
         korisnikRepo.save(korisnik);
         var jwtToken = jwtService.generateToken(korisnik);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .korisnik(korisnikRepo.findByEmail(req.getEmail()).get())
                 .build();
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request){
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
-        //kad dodemo ode user je auth
-        var korisnik= korisnikRepo.findByEmail(request.getEmail()).orElseThrow();//neki error
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
+        }catch (AuthenticationException exc){
+            throw new RecordNotFoundException("Pogrešan email ili lozinka.");
+        }
 
+        var korisnik= korisnikRepo.findByEmail(request.getEmail()).orElseThrow();
+
+        System.out.println(encoder.matches(request.password,korisnik.getPassword()));
         var jwtToken = jwtService.generateToken(korisnik);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .korisnik(korisnikRepo.findByEmail(request.getEmail()).get())
                 .build();
     }
 }
