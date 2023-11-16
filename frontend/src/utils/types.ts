@@ -2,18 +2,32 @@ import { MenuProps } from "antd";
 
 export type GlobalState = {
   user?: User,
+  token?: string,
 }
 
-export type UserNoID = {
+export type UserBase = {
   username: string;
   email: string;
-  name: string;
-  surname: string;
+  ime: string;
+  prezime: string;
 }
 
-export type User = UserNoID & {
+export type PasswordHash = string;
+
+export type UserRegiser = UserBase & {
+  password: PasswordHash;
+}
+
+export type UserLogin = {
+  email: string;
+  password: PasswordHash;
+}
+
+export type UserRole = "USER" | "ADMIN";
+
+export type User = UserBase & {
   id: number;
-  isAdmin: boolean;
+  role: UserRole;
 }
 
 export type Location = {
@@ -53,9 +67,19 @@ export type Prijava = {
   slike: string[];
 }
 
+export type PrijaveOptions = {
+  kreatorId?: string;
+  active?: string;
+  ostecenjeId?: string;
+  dateFrom?: string;
+  dateTo?: string;
+  lat?: string;
+  lng?: string;
+};
+
 export type Response<T> = {
   success: boolean;
-  error?: string;
+  error?: string[];
   data?: T;
 }
 

@@ -3,15 +3,15 @@ import { CloseCircleFilled } from "@ant-design/icons";
 import { useForm } from "antd/es/form/Form";
 import { Content } from "antd/es/layout/layout";
 import { useState } from "react";
-import { Prijava } from "../utils/types";
-import { PrijaveOptions, getPrijave } from "../utils/fetch";
+import { Prijava, PrijaveOptions } from "../utils/types";
+import { getPrijave } from "../utils/fetch";
 import { useOstecenja } from "../hooks/useOstecenja";
 import { Dayjs } from "dayjs";
 import { useToggleable } from "../hooks/useToggleable";
+import { locationToGoogle } from "../utils/location";
 import locale from "antd/es/date-picker/locale/hr_HR";
 import ReportList from "../components/ReportList";
 import MapJsApi from "../components/MapJsApi";
-import { locationToGoogle } from "../utils/location";
 
 const styleLocationActive = {
   color: "green",

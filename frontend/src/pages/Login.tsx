@@ -1,11 +1,13 @@
+import { useContext, useEffect } from "react";
 import { Layout, Button, Typography, Form, Input } from "antd";
+import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Content } from "antd/es/layout/layout";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "antd/es/form/Form";
-import { useContext, useEffect } from "react";
 import { StateContext } from "../utils/state";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { login } from "../utils/fetch";
+import { hash } from "../utils/hasher";
 import LoginRegisterHeader from "../components/LoginRegisterHeader";
 
 function Login() {
@@ -19,12 +21,14 @@ function Login() {
 
   if (global.user) return <div></div>;
 
-  function onSubmit() {
-    setGlobal({
-      ...global,
-      user: { username: form.getFieldValue("username"), email: "mail", name: "name", surname: "surname", id: 0 }
-    });
-    navigate("/");
+  async function onSubmit() {
+    //navigate("/");
+    const passwordHash = await hash(form.getFieldValue("password"));
+
+    login({
+      email: form.getFieldValue("email"),
+      password: passwordHash,
+    }).then(console.log);
   }
 
   return (
@@ -40,14 +44,17 @@ function Login() {
             style={{ width: "100%", maxWidth: "20em" }}
           >
             <Form.Item
-              name="username"
-              rules={[{ required: true, message: "Molimo unesite svoje korisničko ime" }]}
+              name="email"
+              rules={[{ required: true, type: "email", message: "Molimo unesite važeći email" }]}
             >
-              <Input prefix={<UserOutlined style={{ color: "rgba(0, 0, 0, 0.25)" }} />} placeholder="Korisničko ime" autoFocus />
+              <Input prefix={<MailOutlined style={{ color: "rgba(0, 0, 0, 0.25)" }} />} placeholder="Email" autoFocus />
             </Form.Item>
             <Form.Item
               name="password"
-              rules={[{ required: true, message: "Molimo unesite svoju lozinku" }]}
+              rules={[
+                { required: true, message: "Molimo unesite svoju lozinku" },
+                { min: 8, message: "Lozinka mora imati barem 8 znakova" }
+              ]}
             >
               <Input.Password placeholder="Lozinka" prefix={<LockOutlined style={{ color: "rgba(0, 0, 0, 0.25)" }} />} />
             </Form.Item>
@@ -55,8 +62,6 @@ function Login() {
               <Button type="primary" htmlType="submit" style={{ width: "100%" }}>Prijava</Button>
               Nemaš račun? <Link to="/register">Registriraj se!</Link>
             </Form.Item>
-            <Form.Item>
-          </Form.Item>
           </Form>
         </Content>
       </Layout>
