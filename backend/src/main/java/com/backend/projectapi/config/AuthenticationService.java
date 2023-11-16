@@ -1,10 +1,13 @@
 package com.backend.projectapi.config;
 
+import com.backend.projectapi.ResponseData;
 import com.backend.projectapi.exception.RecordNotFoundException;
 import com.backend.projectapi.model.Korisnik;
 import com.backend.projectapi.model.Role;
 import com.backend.projectapi.repository.KorisniciRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -12,6 +15,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -55,7 +59,7 @@ public class AuthenticationService {
 
         var korisnik= korisnikRepo.findByEmail(request.getEmail()).orElseThrow();
 
-        System.out.println(encoder.matches(request.password,korisnik.getPassword()));
+        // System.out.println(encoder.matches(request.password,korisnik.getPassword()));
         var jwtToken = jwtService.generateToken(korisnik);
         return AuthenticationResponse.builder()
                 .token(jwtToken)

@@ -68,8 +68,10 @@ public class Korisnik implements UserDetails {
 
     @Override
     public @NonNull String getUsername(){
-        return email;
+        return username;
     }
+
+    public @NonNull String getEmail(){ return email; }
 
     @Override
     public boolean isAccountNonExpired() {
