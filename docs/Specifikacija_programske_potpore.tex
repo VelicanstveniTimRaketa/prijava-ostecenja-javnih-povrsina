@@ -26,21 +26,22 @@
 				\begin{packed_enum}
 					
 					\item Prijaviti se u sustav koristeći svoj email i lozinku
-					\item Odjaviti se iz sustava
-					\item Pregledati osobne podatke
-					\item Mijenjati osobne podatke
-					\item Izbrisati svoj profil
-					\item Podnijeti prijavu preko web sučelja koja sadrži naziv, opis, geografske koordinate, te opcionalno fotografiju
+					\item Uređivati osobne podatke
+					\item Poslati prijavu u sustav
+					\begin{packed_item}
+					\item Unijeti naziv za prijavu, opis prijave, geografske koordinate, te opcionalno fotografiju
 					\item Odabrati koordinate preko karte ili unijeti najbližu adresu
 					\item Povezati svoju prijavu na postojeću (ako takva postoji)
-					\item Vidjeti promjene u statusu svoje prijave
-					\item Odabrati aktivne prijave na karti
-					\item Imati uvid u sve prijave u sustavu
+					\end{packed_item}
+					\item Pregledati prijave i podatke vezane za njih
+					\begin{packed_item}
+					\item Odabrati aktivnu prijavu na karti
 					\item Pregledati povijet svojih prijava
-					\item Kreirati novi gradski ured
-					\item Zatražiti ulazak u određeni gradski ured
 					\item Filtrirati pregled prijava po lokaciji i temi
-					\item Mijenjati podatke aktivne prijave u povijesti prijava
+					\end{packed_item}
+					\item Registrirati novi gradski ured
+					\item Zatražiti ulazak za participaciju u određeni gradski ured
+					\item Mijenjati podatke aktivne prijave
 				\end{packed_enum}
 				
 				\pagebreak
@@ -49,43 +50,48 @@
 				
 				\begin{packed_enum}
 					
-					\item Imati uvid u popis svih prijava
-					\item Imati uvid u popis svih registriranih profila
+					\item Pregledati popis svih prijava ikad napravljenih u sustavu
+					\begin{packed_item}
 					\item Uređivati podatke prijava
 					\item Brisati prijave
+					\end{packed_item}
+					\item Pregledati i uklanjati registrirane profile po potrebi
 					\item Imati uvid u popis svih gradskih ureda
-					\item Uklanjati (brisati) korisničke profile
 				\end{packed_enum}
 				
 				\item \underbar{Gradski ured (inicijator) može:}
 				
 				\begin{packed_enum}
 					
-					\item Pregledati popis aktivnih prijava namijenjenih njemu
+					\item Pregledati popis aktivnih zaprimljenih prijava
+					\begin{packed_item} 
 					\item Prihvatiti (ili odbiti) određenu prijavu
 					\item Spojiti nepovezane prijave
-					\item Promijeniti status prihvaćene prijave
-					\item Prihvatiti (ili odbiti ulazak) korisnika u taj ured
+					\item Promijeniti status prihvaćene prijave ovisno o uspješnosti odrađene te iste prijave
+					\end{packed_item}
+					\item Prihvatiti (ili odbiti) zahtjev korisnika za ulazak u taj ured
+					\item Poslati izvješće o odrađenoj prijavi na E-mail klijent
 				\end{packed_enum}
 				
 				\item  \underbar{Neregistrirani korisnik (incijator) može:}
 				
 				\begin{packed_enum}
-					\item Napraviti novi korisnički račun klijenta
-					\item Podnijeti prijavu preko web sučelja koja sadrži naziv, opis, geografske koordinate, te opcionalno fotografiju
+					\item Registrirati se u sustav koristeći ime, prezime, mail, username i lozinku
+					\item Poslati prijavu u sustav
+					\begin{packed_item}
+					\item Unijeti naziv za prijavu, opis prijave, geografske koordinate, te opcionalno fotografiju
 					\item Odabrati koordinate preko karte ili unijeti najbližu adresu
 					\item Povezati svoju prijavu na postojeću (ako takva postoji)
-					\item Imati uvid u sve prijave na stranici, te iste grupirati po temi i lokaciji
+					\item Zaprimiti jedistveni ID za podnesenu prijavu
+					\end{packed_item}
 
 				\end{packed_enum}
 				
 				\item  \underbar{Baza podataka (sudionik) može:}
 				
 				\begin{packed_enum}
-				\item Imati popis svih postojećih korisničkih računa
-				\item Sadržavati sve jedinstvene oznake prijava neregistriranih oznaka
-				\item Pohraniti svaku prijavu
-					
+				\item Pohraniti sve pdoatke o korisnicima i njihovim ovlastima
+				\item Pohraniti svaku prijavu sa koreliranim podacima za istu	
 				\end{packed_enum}
 			\end{packed_enum}
 			\eject 
@@ -250,7 +256,7 @@
 						\end{packed_enum}
 					\end{packed_item}
 					
-					\noindent \underbar{\textbf{UC07 - Pregled korisnika}}
+					\noindent \underbar{\textbf{UC07 - Pregled regsitranih progila korisnika}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: }Administrator
@@ -262,14 +268,14 @@
 						\item[] \begin{packed_enum}
 	
 							\item Korisnik bira opciju za pregled svih profila
-							\item Otvara mu se lista svih registriranih profila
+							\item Otvara mu se lista svih registriranih profila zajedno sa njihovim osobnim podacima
 							
 						\end{packed_enum}
 					\end{packed_item}
 					
 					\pagebreak
 					
-					\noindent \underbar{\textbf{UC08 - Pregled osobnih podataka}}
+					\noindent \underbar{\textbf{UC08 - Pregled osobnih podataka vlastitog profila}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: }Klijent
@@ -286,7 +292,7 @@
 						\end{packed_enum}
 					\end{packed_item}
 					
-					\noindent \underbar{\textbf{UC09 - Odjava}}
+					\noindent \underbar{\textbf{UC09 - Odjava iz sustava}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: }Registrirani korisnik
@@ -321,7 +327,7 @@
 					
 					\pagebreak
 					
-					\noindent \underbar{\textbf{UC11 - Uvid povijest prijava}}
+					\noindent \underbar{\textbf{UC11 - Pregledavanje povijesti svojih prijava}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: }Klijent
@@ -430,7 +436,7 @@
 						\end{packed_item}
 					\end{packed_item}
 					
-					\noindent \underbar{\textbf{UC16 - Pregled dobivenih prijava}}
+					\noindent \underbar{\textbf{UC16 - Pregled zaprimljenih prijava}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: }Gradski ured
@@ -511,7 +517,7 @@
 					
 					\pagebreak
 					
-					\noindent \underbar{\textbf{UC20 - Prihvaćanje zahtjeva ulaska u gradski ured}}
+					\noindent \underbar{\textbf{UC20 - Prihvaćanje zahtjeva za ulazak registriranog korisnika u gradski ured}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: }Gradski ured
@@ -558,7 +564,7 @@
 						
 					\end{packed_item}
 					
-					\noindent \underbar{\textbf{UC22 - Stvaranje novog gradskog ureda}}
+					\noindent \underbar{\textbf{UC22 - Registracija novog gradskog ureda}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: }Registrirani korisnik
@@ -576,6 +582,8 @@
 						\end{packed_enum}
 						
 					\end{packed_item}
+					
+					\pagebreak
 					
 					\noindent \underbar{\textbf{UC23 - Uređivanje osobnih podataka}}
 					\begin{packed_item}
@@ -606,7 +614,7 @@
 						
 					\end{packed_item}
 					
-					\noindent \underbar{\textbf{UC24 - UC24- Praćanje prijave jedinstvenim ID-om}}
+					\noindent \underbar{\textbf{UC24- Praćanje prijave jedinstvenim ID-om}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: }Neregistrirani korisnik
@@ -633,15 +641,32 @@
 						\end{packed_item}
 						
 					\end{packed_item}
+					
+					\noindent \underbar{\textbf{UC25- Slanje obavijesti vezane za odrađenu prijavu na E-mail klijent }}
+					\begin{packed_item}
+	
+						\item \textbf{Glavni sudionik: }Gradski ured
+						\item  \textbf{Cilj:} Isporučiti objavu vezanu za odrađenu prihvaćenu prijavu na E-mail klijenta
+						\item  \textbf{Sudionici:} E-mail klijent
+						\item  \textbf{Preduvjet:} -
+						\item  \textbf{Opis osnovnog tijeka:}
+						
+						\item[] \begin{packed_enum}
+	
+							\item Gradski ured šalje prouku o prijavi na E-mail klijent 
+							\item E-mail klijent prikazuje podnositelju prijave obavijest
+						\end{packed_enum}
+						
+					\end{packed_item}
 						
 				
 					
 				\subsubsection{Dijagrami obrazaca uporabe}
 					
 					\begin{figure}[H]
-			\includegraphics[scale=0.8]{slike/obrazac_nereg.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\includegraphics[scale=0.8]{slike/obrazac_podnosenjeprijave.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
 			\centering
-			\caption{Dijagram obrasca uporabe - Opće funkcionalnosti korisnika i neregistriranog korisnika}
+			\caption{Dijagram obrasca uporabe - Funkcionalnosti vezane za podnošenje prijave}
 		\end{figure}
 		
 		
@@ -705,5 +730,7 @@
 			\item Arhitektura aplikacije mora biti u obliku klijent-poslužitelj
 			\item Pri pristupu aplikaciji se koristi protokol HTTPS
 			\item Aplikacije treba biti prilagođena i desktop uređajima kao i mobilnim uređajima
+			\item Veza s bazom podataka mora biti kvalitetno zasti ˇ cena, brza i otporna na vanjske greške
+			\item Pristup sustavu mora biti omogucen iz javne mreže pomoću HTTPS
 			\end{packed_item}
 			 
