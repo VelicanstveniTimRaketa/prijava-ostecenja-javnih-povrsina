@@ -36,7 +36,7 @@
 					\item Pregledati prijave i podatke vezane za njih
 					\begin{packed_item}
 					\item Odabrati aktivnu prijavu na karti
-					\item Pregledati povijet svojih prijava
+					\item Pregledati povijest svojih prijava
 					\item Filtrirati pregled prijava po lokaciji i temi
 					\end{packed_item}
 					\item Registrirati novi gradski ured
@@ -56,7 +56,7 @@
 					\item Brisati prijave
 					\end{packed_item}
 					\item Pregledati i uklanjati registrirane profile po potrebi
-					\item Imati uvid u popis svih gradskih ureda
+					\item Odobravati kreaciju novih gradskih ureda
 				\end{packed_enum}
 				
 				\item \underbar{Gradski ured (inicijator) može:}
@@ -90,7 +90,7 @@
 				\item  \underbar{Baza podataka (sudionik) može:}
 				
 				\begin{packed_enum}
-				\item Pohraniti sve pdoatke o korisnicima i njihovim ovlastima
+				\item Pohraniti sve podatke o korisnicima i njihovim ovlastima
 				\item Pohraniti svaku prijavu sa koreliranim podacima za istu	
 				\end{packed_enum}
 			\end{packed_enum}
@@ -99,8 +99,6 @@
 			
 				
 			\subsection{Obrasci uporabe}
-				
-				\textbf{\textit{dio 1. revizije}}
 				
 				\subsubsection{Opis obrazaca uporabe}
 					
@@ -111,7 +109,7 @@
 						\item \textbf{Glavni sudionik: }Neregistrirani korisnik
 						\item  \textbf{Cilj:} Stvoriti korisnički račun
 						\item  \textbf{Sudionici:} Baza podataka
-						\item  \textbf{Preduvjet:} Null
+						\item  \textbf{Preduvjet:} -
 						\item  \textbf{Opis osnovnog tijeka:}
 						
 						\item[] \begin{packed_enum}
@@ -143,7 +141,7 @@
 						\item \textbf{Glavni sudionik: }Korisnik
 						\item  \textbf{Cilj:} Podnijeti novu prijavu
 						\item  \textbf{Sudionici:} Baza podataka
-						\item  \textbf{Preduvjet:} Null
+						\item  \textbf{Preduvjet:} -
 						\item  \textbf{Opis osnovnog tijeka:}
 						
 						\item[] \begin{packed_enum}
@@ -170,13 +168,13 @@
 					
 					\pagebreak
 					
-					\noindent \underbar{\textbf{UC03 - Pregled prijava}}
+					\noindent \underbar{\textbf{UC03 - Pregled aktivnih prijava u sustavu}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: }Korisnik
 						\item  \textbf{Cilj:} Pregled postojećih prijava
 						\item  \textbf{Sudionici:} Baza podataka
-						\item  \textbf{Preduvjet:} Null
+						\item  \textbf{Preduvjet:} -
 						\item  \textbf{Opis osnovnog tijeka:}
 						
 						\item[] \begin{packed_enum}
@@ -242,7 +240,7 @@
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: }Administrator
-						\item  \textbf{Cilj:} Obrisati određenu prijavu
+						\item  \textbf{Cilj:} Obrisati određenu prijavu iz baze podataka
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Dodijeljena prava administratora
 						\item  \textbf{Opis osnovnog tijeka:}
@@ -251,16 +249,16 @@
 	
 							\item Administratoru se prikazuje pregled prijava  
 							\item Administrator bira prijavu koju želi izbrisati
-							\item Prijava se uklanja iz baze podataka i više nije viidljiva u aplikaciji
+							\item Prijava se uklanja iz baze podataka i više nije vidljiva u aplikaciji
 							
 						\end{packed_enum}
 					\end{packed_item}
 					
-					\noindent \underbar{\textbf{UC07 - Pregled regsitranih progila korisnika}}
+					\noindent \underbar{\textbf{UC07 - Pregled podataka registriranih profila korisnika}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: }Administrator
-						\item  \textbf{Cilj:} Uvid u profile registriranih korisnika
+						\item  \textbf{Cilj:} Uvid u profile registriranih korisnika i njihovih podataka
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Dodijeljena prava administratora
 						\item  \textbf{Opis osnovnog tijeka:}
@@ -275,7 +273,7 @@
 					
 					\pagebreak
 					
-					\noindent \underbar{\textbf{UC08 - Pregled osobnih podataka vlastitog profila}}
+					\noindent \underbar{\textbf{UC08 - Pregled liste osobnih podataka vlastitog profila}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: }Klijent
@@ -308,11 +306,11 @@
 						\end{packed_enum}
 					\end{packed_item}
 					
-					\noindent \underbar{\textbf{UC10 - Brisanje kroisničkog računa}}
+					\noindent \underbar{\textbf{UC10 - Brisanje korisničkog računa}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: }Administrator
-						\item  \textbf{Cilj:} Obrisati određeni račun
+						\item  \textbf{Cilj:} Obrisati određeni profil
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Dodijeljena prava administratora
 						\item  \textbf{Opis osnovnog tijeka:}
@@ -345,7 +343,7 @@
 						
 					\end{packed_item}
 					
-					\noindent \underbar{\textbf{UC12 - Pregled gradskih ureda}}
+					\noindent \underbar{\textbf{UC12 - Pregledavanje profila gradskih ureda}}
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: }Administrator
@@ -357,7 +355,7 @@
 						\item[] \begin{packed_enum}
 	
 							\item Administrator odabire opciju za pregled svih gradskih ureda zapisanih u sustavu
-							\item Sustav mu na sučelje prikazuje gradske urede zapisane u bazi podataka
+							\item Sustav mu na sučelje prikazuje gradske urede zapisane u bazi podataka zajedno sa njihovim opisima
 						\end{packed_enum}
 					\end{packed_item}
 					
@@ -365,7 +363,7 @@
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: }Korisnik
-						\item  \textbf{Cilj:} Vezati se ne vremenski blisku prijavu
+						\item  \textbf{Cilj:} Vezati se na vremenski blisku prijavu na istom području
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Opis osnovnog tijeka:}
 						
@@ -383,7 +381,7 @@
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: }Klijent
-						\item  \textbf{Cilj:} Pogladati na karti neriješene prijave
+						\item  \textbf{Cilj:} Pogledati na karti neriješene prijave i detalje za iste
 						\item  \textbf{Sudionici:} Baza podataka
 						\item  \textbf{Preduvjet:} Postojanje aktivnih prijava
 						\item  \textbf{Opis osnovnog tijeka:}
@@ -502,7 +500,7 @@
 					\begin{packed_item}
 	
 						\item \textbf{Glavni sudionik: }Gradski ured
-						\item  \textbf{Cilj:} Promijeniti sadržaj vlastite aktivne prijave
+						\item  \textbf{Cilj:} Spojiti više pojedinih prijava u jednu cjelinu
 						\item  \textbf{Sudionici:} Baza podataka, Korisnik (inicjaitaor prijave)
 						\item  \textbf{Preduvjet:} -
 						\item  \textbf{Opis osnovnog tijeka:}
@@ -522,7 +520,7 @@
 	
 						\item \textbf{Glavni sudionik: }Gradski ured
 						\item  \textbf{Cilj:} Prihvatiti ili odbiti zahtjev kroisnika za ulazak u  gradski ured
-						\item  \textbf{Sudionici:} Baza podataka, Korisnik (inicjaitaor prijave)
+						\item  \textbf{Sudionici:} Baza podataka, Korisnik (inicijator zahtjeva)
 						\item  \textbf{Preduvjet:} Poslan zahtjev za ulazak u gradski ured
 						\item  \textbf{Opis osnovnog tijeka:}
 						
