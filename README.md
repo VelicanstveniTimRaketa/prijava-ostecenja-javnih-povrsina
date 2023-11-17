@@ -3,6 +3,8 @@ Aplikacija za prijavu oštećenja javnih površina sa sučeljem za krajnje koris
 **Ova aplikacija je razvijena u sklopu kolegija "Programsko inženjerstvo" na
 Fakultetu elektrotehnike i računarstva, grupa TG08.2, akademska godina 2023/2024.**
 
+Demo aplikacije je postavljen na https://prijavi-ostecenja.onrender.com/.
+
 ## Tehnologije
 Frontend je pisan u TypeScript React.js-u, a backend u Java Spring Boot-u.
 
