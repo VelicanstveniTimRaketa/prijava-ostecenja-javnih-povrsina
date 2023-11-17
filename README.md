@@ -73,4 +73,4 @@ Pogledaj [CONTRIBUTING.md](https://github.com/VelicanstveniTimRaketa/prijava-ost
 Dokumentacija se nalazi u direktoriju `docs`. Prva verzija dokumentacije se nalazi u datoteci [PROGI_ProjektnaDokumentacija.pdf](https://github.com/VelicanstveniTimRaketa/prijava-ostecenja-javnih-povrsina/blob/master/docs/PROGI_ProjektnaDokumentacija.pdf) koja je napisana u označnom jeziku LaTeX i generirana pomoću alata MiKTeX.
 
 ## Licenca
-Ovaj projekt objavljen pod [MIT licencom](https://github.com/VelicanstveniTimRaketa/prijava-ostecenja-javnih-povrsina/blob/master/LICENSE).
+Ovaj projekt je objavljen pod [MIT licencom](https://github.com/VelicanstveniTimRaketa/prijava-ostecenja-javnih-povrsina/blob/master/LICENSE).
