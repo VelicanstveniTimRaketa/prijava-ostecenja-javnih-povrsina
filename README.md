@@ -26,7 +26,7 @@ $ npm run build && npm run serve
 ```
 
 Moguće je konfigurirati postavke frontenda postavljajući sljedeće vrijednosti u `frontend/.env` datoteku:  
-```toml
+```ini
 VITE_MAPS_API_KEY=google_api_kljuc # Ključ za Google Maps API
 
 # SAMO ZA PRODUKCIJU
@@ -43,7 +43,7 @@ u terminalu pokrenuti sljedeću naredbu:
 $ mvn clean spring-boot:run
 ```
 Moguće je konfigurirati postavke backend postavljajući sljedeće vrijednosti u `backend/.env` datoteku:  
-```toml
+```ini
 PORT=8080                                    # Port na kojem je izložen API
 DB_URL=jdbc:postgresql://localhost:5432/pojp # URL baze podataka
 DB_USERNAME=postgres                         # Korisnik baze podataka
@@ -70,4 +70,7 @@ Navedene vrijednosti poviše su zadane vrijednosti. Sve backend rute su izložen
 Pogledaj [CONTRIBUTING.md](https://github.com/VelicanstveniTimRaketa/prijava-ostecenja-javnih-povrsina/blob/master/CONTRIBUTING.md).
 
 ## Dokumentacija
-Dokumentacija se nalazi u direktoriju `docs`. Prva verzija dokumentacije se nalazi u [PROGI_ProjektnaDokumentacija.pdf](https://github.com/VelicanstveniTimRaketa/prijava-ostecenja-javnih-povrsina/blob/master/docs/PROGI_ProjektnaDokumentacija.pdf) koja je generirana u označnom jeziku LaTeX pomoću MiKTeX-a.
+Dokumentacija se nalazi u direktoriju `docs`. Prva verzija dokumentacije se nalazi u datoteci [PROGI_ProjektnaDokumentacija.pdf](https://github.com/VelicanstveniTimRaketa/prijava-ostecenja-javnih-povrsina/blob/master/docs/PROGI_ProjektnaDokumentacija.pdf) koja je napisana u označnom jeziku LaTeX i generirana pomoću alata MiKTeX.
+
+## Licenca
+Ovaj projekt objavljen pod [MIT licencom](https://github.com/VelicanstveniTimRaketa/prijava-ostecenja-javnih-povrsina/blob/master/LICENSE).
