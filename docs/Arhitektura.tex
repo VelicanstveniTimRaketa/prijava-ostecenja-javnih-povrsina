@@ -57,19 +57,20 @@ korisnicima. Putem web preglednika korisnik šalje HTTP zahtjeve web poslužitel
 		Za potrebe sustava koristit će se relacijska baza podataka koja nam omogućuje jednostavnije modeliranje stvarnog svijeta. Baza je implementirana u PostgreSQL-u zbog njegove jednostavnosti i jer je tim najbolje upoznat s tim sustavom; njegovim limitacijama i pravilima. Entiteti stvarnog svijeta su prevedeni kao tablice (relacije) koje imaju ime i svoj skup atributa. Baza podataka osigurava nam jednostavnu pohranu, umetanje, izmjenu i dohvat podataka, te garantira njihovu sigurnost. Baza podataka koristi sljedeće atribute:
 		\begin{packed_item}
 		\setlength\itemindent{24pt}
-		\item Prijave
-		\item Lokacije
-		\item Slike
-		\item Korisnici
-		\item tipOstecenja
-		\item Vijeca
+		\item prijave
+		\item lokacije
+		\item slike
+		\item sorisnici
+		\item tipovi{\_}ostecenja
+		\item gradski{\_}uredi
 		\end{packed_item}
 		
 		
 			\subsection{Opis tablica}
 			
 
-				\textbf{Prijave} je entitet koji sadrži sve važne informacije o podnesenim prijavama. Sastoji se od atributa:id, ostecenjaId, lokacijaId, kreatorId, parentId, vrijemePrijave i vrijemeOtklona. Ovaj entitet u vezi je One-to-One s tablicom lokacije preko atributa lokacijaId, sa entitetom slike je u vezi One-to-Many preko atributa id. Sa entitetom tipOstecenja je u vezi One-to-Many preko atributa ostecenjeID, te je u vezi Many-to-One sa entitetom Korisnici preko atributa kreatorID.\\
+				\textbf{prijave} je entitet koji sadrži sve važne informacije o podnesenim prijavama. Sastoji se od atributa:id, ostecenje{\_}id, lokacija{\_}id, kreator{\_}id, parent{\_}prijava{\_}id, prvo{\_}vrijeme{\_}prijave,
+vrijeme{\_}otklona, naziv, opis. Ovaj entitet u vezi je One-to-One s tablicom lokacije preko atributa lokacija{\_}id, sa entitetom slike je u vezi One-to-Many preko atributa id. Sa entitetom tipovi{\_}ostecenja je u vezi One-to-Many preko atributa ostecenje{\_}id, u vezi Many-to-One sa entitetom korisnici preko atributa kreator{\_}id, te je sama sa sobom u refleksivnoj vezi One-to-Many preko atributa id.\\
 				
 				
 				\begin{longtblr}[
@@ -80,16 +81,18 @@ korisnicima. Putem web preglednika korisnik šalje HTTP zahtjeve web poslužitel
 						colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
 						rowhead = 1,
 					} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
-					\hline \SetCell[c=3]{c}{\textbf{Prijave}}	 \\ \hline[3pt]
+					\hline \SetCell[c=3]{c}{\textbf{prijave}}	 \\ \hline[3pt]
 					\SetCell{LightGreen}id & INT & jedinstveni identifikator prijave  	\\ \hline
-					\SetCell{LightBlue}ostecenjeId	& INT & jedinstveni identifikator tipa ostecenja   	\\ \hline 
-					\SetCell{LightBlue}kreatorId & INT &  jedinstvani identifikator korisnika koji je poslao prijavu \\ \hline 
-					\SetCell{LightBlue}parentId & INT & jedinstveni identifikator prijave na koju se prijava nadovezala		\\ \hline 
-					 vrijemePrijave	& INT &  vrijeme slanja prijave 	\\ \hline
-					 vrijemeOtklona	& INT &  vrijeme otklona prijave 	\\ \hline 
+					\SetCell{LightBlue}ostecenje{\_}id	& INT & jedinstveni identifikator tipa ostecenja   	\\ \hline 
+					\SetCell{LightBlue}kreator{\_}id & INT &  jedinstvani identifikator korisnika koji je poslao prijavu \\ \hline 
+					\SetCell{LightBlue}parent{\_} prijava{\_}id & INT & jedinstveni identifikator prijave na koju se prijava nadovezala		\\ \hline 
+					 prvo{\_}vrijeme\_ prijave	& INT &  vrijeme slanja prijave 	\\ \hline
+					 vrijeme{\_}otklona	& INT &  vrijeme otklona prijave 	\\ \hline 
+					 opis & VARCHAR &  opis poslane prijave 	\\ \hline
+					 naziv	& INT &  konkretno ime poslane prijave 	\\ \hline
 					\end{longtblr}
 					
-					\textbf{Lokacije} je entitet koji sadrži osnovne podatke o geografskoj lokaciji pojedine prijave. Sastoji se od atributa: id, latitude, longitude. Preko atributa id je povezana vezom One-to-One sa relacijom Prijave.\\
+					\textbf{lokacije} je entitet koji sadrži osnovne podatke o geografskoj lokaciji pojedine prijave. Sastoji se od atributa: lokacija{\_}id, latitude, longitude. Preko atributa id je povezana vezom One-to-One sa relacijom Prijave.\\
 				
 				\begin{longtblr}[
 					label=none,
@@ -100,12 +103,12 @@ korisnicima. Putem web preglednika korisnik šalje HTTP zahtjeve web poslužitel
 						rowhead = 1,
 					} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
 					\hline \SetCell[c=3]{c}{\textbf{Lokacije}}	 \\ \hline[3pt]
-					\SetCell{LightGreen}id & INT &  	jedinstveni identifikator prijave 	\\ \hline
+					\SetCell{LightGreen}lokacija{\_}id & INT &  	jedinstveni identifikator prijave 	\\ \hline
 					latitude & INT & geografska latituda lokacije   	\\ \hline 
 					longitude & INT & geografska longituda lokacije   	\\ \hline 
 				\end{longtblr}
 				
-				\textbf{Korisnici} je entitet koji sadrži osobne podatke o registriranim korisnicima kao i njihovu pripadnost vijecu i ulogu koju obnašaju u sustavu. Sastoji se od atributa: id, ime, prezime, username, email, passwordHash, vijeceId, token, role. Povezani su sa relacijom Prijave u vezi One-to-Many preko atributa id, te sa relacijom Vijeca u vezi Many-to-One preko atributa vijeceId.\\
+				\textbf{korisnici} je entitet koji sadrži osobne podatke o registriranim korisnicima kao i njihovu pripadnost vijecu i ulogu koju obnašaju u sustavu. Sastoji se od atributa: id, ime, prezime, username, email, password, ured{\_}id, role, active. Povezani su sa relacijom prijave u vezi One-to-Many preko atributa id, te sa relacijom gradski{\_}uredi u vezi Many-to-One preko atributa ured{\_}id.\\
 				
 				\begin{longtblr}[
 					label=none,
@@ -115,19 +118,19 @@ korisnicima. Putem web preglednika korisnik šalje HTTP zahtjeve web poslužitel
 						colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
 						rowhead = 1,
 					} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
-					\hline \SetCell[c=3]{c}{\textbf{Korisnici}}	 \\ \hline[3pt]
+					\hline \SetCell[c=3]{c}{\textbf{korisnici}}	 \\ \hline[3pt]
 					\SetCell{LightGreen}id & INT & jedinstveni identifikator korisnika  	\\ \hline
 					ime	& VARCHAR & ime registriranog korisnika   	\\ \hline
 					prezime	& VARCHAR & prezime registriranog korisnika   	\\ \hline
 					username	& VARCHAR & korisničko ime registriranog korisnika   	\\ \hline 
 					email & VARCHAR & e-mail adresa registriranog korisnika   	\\ \hline
-					passwordHash	& VARCHAR & lozinka za prijavu registriranog korisnika   	\\ \hline
-					\SetCell{LightBlue}vijeceId & INT &  jedinstvani identifikator vijeca/ureda kojem pripada \\ \hline 
-					token & INT & jedinstveni identifikator prijave na koju se prijava nadovezala		\\ \hline 
+					password  & VARCHAR & lozinka za prijavu registriranog korisnika   	\\ \hline
+					\SetCell{LightBlue}ured{\_}id & INT &  jedinstvani identifikator vijeca/ureda kojem pripada \\ \hline 
+					active & INT & jedinstveni token sesije prijave korisnika		\\ \hline 
 					 role & VARCHAR &  uloga koju korisnik obnaša u sustavu 	\\ \hline 
 				\end{longtblr}
 				
-				\textbf{Slike} je entitet koji sadrži podatke vezane za sliku podnešene prijave. Sastoji se od atributa: id, podatak, prijavaId. Preko entiteta prijavaId je povezan tablicom Prijave u vezi Many-to-One.\\
+				\textbf{slike} je entitet koji sadrži podatke vezane za sliku podnešene prijave. Sastoji se od atributa: id, podatak, prijava{\_}id. Preko entiteta prijava{\_}id je povezan tablicom prijave u vezi Many-to-One.\\
 				
 				\begin{longtblr}[
 					label=none,
@@ -139,11 +142,11 @@ korisnicima. Putem web preglednika korisnik šalje HTTP zahtjeve web poslužitel
 					} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
 					\hline \SetCell[c=3]{c}{\textbf{slike}}	 \\ \hline[3pt]
 					\SetCell{LightGreen}id & INT &  	jedinstveni identifikator slike pojedine prijave	\\ \hline
-					podatak & VARCHAR & geografska latituda lokacije   	\\ \hline 
-					\SetCell{LightBlue}prijavaId & INT & jedinstveni identifikator prijave za koju je poslana slika   	\\ \hline 
+					podatak & VARCHAR & string bitova koji sadrže sliku   	\\ \hline 
+					\SetCell{LightBlue}prijava{\_}id & INT & jedinstveni identifikator prijave za koju je poslana slika   	\\ \hline 
 				\end{longtblr}
 				
-				\textbf{tipOstecenja} je entitet koji sadrži podatke vezane za opis oštećenja kao i id ureda koji se bavi tim tipom oštećenja. Sastoji se od atributa: id, naziv, vijeceId. Preko atributa id je povezan sa relacijom Prijave u vezi Many-to-One, te je sa relacijom Vijeca u vezi One-to-One povezan preko atributa vijeceId\\
+				\textbf{tipovi{\_}osetecenja} je entitet koji sadrži podatke vezane za opis oštećenja kao i id ureda koji se bavi tim tipom oštećenja. Sastoji se od atributa: id, naziv. Preko atributa id je povezan sa relacijom prijave u vezi Many-to-One, te je sa relacijom gradski{\_}uredi u vezi One-to-One povezan preko istog atributa id.\\
 				
 				\begin{longtblr}[
 					label=none,
@@ -153,13 +156,12 @@ korisnicima. Putem web preglednika korisnik šalje HTTP zahtjeve web poslužitel
 						colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
 						rowhead = 1,
 					} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
-					\hline \SetCell[c=3]{c}{\textbf{tipOstecenja}}	 \\ \hline[3pt]
+					\hline \SetCell[c=3]{c}{\textbf{tipovi\_ ostecenja}}	 \\ \hline[3pt]
 					\SetCell{LightGreen}id & INT &  	jedinstveni identifikator vrste oštećenja	\\ \hline
-					naziv & VARCHAR & naziv konkretnog oštećenja   	\\ \hline 
-					\SetCell{LightBlue}vijeceId & INT & jedinstveni identifikator vijeca koji je zadužen za taj tip oštećenja   	\\ \hline 
+					naziv & VARCHAR & naziv konkretnog oštećenja   	\\ \hline  
 				\end{longtblr}
 				
-				\textbf{Vijeca} je entitet koji sadrži podatke vezane za opis pojedinog vijeca/ureda koji je zadužen za otklanjanje određenog tipa oštećenja. Sastoji se od atributa: id i naziv. Preko atributa id je povezan sa relacijom tipOstecenja u vezi One-to-One, te je povezan sa relacijom Korisnici preko atributa id u vezi One-to-Many.\\
+				\textbf{gradski{\_}uredi} je entitet koji sadrži podatke vezane za opis pojedinog vijeca/ureda koji je zadužen za otklanjanje određenog tipa oštećenja. Sastoji se od atributa: id, naziv i ostecenje{\_}id. Preko atributa ostecenje{\_}id je povezan sa relacijom tipovi{\_}ostecenja u vezi Many-to-One, te je povezan sa relacijom korisnici preko atributa id u vezi One-to-Many.\\
 				
 				\begin{longtblr}[
 					label=none,
@@ -169,16 +171,17 @@ korisnicima. Putem web preglednika korisnik šalje HTTP zahtjeve web poslužitel
 						colspec={|X[6,l]|X[6, l]|X[20, l]|}, 
 						rowhead = 1,
 					} %definicija širine tablice, širine stupaca, poravnanje i broja redaka naslova tablice
-					\hline \SetCell[c=3]{c}{\textbf{Vijeca}}	 \\ \hline[3pt]
+					\hline \SetCell[c=3]{c}{\textbf{gradski{\_}uredi}}	 \\ \hline[3pt]
 					\SetCell{LightGreen}id & INT &  jedinstveni identifikator pojedinog registriranog vijeća/ureda	\\ \hline
 					naziv & VARCHAR & puni naziv vijćea u aplikaciji\\ \hline 
+					\SetCell{LightBlue}ostecenje{\_}id & INT & identifikator vrste oštećenja koje za koje je taj ured zadužen\\ \hline
 				\end{longtblr}
 				
 				
 			
 			\subsection{Dijagram baze podataka}
 				\begin{figure}[H]
-			\includegraphics[scale=0.3]{slike/bazaPodataka.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\includegraphics[scale=0.3]{slike/erBaza.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
 			\centering
 			\caption{Relacijski dijagram baze podataka}
 			\label{fig:bazapod}
