@@ -1,5 +1,4 @@
 import { List } from "antd";
-import PrijavaListItemField from "./PrijavaListItemField";
 
 interface Entry {
   id: number;
@@ -24,11 +23,14 @@ function CustomList(props: CustomListProps) {
           key={entry.id}
           title={props.onHoverText}
           className={entry.onClick ? "reportListItemHover" : ""}
-          onClick={() => entry.onClick && entry.onClick()}
+          onClick={entry.onClick}
           style={{ padding: "1.5em 2em", display: "flex", textAlign: "center" }}
         >
           {entry.items.map((item, i) => (
-            <PrijavaListItemField key={item.title || i} title={item.title} value={item.value} />
+            <div key={item.title || i} style={{ minWidth: "5em", maxWidth: "30em", margin: "0.5em" }}>
+              {item.title && <div style={{ fontWeight: "bold" }}>{item.title}</div>}
+              <div>{item.value}</div>
+            </div>
           ))}
         </List.Item>
       ))}

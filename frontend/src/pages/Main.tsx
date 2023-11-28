@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { StateContext } from "../utils/state";
 import { Button, Layout, Menu } from "antd";
 import { Header } from "antd/es/layout/layout";
@@ -7,44 +7,66 @@ import { useNavigate } from "react-router";
 import { PlusOutlined } from "@ant-design/icons";
 import { MenuPropsWithComponent } from "../utils/types";
 import { Route, Routes } from "react-router";
-import WelcomeView from "../views/WelcomeView";
-import Explore from "../views/Explore";
-import NewReport from "../views/NewReport";
-import Report from "../pages/Report";
+import WelcomeView from "./WelcomeView";
+import Explore from "./Explore";
+import NewReport from "./NewReport";
+import Report from "./Report";
 import Logo from "../components/Logo";
 import UserIcon from "../components/UserIcon";
-import ProfileRoutes from "../components/ProfileRoutes";
-import GradskiUredi from "../views/GradskiUredi";
+import GradskiUredi from "./GradskiUredi";
+import Users from "./Users";
+import Check from "../components/Check";
+import EditProfile from "./EditProfile";
+import Profile from "./Profile";
+import UserReports from "./UserReports";
 
 const items: MenuPropsWithComponent = [
   {
-    key: "",
-    label: "Početna",
+    item: {
+      key: "",
+      label: "Početna",
+    },
     component: WelcomeView,
   },
   {
-    key: "search",
-    label: "Pretraga",
+    item: {
+      key: "search",
+      label: "Pretraga",
+    },
     component: Explore,
   },
   {
-    key: "offices",
-    label: "Gradski uredi",
+    item: {
+      key: "offices",
+      label: "Gradski uredi",
+    },
     component: GradskiUredi,
+  },
+  {
+    item: {
+      key: "users",
+      label: "Korisnici",
+    },
+    component: Users,
+    admin: true,
   },
 ];
 
-function App() {
+function Main() {
   const { global } = useContext(StateContext);
   const navigate = useNavigate();
   const currentPage = window.location.pathname.split("/")[1];
+
+  const menuItems = useMemo(() => {
+    return items
+      .filter(i => !i.admin || global.user?.role === "ADMIN" && i.admin)
+      .map(i => i.item);
+  }, [global.user?.role]);
 
   return (
     <Layout>
       <Header
         style={{
-          borderBottom: 0,
-          borderTop: "2px",
           backgroundColor: "white",
           display: "flex",
           alignItems: "center",
@@ -59,7 +81,7 @@ function App() {
             mode="horizontal"
             onClick={info => navigate(info.key)}
             selectedKeys={[currentPage]}
-            items={items}
+            items={menuItems}
           />
           <Button type="primary" size="large" shape="round" icon={<PlusOutlined />} onClick={() => navigate("report")}>
             Prijavi štetu
@@ -80,14 +102,24 @@ function App() {
       </Header>
       <Routes>
         {items.map(item => (
-          <Route key={item.key} path={item.key as string} element={<item.component />} />
+          <Route key={item.item.key} path={item.item.key as string} element={<item.component />} />
         ))}
-        <Route path="report" element={<NewReport />} />
         <Route path="search/:id" element={<Report enableEditing={global.user?.role === "ADMIN"} />} />
-        <Route path="profile/*" element={<ProfileRoutes />} />
+        <Route path="users" element={<Users />} />
+        <Route path="report" element={<NewReport />} />
+        <Route path="profile/*" element={
+          <Check if={!!global.user} elseNavigateTo="/login">
+            <Routes>
+              <Route path="" element={<Profile />} />
+              <Route path="reports" element={<UserReports />} />
+              <Route path="reports/:id" element={<Report enableEditing={true} />} />
+              <Route path="edit" element={<EditProfile />} />
+            </Routes>
+          </Check>
+        } />
       </Routes>
     </Layout>
   );
 }
 
-export default App;
+export default Main;

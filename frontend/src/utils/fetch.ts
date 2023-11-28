@@ -1,89 +1,106 @@
 import { RcFile } from "antd/es/upload";
-import { BarebonesPrijava, GradskiUred, LoginData, Prijava, PrijaveOptions, Response, TipOstecenja, UserLogin, UserRegiser } from "./types";
+import { BarebonesPrijava, GradskiUred, LoginData, Prijava, PrijaveOptions, Response, TipOstecenja, User, UserLogin, UserRegiser } from "./types";
 
-function requestGet<T>(path: string, params?: Record<string, string>, token?: string): Promise<Response<T>> {
-  const headers = token ? { Authorization: "Bearer " + token } : undefined;
-  let fullPath = path;
-  if (params) fullPath += "?" + new URLSearchParams(params);
-  
-  return new Promise(res => {
-    fetch(fullPath, { headers })
-      .then(resp => resp.json())
-      .then(res)
-      .catch((error) => res({ success: false, errors: [error.toString()] }));
-  });
+export class Fetcher {
+  static token?: string;
+
+  static setToken(token?: string) {
+    this.token = token;
+  }
+
+  static get<T>(path: string, params?: Record<string, string>): Promise<Response<T>> {
+    const headers = this.token ? { Authorization: "Bearer " + this.token } : undefined;
+    let fullPath = path;
+    if (params) fullPath += "?" + new URLSearchParams(params);
+
+    return new Promise(res => {
+      fetch(fullPath, { headers })
+        .then(resp => resp.json())
+        .then(res)
+        .catch((error) => res({ success: false, errors: [error.toString()] }));
+    });
+  }
+
+  static post<T>(path: string, data: FormData | unknown): Promise<Response<T>> {
+    const headers: HeadersInit = {};
+    if (this.token) headers.Authorization = "Bearer " + this.token;
+    if (!(data instanceof FormData)) headers["Content-Type"] = "application/json";
+
+    const body = data instanceof FormData ? data : JSON.stringify(data);
+
+    return new Promise(res => {
+      fetch(path, { method: "POST", body, headers })
+        .then(resp => resp.json())
+        .then(res)
+        .catch((error) => res({ success: false, errors: [error.toString()] }));
+    });
+  }
 }
 
-function requestPost<T>(path: string, data: unknown, token?: string): Promise<Response<T>> {
-  const headers: HeadersInit = {
-    "Content-Type": "application/json",
-  };
-  if (token) headers.Authorization = "Bearer " + token;
-
-  return new Promise(res => {
-    fetch(path, { method: "POST", body: JSON.stringify(data), headers })
-      .then(resp => resp.json())
-      .then(res)
-      .catch((error) => res({ success: false, errors: [error.toString()] }));
-  });
+function fixPrijava(p: Prijava) {
+  p.prvoVrijemePrijave = new Date(p.prvoVrijemePrijave);
+  p.vrijemeOtklona = p.vrijemeOtklona && new Date(p.vrijemeOtklona);
 }
 
-export function getPrijava(id: number): Promise<Response<Prijava>> {
-    return requestGet("/api/prijave/" + id);
+// GET REQUESTS
+
+export async function getPrijava(id: number): Promise<Response<Prijava>> {
+  const r = await Fetcher.get<Prijava>("/api/prijave/" + id);
+  r.data && fixPrijava(r.data);
+  return r;
 }
 
-export function getPrijave(
-  options?: PrijaveOptions
-): Promise<Response<Prijava[]>> {
-  return new Promise((res) => {
-    fetch("/api/prijave?" + new URLSearchParams(options))
-      .then((resp) => resp.json())
-      .then((r) => {
-        r.data = r.data.map((val: Prijava) => ({
-          ...val,
-          prvoVrijemePrijave: new Date(val.prvoVrijemePrijave),
-          vrijemeOtklona: val.vrijemeOtklona && new Date(val.vrijemeOtklona),
-        }));
-        res(r);
-      })
-      .catch((error) => res({ success: false, errors: [error] }));
-  });
-}
-export function addPrijava(
-  prijava: BarebonesPrijava,
-  images: RcFile[]
-): Promise<Response<never>> {
-  return new Promise((res) => {
-    const data = new FormData();
-
-    Object.entries(prijava).forEach((entry) =>
-      data.append(entry[0], JSON.stringify(entry[1]))
-    );
-    images.forEach((im) => data.append("slike", im, im.name));
-
-    fetch("/api/addPrijava", { method: "POST", body: data })
-      .then((resp) => resp.json())
-      .then((r) => console.log(r))
-      .catch((error) => res({ success: false, errors: [error] }));
-  });
+export async function getPrijave(options?: PrijaveOptions): Promise<Response<Prijava[]>> {
+  const r = await Fetcher.get<Prijava[]>("/api/prijave?" + new URLSearchParams(options));
+  r.data?.forEach(fixPrijava);
+  return r;
 }
 
-export function getUserPrijave(id: string): Promise<Response<Prijava[]>> {
-  return requestGet("/api/prijave",  { id });
+export async function getUserPrijave(id: string): Promise<Response<Prijava[]>> {
+  const r = await Fetcher.get<Prijava[]>("/api/prijave", { id });
+  r.data?.forEach(fixPrijava);
+  return r;
 }
 
 export function getOstecenja(): Promise<Response<TipOstecenja[]>> {
-  return requestGet("/api/ostecenja");
+  return Fetcher.get("/api/ostecenja");
 }
 
 export function getGradskiUredi(): Promise<Response<GradskiUred[]>> {
-  return requestGet("/api/uredi");
+  return Fetcher.get("/api/uredi");
+}
+
+export function getAllUsers(): Promise<Response<User[]>> {
+  return Fetcher.get("/api/korisnici");
+}
+
+// POST REQUESTS
+
+export async function addPrijava(prijava: BarebonesPrijava, images: RcFile[]): Promise<Response<Prijava[]>> {
+  const data = new FormData();
+
+  Object.entries(prijava).forEach((entry) =>
+    data.append(entry[0], typeof entry[1] === "string" ? entry[1] : JSON.stringify(entry[1]))
+  );
+  images.forEach((im) => data.append("slike", im, im.name));
+
+  const r = await Fetcher.post<Prijava[]>("/api/addPrijava", data);
+  r.data?.forEach(fixPrijava);
+  return r;
+}
+
+export function connectPrijave(idOneConnecting: number, idTo: number): Promise<Response<unknown>> {
+  return Fetcher.post("/api/makeChild", { child_id: idOneConnecting, parent_id: idTo });
+}
+
+export function deleteUser(id: number): Promise<Response<unknown>> {
+  return Fetcher.post("/api/makeChild", { id });
 }
 
 export function login(data: UserLogin): Promise<Response<LoginData>> {
-  return requestPost("/api/login", data);
+  return Fetcher.post("/api/login", data);
 }
 
 export function register(data: UserRegiser): Promise<Response<LoginData>> {
-  return requestPost("/api/register", data);
+  return Fetcher.post("/api/register", data);
 }

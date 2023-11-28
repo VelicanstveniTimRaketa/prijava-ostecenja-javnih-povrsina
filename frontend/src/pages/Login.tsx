@@ -9,16 +9,13 @@ import { Link } from "react-router-dom";
 import { login } from "../utils/fetch";
 import { LoginData, Response } from "../utils/types";
 import LoginRegisterHeader from "../components/LoginRegisterHeader";
+import Check from "../components/Check";
 
 function Login() {
   const { global, setGlobal } = useContext(StateContext);
   const [form] = useForm();
   const [response, setResponse] = useState<Response<LoginData>>();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (global.user) navigate("/");
-  }, [global.user, navigate]);
 
   useEffect(() => {
     if (!response) return;
@@ -34,11 +31,9 @@ function Login() {
       console.error("no response data");
       return;
     }
-    setGlobal({ ...global, user: response.data.korisnik, token: response.data.token });
+    setGlobal({ ...global, user: { ...response.data.korisnik,  token: response.data.token }});
     navigate("/");
   }, [global, setGlobal, navigate, response]);
-
-  if (global.user) return <div></div>;
 
   async function onSubmit() {
     const data = { email: form.getFieldValue("email"), password: form.getFieldValue("password") };
@@ -46,7 +41,7 @@ function Login() {
   }
 
   return (
-    <Layout>
+    <Check if={!global.user} elseNavigateTo="/">
       <LoginRegisterHeader />
       <Layout>
         <Content style={{ display: "flex", alignItems: "center", flexDirection: "column", flex: "1", width: "100%" }}>
@@ -79,7 +74,7 @@ function Login() {
           </Form>
         </Content>
       </Layout>
-    </Layout>
+    </Check>
   );
 }
 

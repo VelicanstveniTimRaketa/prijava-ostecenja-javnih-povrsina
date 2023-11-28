@@ -6,27 +6,13 @@ import MapJsApi from "../components/MapJsApi";
 import { useNavigate } from "react-router-dom";
 
 function WelcomeView() {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
-
+  const { token: { colorBgContainer } } = theme.useToken();
   const navigate = useNavigate();
 
   return (
     <Layout
-      style={{
-        padding: "2em",
-        display: "flex",
-        flexDirection: "row",
-      }}>
-      <Content
-        style={{
-          padding: "2em",
-          margin: 0,
-          minHeight: 280,
-          color: "black",
-        }}
-      >
+      style={{ padding: "2em 4em", display: "flex", flexDirection: "row" }}>
+      <Content style={{ margin: 0, minHeight: 280 }}>
         <Title level={1}>Prijavi oštećenje na cesti</Title>
         <Typography.Paragraph style={{ fontSize: "1.5em" }}>
           Odmah i sada!
