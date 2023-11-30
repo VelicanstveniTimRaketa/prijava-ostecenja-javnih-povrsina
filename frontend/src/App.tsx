@@ -1,14 +1,19 @@
 import "./App.css";
-import { useState } from "react";
-import Main from "./pages/Main";
-import Login from "./pages/Login";
+import { useEffect, useState } from "react";
 import { STATE, StateContext } from "./utils/state";
 import { Route, Routes } from "react-router";
 import { BrowserRouter } from "react-router-dom";
+import { Fetcher } from "./utils/fetch";
+import Main from "./pages/Main";
+import Login from "./pages/Login";
 import Register from "./pages/Register";
 
 function App() {
   const [global, setGlobal] = useState(STATE);
+
+  useEffect(() => {
+    Fetcher.setToken(global.user?.token);
+  }, [global.user]);
 
   return (
     <BrowserRouter>

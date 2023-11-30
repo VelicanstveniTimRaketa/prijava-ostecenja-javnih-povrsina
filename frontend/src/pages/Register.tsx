@@ -7,15 +7,12 @@ import { LoginData, Response, UserRegiser } from "../utils/types";
 import { register } from "../utils/fetch";
 import LoginRegisterHeader from "../components/LoginRegisterHeader";
 import UserForm from "../components/UserForm";
+import Check from "../components/Check";
 
 function Register() {
   const { global, setGlobal } = useContext(StateContext);
   const [response, setResponse] = useState<Response<LoginData>>();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (global.user) navigate("/");
-  }, [global.user, navigate]);
 
   useEffect(() => {
     if (!response) return;
@@ -31,24 +28,24 @@ function Register() {
       console.error("no response data");
       return;
     }
-    setGlobal({ ...global, user: response.data.korisnik, token: response.data.token });
+    setGlobal({ ...global, user: { ...response.data.korisnik, token: response.data.token } });
     navigate("/");
   }, [global, setGlobal, navigate, response]);
-
-  if (global.user) return <div></div>;
 
   function onRegister(data: UserRegiser) {
     register(data).then(setResponse);
   }
 
   return (
-    <Layout>
-      <LoginRegisterHeader />
-      <Content style={{ display: "flex", alignItems: "center", flexDirection: "column", flex: "1", width: "100%" }}>
-        <Typography.Title level={2}>Registracija</Typography.Title>
-        <UserForm onSubmit={onRegister} />
-      </Content>
-    </Layout>
+    <Check if={!global.user} elseNavigateTo="/">
+      <Layout>
+        <LoginRegisterHeader />
+        <Content style={{ display: "flex", alignItems: "center", flexDirection: "column", flex: "1", width: "100%" }}>
+          <Typography.Title level={2}>Registracija</Typography.Title>
+          <UserForm onSubmit={onRegister} />
+        </Content>
+      </Layout>
+    </Check>
   );
 }
 

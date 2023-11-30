@@ -3,7 +3,7 @@ import { Input } from "antd";
 import { useState } from "react";
 
 interface PlacesInputProps {
-  onClick: (point: google.maps.LatLng) => void;
+  onClick: (point: google.maps.LatLngLiteral) => void;
 }
 
 function PlacesInput(props: PlacesInputProps) {
@@ -17,7 +17,7 @@ function PlacesInput(props: PlacesInputProps) {
       }}
       onPlaceChanged={() => {
         const point = autoComplete?.getPlace().geometry?.location;
-        point && props.onClick(point);
+        point && props.onClick({ lat: point.lat(), lng: point.lng() });
       }}
     >
       <Input
