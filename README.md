@@ -46,7 +46,7 @@ u terminalu pokrenuti sljedeću naredbu:
 ```sh
 $ mvn clean spring-boot:run
 ```
-Moguće je konfigurirati postavke backend postavljajući sljedeće vrijednosti u `backend/.env` datoteku:  
+Moguće je konfigurirati postavke backenda postavljajući sljedeće vrijednosti u `backend/.env` datoteku:  
 ```ini
 PORT=8080                                    # Port na kojem je izložen API
 DB_URL=jdbc:postgresql://localhost:5432/pojp # URL baze podataka
