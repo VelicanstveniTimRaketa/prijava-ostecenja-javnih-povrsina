@@ -109,26 +109,24 @@ function NewReport() {
       >
         <Title level={2}>Nova prijava</Title>
         <Form id="addPrijava" form={form} onFinish={onSubmit} labelCol={{ span: "5" }} wrapperCol={{ span: "20" }} style={{ width: "100%" }}>
-          <Form.Item required name="reportName" label="Naziv: ">
+          <Form.Item required name="reportName" label="Naziv: " rules={[{ required: true, message: "Molimo unesite naziv prijave." }]}>
             <Input />
           </Form.Item>
           <Form.Item name="opis" label="Opis: ">
             <TextArea rows={4} />
           </Form.Item>
           <Form.Item required name="ostecenja" label="Tip oštećenja" rules={[{ required: true, message: "Molimo označite tip oštećenja." }]}>
-            <Select onChange={() => form.setFieldValue("ured", undefined)}>
+            <Select onChange={() => form.resetFields(["ured"])}>
               {ostecenja && ostecenja.map(ostecenje => (
                 <Select.Option key={ostecenje.id}>{ostecenje.naziv}</Select.Option>
               ))}
             </Select>
           </Form.Item>
-          <Form.Item required label="Gradski ured" rules={[{ required: true, message: "Molimo označite gradski ured." }]}
-            shouldUpdate={(prevValues, currentValues) => prevValues.ostecenja !== currentValues.ostecenja}
-          >
+          <Form.Item required label="Gradski ured" shouldUpdate={(prevValues, currentValues) => prevValues.ostecenja !== currentValues.ostecenja}>
             {({ getFieldValue }) => {
-              const filtriraniUredi = uredi?.filter(ured => ured.tipOstecenja.id.toString() === getFieldValue("ostecenja")) ;
+              const filtriraniUredi = uredi?.filter(ured => ured.tipOstecenja.id.toString() === getFieldValue("ostecenja"));
               return (
-                <Form.Item name="ured">
+                <Form.Item noStyle name="ured" rules={[{ required: true, message: "Molimo označite gradski ured." }]}>
                   <Select disabled={!getFieldValue("ostecenja")}>
                     {filtriraniUredi && filtriraniUredi.map(ostecenje => (
                       <Select.Option key={ostecenje.id}>{ostecenje.naziv}</Select.Option>
