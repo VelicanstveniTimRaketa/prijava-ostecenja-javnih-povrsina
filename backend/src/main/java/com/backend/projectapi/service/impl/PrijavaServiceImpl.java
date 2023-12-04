@@ -121,7 +121,7 @@ public class PrijavaServiceImpl implements PrijavaService {
     }
 
     @Override
-    public List<Prijava> addPrijave(PrijavaDTO prijavaDTO, HttpServletRequest req) {
+    public Object addPrijave(PrijavaDTO prijavaDTO, HttpServletRequest req) {
         Lokacija lok=new Lokacija(prijavaDTO.getLatitude(), prijavaDTO.getLongitude());
         lokacijRepo.save(lok);
         Prijava prijava=new Prijava(
@@ -137,12 +137,18 @@ public class PrijavaServiceImpl implements PrijavaService {
 
         //Long id = prijaveRepo.save(prijava).getId();
         Prijava prijavaSaved = prijaveRepo.save(prijava);
-        if(prijavaDTO.getSlike() != null){
+        if(prijavaDTO.getSlike() != null) {
             List<Slika> savedSlike = addSlike(prijavaDTO.getSlike(), prijavaSaved);
             prijavaSaved.setSlike(savedSlike);
             prijaveRepo.save(prijavaSaved);
         }
-        return getClosePrijave(prijavaDTO.getLatitude(), prijavaDTO.getLongitude(), prijavaSaved.getId());
+
+        Map<String,Object> returnObj= new HashMap<>();
+
+        returnObj.put("newReport",prijavaSaved);
+        returnObj.put("nearbyReports",getClosePrijave(prijavaDTO.getLatitude(), prijavaDTO.getLongitude(), prijavaSaved.getId()));
+
+        return returnObj;
     }
 
 
