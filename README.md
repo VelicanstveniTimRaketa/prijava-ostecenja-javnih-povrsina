@@ -3,7 +3,9 @@ Aplikacija za prijavu oštećenja javnih površina sa sučeljem za krajnje koris
 **Ova aplikacija je razvijena u sklopu kolegija "Programsko inženjerstvo" na
 Fakultetu elektrotehnike i računarstva, grupa TG08.2, akademska godina 2023/2024.**
 
-Demo aplikacije je postavljen na https://prijavi-ostecenja.onrender.com/.
+Verzija aplikacije koja je pod aktivnim razvijanjem se nalazi na branchu `develop`.  
+Verzija aplikacije koja je spremna za produkciju se nalazi na branchu `master` i njen demo
+je postavljen na https://prijavi-ostecenja.onrender.com/.
 
 ## Tehnologije
 Frontend je pisan u TypeScript React.js-u, a backend u Java Spring Boot-u.
@@ -44,7 +46,7 @@ u terminalu pokrenuti sljedeću naredbu:
 ```sh
 $ mvn clean spring-boot:run
 ```
-Moguće je konfigurirati postavke backend postavljajući sljedeće vrijednosti u `backend/.env` datoteku:  
+Moguće je konfigurirati postavke backenda postavljajući sljedeće vrijednosti u `backend/.env` datoteku:  
 ```ini
 PORT=8080                                    # Port na kojem je izložen API
 DB_URL=jdbc:postgresql://localhost:5432/pojp # URL baze podataka
@@ -58,15 +60,14 @@ Navedene vrijednosti poviše su zadane vrijednosti. Sve backend rute su izložen
 
 
 ## Članovi tima i zadaće
-| **Član tima**                                                     | **Zadaća**                |
-|-------------------------------------------------------------------|---------------------------|
-| Ivan Šimunić ([@ivansimunic](https://www.github.com/ivansimunic)) | koordinator/dokumentacija |
-| Nino Ćurko ([@ninotronics](https://www.github.com/ninotronics))   | dokumentacija             |
-| Davor Najev ([@spinzed](https://www.github.com/spinzed))          | frontend                  |
-| Nikola Botić ([@NBotic02](https://www.github.com/NBotic02))       | frontend                  |
-| Dominik Zoričić ([@dz54240](https://www.github.com/dz54240))      | backend                   |
-| Josip Šare ([@josipsare](https://www.github.com/josipsare))       | backend                   |
-| Ivan Elez ([@eca041](https://www.github.com/eca041))              | backend                   |
+| **Član tima**                                                   | **Zadaća**           |
+|-----------------------------------------------------------------|----------------------|
+| Davor Najev ([@spinzed](https://www.github.com/spinzed))        | koordinator/frontend |
+| Nikola Botić ([@NBotic02](https://www.github.com/NBotic02))     | frontend             |
+| Dominik Zoričić ([@dz54240](https://www.github.com/dz54240))    | backend              |
+| Josip Šare ([@josipsare](https://www.github.com/josipsare))     | backend              |
+| Ivan Elez ([@eca041](https://www.github.com/eca041))            | backend              |
+| Nino Ćurko ([@ninotronics](https://www.github.com/ninotronics)) | dokumentacija        |
 
 ## Kontribucije
 Pogledaj [CONTRIBUTING.md](https://github.com/VelicanstveniTimRaketa/prijava-ostecenja-javnih-povrsina/blob/master/CONTRIBUTING.md).

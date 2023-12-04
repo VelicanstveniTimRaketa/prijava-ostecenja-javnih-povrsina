@@ -1,26 +1,23 @@
 import { MenuProps } from "antd";
 
 export type GlobalState = {
-  user?: User,
-  token?: string,
+  user?: CurrentUser,
 }
 
-export type UserBase = {
+type UserBase = {
   username: string;
   email: string;
   ime: string;
   prezime: string;
 }
 
-export type PasswordHash = string;
-
 export type UserRegiser = UserBase & {
-  password: PasswordHash;
+  password: string;
 }
 
 export type UserLogin = {
   email: string;
-  password: PasswordHash;
+  password: string;
 }
 
 export type UserRole = "USER" | "ADMIN";
@@ -29,6 +26,10 @@ export type User = UserBase & {
   id: number;
   role: UserRole;
   ured?: GradskiUred;
+}
+
+export type CurrentUser = User & {
+  token: string;
 }
 
 export type Location = {
@@ -89,5 +90,10 @@ export type LoginData = {
   korisnik: User;
 }
 
+export type AddPrijavaResponse = {
+  newReport: Prijava,
+  nearbyReports: Prijava[]
+};
+
 // this is some vile black magic fr
-export type MenuPropsWithComponent = MenuProps["items"] extends ((infer T)[] | undefined) ? (T & { component: React.FC })[] : never;
+export type MenuPropsWithComponent = MenuProps["items"] extends ((infer T)[] | undefined) ? ({ item: T extends null ? { key: string } : T, component: React.FC, admin?: boolean })[] : never;

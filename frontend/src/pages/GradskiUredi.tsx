@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Button, Divider, Row, Typography } from "antd";
 import { Content } from "antd/es/layout/layout";
 import { useGradskiUredi } from "../hooks/useGradskiUredi";
@@ -11,7 +11,7 @@ function GradskiUredi() {
   const uredi = useGradskiUredi();
   const [newUred, setNewUred] = useState(false);
 
-  const items = uredi?.map(ured => {
+  const items = useMemo(() => uredi?.map(ured => {
     const button = <Button style={{ marginLeft: "2em" }} onClick={() => { }} type="primary">Prijavi se</Button>;
     return {
       id: ured.id,
@@ -23,14 +23,13 @@ function GradskiUredi() {
         ...(global.user ? [{ value: button }] : [])
       ]
     };
-  });
-
+  }), [global.user, uredi]);
 
   return (
     <Content style={{ display: "flex", margin: "2em" }}>
       <Row style={{ justifyContent: "space-around", flex: 1 }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 2 }}>
-          <Typography.Title level={3}>Lista ureda</Typography.Title>
+          <Typography.Title level={2}>Lista ureda</Typography.Title>
           {items && <CustomList data={items} />}
         </div>
         {global.user &&

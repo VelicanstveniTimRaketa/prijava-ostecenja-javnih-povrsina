@@ -6,10 +6,10 @@ import { StoreValue } from "antd/es/form/interface";
 import { RcFile } from "antd/es/upload";
 import { getBase64 } from "../utils/imageTransform";
 import { PlusOutlined } from "@ant-design/icons";
-import { UserBase, UserRegiser } from "../utils/types";
+import { User, UserRegiser } from "../utils/types";
 
 interface UserFormProps {
-  initialData?: UserBase;
+  initialData?: User;
   noPassword?: boolean;
   onSubmit: (user: UserRegiser) => void;
 }
