@@ -126,7 +126,7 @@ function NewReport() {
             shouldUpdate={(prevValues, currentValues) => prevValues.ostecenja !== currentValues.ostecenja}
           >
             {({ getFieldValue }) => {
-              const filtriraniUredi = uredi?.filter(ured => ured.id == getFieldValue("ostecenja"));
+              const filtriraniUredi = uredi?.filter(ured => ured.tipOstecenja.id.toString() === getFieldValue("ostecenja")) ;
               return (
                 <Form.Item name="ured">
                   <Select disabled={!getFieldValue("ostecenja")}>
