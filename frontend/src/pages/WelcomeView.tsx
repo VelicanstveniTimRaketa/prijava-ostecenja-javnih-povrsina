@@ -1,9 +1,9 @@
 import { Layout, Typography, theme } from "antd";
 import { Content } from "antd/es/layout/layout";
+import { useNavigate } from "react-router-dom";
 import Title from "antd/es/typography/Title";
 import BigButton from "../components/BigButton";
 import MapJsApi from "../components/MapJsApi";
-import { useNavigate } from "react-router-dom";
 
 function WelcomeView() {
   const { token: { colorBgContainer } } = theme.useToken();
