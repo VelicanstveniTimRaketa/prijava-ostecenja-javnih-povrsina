@@ -21,10 +21,10 @@ insert into public.tipovi_ostecenja (naziv) values
                                                 ('Oštećenje vodovoda ispod javne površine');
 
 insert into public.gradski_uredi (ostecenje_id, naziv) values
-                                                           (1,'Vijece za ceste'),
-                                                           (2,'Vijece za vodovod'),
-                                                           (3,'Vijece za elektriku'),
-                                                           (4,'Vijece za cijevi');
+                                                           (1,'Gradski ured za ceste'),
+                                                           (2,'Gradski ured za vodovod'),
+                                                           (3,'Gradski ured za elektriku'),
+                                                           (4,'Gradski ured za cijevi');
 
 
 insert into public.prijave
