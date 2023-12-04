@@ -90,5 +90,10 @@ export type LoginData = {
   korisnik: User;
 }
 
+export type AddPrijavaResponse = {
+  newReport: Prijava,
+  nearbyReports: Prijava[]
+};
+
 // this is some vile black magic fr
 export type MenuPropsWithComponent = MenuProps["items"] extends ((infer T)[] | undefined) ? ({ item: T extends null ? { key: string } : T, component: React.FC, admin?: boolean })[] : never;
