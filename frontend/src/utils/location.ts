@@ -9,6 +9,21 @@ export function locationToGoogle(latlng: Location): google.maps.LatLngLiteral {
   return { lat: latlng.latitude, lng: latlng.longitude };
 }
 
+export function checkLocationComponents(coords: number[]) {
+  if (coords.length !== 3) return false;
+  return coords.every(v => !isNaN(v));
+}
+
+function componentsToCoord(coords: number[]) {
+  if (!checkLocationComponents(coords)) throw TypeError("coords array not valid");
+  return coords[0] + coords[1] / 60 + coords[2] / 3600;
+}
+
+
+export function componentsToGoogle(latComponents: number[], lngComponents: number[]): google.maps.LatLngLiteral {
+  return { lat: componentsToCoord(latComponents), lng: componentsToCoord(lngComponents) };
+}
+
 export function getLocation(): Promise<google.maps.LatLngLiteral | undefined> {
   return new Promise((res) => {
     if (!navigator.geolocation) {
