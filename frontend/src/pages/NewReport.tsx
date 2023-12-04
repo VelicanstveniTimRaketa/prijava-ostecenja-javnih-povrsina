@@ -6,7 +6,7 @@ import { useOstecenja } from "../hooks/useOstecenja";
 import { useGradskiUredi } from "../hooks/useGradskiUredi";
 import { useForm } from "antd/es/form/Form";
 import { RcFile } from "antd/es/upload";
-import { BarebonesPrijava, Prijava, Response } from "../utils/types";
+import { AddPrijavaResponse, BarebonesPrijava, Response } from "../utils/types";
 import { addPrijava, connectPrijave } from "../utils/fetch";
 import { checkLocationComponents, componentsToGoogle, getLocation } from "../utils/location";
 import { useNavigate } from "react-router";
@@ -26,7 +26,7 @@ function NewReport() {
   const [center, setCenter] = useState<google.maps.LatLngLiteral | undefined>(undefined);
   const [locationFromImage, setLocationFromImage] = useState<google.maps.LatLngLiteral | undefined>(undefined);
   const [images, setImages] = useState<{ originFileObj: RcFile }[]>([]);
-  const [response, setResponse] = useState<Response<Prijava[]>>();
+  const [response, setResponse] = useState<Response<AddPrijavaResponse>>();
   const ostecenja = useOstecenja();
   const uredi = useGradskiUredi();
   const navigate = useNavigate();
@@ -59,7 +59,7 @@ function NewReport() {
       fail(response);
       return;
     }
-    if (response.data && response.data.length > 0) return;
+    if (response.data && response.data.nearbyReports.length > 0) return;
 
     success("Prijava uspješno registrirana");
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -139,15 +139,17 @@ function NewReport() {
             }}
           </Form.Item>
           <Form.Item required name="lokacija" label="Lokacija" rules={[{ required: true, validator: locationValidator, message: "Molimo odaberite lokaciju." }]}>
-            <Radio.Group value={mapInputType} onChange={e => setMapInputType(e.target.value)}>
-              <Radio.Button value="onMap">Odaberi na karti</Radio.Button>
-              <Radio.Button value="address">Unesi adresu</Radio.Button>
-              <Radio.Button value="myLocation">Uzmi moju lokaciju</Radio.Button>
-            </Radio.Group>
-            {mapInputType === "address" && <PlacesInput onClick={l => { setLocation(l); setCenter(l); setMapInputType("onMap"); }} />}
-            <Layout style={{ margin: "1em 0" }}>
-              <MapJsApi marker={location} center={center} zoom={center && 12} onClick={l => setLocation({ lat: l.lat(), lng: l.lng() })} disabled={mapInputType !== "onMap"} />
-            </Layout>
+            <div>
+              <Radio.Group value={mapInputType} onChange={e => setMapInputType(e.target.value)}>
+                <Radio.Button value="onMap">Odaberi na karti</Radio.Button>
+                <Radio.Button value="address">Unesi adresu</Radio.Button>
+                <Radio.Button value="myLocation">Uzmi moju lokaciju</Radio.Button>
+              </Radio.Group>
+              {mapInputType === "address" && <PlacesInput onClick={l => { setLocation(l); setCenter(l); setMapInputType("onMap"); }} />}
+              <Layout style={{ margin: "1em 0" }}>
+                <MapJsApi marker={location} center={center} zoom={center && 12} onClick={l => setLocation({ lat: l.lat(), lng: l.lng() })} disabled={mapInputType !== "onMap"} />
+              </Layout>
+            </div>
           </Form.Item>
           <Form.Item label="Slike" name="slike" valuePropName="fileList" getValueFromEvent={v => setImages(v.fileList)}>
             <Upload beforeUpload={onImageUpload} accept="image/jpeg, image/png" listType="picture-card">
@@ -174,7 +176,7 @@ function NewReport() {
           </Form.Item>
         </Form>
       </Content>
-      {response?.data && response.data.length !== 0 && (
+      {response?.data && response.data.nearbyReports.length !== 0 && (
         <Modal
           style={{ minWidth: "fit-content" }}
           open={!!response}
@@ -184,8 +186,8 @@ function NewReport() {
         >
           <Typography.Title level={2}>Pronađene su prijave u blizini!</Typography.Title>
           <Typography.Title level={5}>Pogledajte odnosi li se ikoja na Vašu i povežite svoju prijavu s njome.</Typography.Title>
-          <ReportList buttonText="Poveži" data={response.data} onButtonClick={(p) => {
-            connectPrijave(0, p.id).then(res => {
+          <ReportList buttonText="Poveži" data={response.data.nearbyReports} onButtonClick={(p) => {
+            connectPrijave(response.data?.newReport.id as number, p.id).then(res => {
               res.success ? success("Prijava uspješno registrirana i povezana") : fail(res);
             });
           }} />
