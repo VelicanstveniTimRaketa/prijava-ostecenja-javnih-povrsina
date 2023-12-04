@@ -85,8 +85,15 @@ export async function addPrijava(prijava: BarebonesPrijava, images: RcFile[]): P
   images.forEach((im) => data.append("slike", im, im.name));
 
   const r = await Fetcher.post<Prijava[]>("/api/addPrijava", data);
-  r.data?.forEach(fixPrijava);
+  /*
+  if(r.data?.newReport) {
+    r.data?.newReport = fixPrijava(r.data?.newReport);
+  }
+  r.data?.nearbyReports?.forEach(fixPrijava);
+
+   */
   return r;
+
 }
 
 export function connectPrijave(idOneConnecting: number, idTo: number): Promise<Response<unknown>> {
