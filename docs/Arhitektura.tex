@@ -192,20 +192,32 @@ vrijeme{\_}otklona, naziv, opis. Ovaj entitet u vezi je One-to-One s tablicom lo
 			
 		\section{Dijagram razreda}
 		
-			\textit{Potrebno je priložiti dijagram razreda s pripadajućim opisom. Zbog preglednosti je moguće dijagram razlomiti na više njih, ali moraju biti grupirani prema sličnim razinama apstrakcije i srodnim funkcionalnostima.}\\
+			Na slikama 4.3 i 4.4 prikazani su razredi i njihove relacije na serverskoj strani aplikacije. Konkretnije rečeno prikazani su modeli i kontroleri. \\
 			
-			\textbf{\textit{dio 1. revizije}}\\
+			Svi kontroleri nasljeđuju razred Controller. Metode koje su u njima implementirane ovise o DTO objektima, koji se realiziraju pomoću metoda implementiranih u Domain dijelu razreda.
 			
-			\textit{Prilikom prve predaje projekta, potrebno je priložiti potpuno razrađen dijagram razreda vezan uz \textbf{generičku funkcionalnost} sustava. Ostale funkcionalnosti trebaju biti idejno razrađene u dijagramu sa sljedećim komponentama: nazivi razreda, nazivi metoda i vrste pristupa metodama (npr. javni, zaštićeni), nazivi atributa razreda, veze i odnosi između razreda.}\\
 			
-			\textbf{\textit{dio 2. revizije}}\\			
-			
-			\textit{Prilikom druge predaje projekta dijagram razreda i opisi moraju odgovarati stvarnom stanju implementacije}
-			
+				\begin{figure}[H]
+			\includegraphics[scale=0.3]{slike/kontroleri.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Dijagram razreda - Controllers dio}
+			\label{fig:bazapod}
+		\end{figure}
+		
+		\pagebreak
+		
+		Domain dio razreda preslikava strukturu baze podataka, te svi razredi nasljeđuju razred Model. Ovako ilustrirani razredi su zapravo odraz onih relacija koji su zapisani u bazi podataka, te direktno komunciraju sa bazom podataka. Razred Korisnik je ilustracija bilo kojeg registriranog usera koji ima svoju ulogu (povezan sa enumom Role), te može podnijeti prijavu u sustav (pvezanost sa razredom Prijava preko private atributa prijave). Prijave kada se konstruiraju zadaje im se lokacija (pa su preko atributa lokacija povezane sa razredom Lokacija), slika (agregatna povezanost sa razredom Slika preko varijable slike) i tip ostecenja (agregatna povezanost sa razredom tipOstecenja preko atributa tipOstecenja). Razred GradskiUred je reprezentacija gradskig ureda koje je povezan sa tipom oštećenja preko atributa tipOstecenja. \\
+		
+		
+			\begin{figure}[H]
+			\includegraphics[scale=0.3]{slike/domain.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Dijagram razreda - Controllers dio}
+			\label{fig:bazapod}
+		\end{figure}
 			
 			
 			\eject
-		
 		\section{Dijagram stanja}
 			
 			
