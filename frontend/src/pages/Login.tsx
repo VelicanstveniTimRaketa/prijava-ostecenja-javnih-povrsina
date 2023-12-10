@@ -15,6 +15,7 @@ function Login() {
   const { global, setGlobal } = useContext(StateContext);
   const [form] = useForm();
   const [response, setResponse] = useState<Response<LoginData>>();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,13 +32,17 @@ function Login() {
       console.error("no response data");
       return;
     }
-    setGlobal({ ...global, user: { ...response.data.korisnik,  token: response.data.token }});
+    setGlobal({ ...global, user: { ...response.data.korisnik, token: response.data.token } });
     navigate("/");
   }, [global, setGlobal, navigate, response]);
 
   async function onSubmit() {
+    setLoading(true);
     const data = { email: form.getFieldValue("email"), password: form.getFieldValue("password") };
-    login(data).then(setResponse);
+    login(data).then(v => {
+      setResponse(v);
+      setLoading(false);
+    });
   }
 
   return (
@@ -68,7 +73,7 @@ function Login() {
               <Input.Password placeholder="Lozinka" prefix={<LockOutlined style={{ color: "rgba(0, 0, 0, 0.25)" }} />} />
             </Form.Item>
             <Form.Item key="submit">
-              <Button type="primary" htmlType="submit" style={{ width: "100%" }}>Prijava</Button>
+              <Button type="primary" loading={loading} htmlType="submit" style={{ width: "100%" }}>Prijava</Button>
               Nemaš račun? <Link to="/register">Registriraj se!</Link>
             </Form.Item>
           </Form>
