@@ -26,6 +26,7 @@ function Explore() {
   const [location, setLocation] = useState<google.maps.LatLng | undefined>(undefined);
   const [selectedPrijava, setSelectedPrijava] = useState<Prijava>();
   const [locationActive, toggleLocation, ref] = useToggleable(false);
+  const [loading, setLoading] = useState(false);
   const ostecenja = useOstecenja();
 
   function onSubmit() {
@@ -47,7 +48,11 @@ function Explore() {
       options.lng = location.lng().toString();
     }
 
-    getPrijave(options).then(res => setData(res.data));
+    setLoading(true);
+    getPrijave(options).then(res => {
+      setData(res.data);
+      setLoading(false);
+    });
   }
 
   const selectedPrijavaSpot = selectedPrijava && locationToGoogle(selectedPrijava.lokacija);
@@ -119,7 +124,7 @@ function Explore() {
           </Select>
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">Pošalji</Button>
+          <Button type="primary" loading={loading} htmlType="submit">Pošalji</Button>
         </Form.Item>
       </Form>
       <Divider />

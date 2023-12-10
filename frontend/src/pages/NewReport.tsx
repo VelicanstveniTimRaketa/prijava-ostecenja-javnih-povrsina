@@ -27,6 +27,7 @@ function NewReport() {
   const [locationFromImage, setLocationFromImage] = useState<google.maps.LatLngLiteral | undefined>(undefined);
   const [images, setImages] = useState<{ originFileObj: RcFile }[]>([]);
   const [response, setResponse] = useState<Response<AddPrijavaResponse>>();
+  const [loading, setLoading] = useState(false);
   const ostecenja = useOstecenja();
   const uredi = useGradskiUredi();
   const navigate = useNavigate();
@@ -82,7 +83,11 @@ function NewReport() {
       longitude: location?.lng,
     };
 
-    addPrijava(prijava, images.map(image => image.originFileObj)).then(setResponse);
+    setLoading(true);
+    addPrijava(prijava, images.map(image => image.originFileObj)).then(v => {
+      setResponse(v);
+      setLoading(false);
+    });
   }
 
   function onImageUpload(file: RcFile) {
@@ -170,7 +175,7 @@ function NewReport() {
             </Modal>
           )}
           <Form.Item key="submit" wrapperCol={{ offset: 5 }}>
-            <Button type="primary" htmlType="submit">Prijavi</Button>
+            <Button type="primary" loading={loading} htmlType="submit">Prijavi</Button>
           </Form.Item>
         </Form>
       </Content>

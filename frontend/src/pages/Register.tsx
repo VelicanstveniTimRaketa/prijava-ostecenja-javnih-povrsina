@@ -32,8 +32,8 @@ function Register() {
     navigate("/");
   }, [global, setGlobal, navigate, response]);
 
-  function onRegister(data: UserRegiser) {
-    register(data).then(setResponse);
+  async function onRegister(data: UserRegiser) {
+    setResponse(await register(data));
   }
 
   return (
