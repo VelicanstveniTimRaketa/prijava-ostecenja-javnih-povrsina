@@ -5,6 +5,7 @@ import { useGradskiUredi } from "../hooks/useGradskiUredi";
 import { StateContext } from "../utils/state";
 import CustomList from "../components/CustomList";
 import NewGradskiUred from "../components/NewGradskiUred";
+import AlertBanner from "../components/AlertBanner";
 
 function GradskiUredi() {
   const { global } = useContext(StateContext);
@@ -30,7 +31,7 @@ function GradskiUredi() {
       <Row style={{ justifyContent: "space-around", flex: 1 }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 2 }}>
           <Typography.Title level={2}>Lista ureda</Typography.Title>
-          {items && <CustomList data={items} />}
+          {items && items.length == 0 ? <CustomList data={items} />:<AlertBanner message="Nema dostupnih gradskih ureda"/>}
         </div>
         {global.user &&
           <>

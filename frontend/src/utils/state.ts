@@ -2,7 +2,6 @@ import { createContext } from "react";
 import { GlobalState } from "../utils/types";
 
 export const STATE: GlobalState = {
-
 };
 
 export const StateContext = createContext<{

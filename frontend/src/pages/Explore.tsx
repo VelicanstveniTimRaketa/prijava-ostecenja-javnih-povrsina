@@ -12,6 +12,7 @@ import { locationToGoogle } from "../utils/location";
 import locale from "antd/es/date-picker/locale/hr_HR";
 import ReportList from "../components/ReportList";
 import MapJsApi from "../components/MapJsApi";
+import AlertBanner from "../components/AlertBanner";
 
 const styleLocationActive = {
   color: "green",
@@ -132,13 +133,17 @@ function Explore() {
         <Typography.Title level={5} style={{ margin: "0.5em" }}>Broj pronađenih prijava: {data.length}</Typography.Title>
         <div style={{ display: "flex" }}>
           <ReportList onClick={p => setSelectedPrijava({ ...p })} data={data} />
-          <MapJsApi
+          {data.length > 0 ? 
+            <MapJsApi
             style={{ display: "flex", position: "sticky", top: "30vh", margin: "1em 2em" }}
             marker={selectedPrijavaSpot}
             center={selectedPrijavaSpot}
             zoom={selectedPrijava && 15}
             secondaryMarkers={selectedPrijava ? undefined : data.map(p => locationToGoogle(p.lokacija))}
-          />
+            />
+            :
+            <AlertBanner message="Nema prijava za odabrane filtere!"/>
+          }
         </div>
       </>}
     </Content>

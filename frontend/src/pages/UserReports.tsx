@@ -7,6 +7,7 @@ import { Content } from "antd/es/layout/layout";
 import ReportList from "../components/ReportList";
 import MapJsApi from "../components/MapJsApi";
 import { locationToGoogle } from "../utils/location";
+import AlertBanner from "../components/AlertBanner";
 
 function UserReports() {
   const [data, setData] = useState<Prijava[]>();
@@ -26,13 +27,14 @@ function UserReports() {
       {data &&
         <div style={{ display: "flex" }}>
           <ReportList data={data} onClick={setSelectedPrijava} />
-          <MapJsApi
+          {data.length > 0 ? <MapJsApi
             style={{ display: "flex", position: "sticky", top: "30vh", margin: "1em 2em" }}
             marker={selectedPrijavaSpot}
             center={selectedPrijavaSpot}
             zoom={selectedPrijava && 15}
             secondaryMarkers={selectedPrijava ? undefined : data.map(p => locationToGoogle(p.lokacija))}
-          />
+          />:
+          <AlertBanner message="Korisnik nema prijava oštećenja" />}
         </div>
       }
     </Content>
