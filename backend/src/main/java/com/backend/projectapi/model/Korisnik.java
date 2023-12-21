@@ -3,6 +3,7 @@ package com.backend.projectapi.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -46,6 +47,11 @@ public class Korisnik implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "uredId")
     private GradskiUred ured;
+
+    @NonNull
+    @Column(columnDefinition = "VARCHAR(6) DEFAULT NULL")
+    @Pattern(regexp = "(NULL|pending|active)")
+    private String ured_status;
 
     @NonNull
     @Email
