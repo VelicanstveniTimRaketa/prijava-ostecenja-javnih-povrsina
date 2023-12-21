@@ -26,6 +26,7 @@ public class GradskiUred {
     @Column(name = "naziv",nullable = false)
     private String naziv;
 
+
     @NotNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "ostecenjeId")
@@ -34,4 +35,14 @@ public class GradskiUred {
     @JsonIgnore
     @OneToMany(mappedBy = "ured",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Korisnik> korisnikList;
+
+    @Column(columnDefinition = "VARCHAR(6) DEFAULT 'false'")
+    private String active;
+
+    public GradskiUred(@NonNull String naziv, TipOstecenja tipOstecenja, List<Korisnik> korisnikList,String active) {
+        this.naziv = naziv;
+        this.tipOstecenja = tipOstecenja;
+        this.korisnikList = korisnikList;
+        this.active=active;
+    }
 }
