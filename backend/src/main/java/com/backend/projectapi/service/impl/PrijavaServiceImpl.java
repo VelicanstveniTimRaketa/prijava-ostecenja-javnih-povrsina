@@ -4,11 +4,9 @@ package com.backend.projectapi.service.impl;
 import com.backend.projectapi.DTO.PrijavaDTO;
 import com.backend.projectapi.ResponseData;
 import com.backend.projectapi.exception.RecordNotFoundException;
-import com.backend.projectapi.model.Lokacija;
-import com.backend.projectapi.model.Prijava;
-import com.backend.projectapi.model.Slika;
-import com.backend.projectapi.model.TipOstecenja;
+import com.backend.projectapi.model.*;
 import com.backend.projectapi.repository.*;
+import com.backend.projectapi.response.PrijavaResponse;
 import com.backend.projectapi.service.PrijavaService;
 import com.backend.projectapi.service.TipOstecenjaService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.security.PrivateKey;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 
@@ -53,7 +53,7 @@ public class PrijavaServiceImpl implements PrijavaService {
     }
 
     @Override
-    public List<Prijava> getAllPrijave(Long kreatorId, String active, Long parentId, ZonedDateTime dateFrom, ZonedDateTime dateTo, Double lat, Double lng, Long... ostecenjeId) {
+    public List<PrijavaResponse> getAllPrijave(Long kreatorId, String active, Long parentId, ZonedDateTime dateFrom, ZonedDateTime dateTo, Double lat, Double lng, Long... ostecenjeId) {
 
         List<Prijava> rez=new ArrayList<>(prijaveRepo.findAll());
 
@@ -98,7 +98,28 @@ public class PrijavaServiceImpl implements PrijavaService {
             rez.retainAll(listLokacija);
         }
 
-        return rez;
+        return setPrijavaResponse(rez);
+    }
+
+
+    public List<PrijavaResponse> setPrijavaResponse(List<Prijava> prijave){
+        List<PrijavaResponse> data = new LinkedList<>();
+        prijave.forEach(prijava -> {
+            GradskiUred gradskiUred = gradskiUrediRepo.findByTipOstecenja(prijava.getTipOstecenja()).get();
+            data.add(new PrijavaResponse(prijava.getId(),
+                    prijava.getNaziv(),
+                    prijava.getLokacija(),
+                    gradskiUred,
+                    prijava.getOpis(),
+                    prijava.getKreator(),
+                    prijava.getSlike(),
+                    prijava.getParentPrijava(),
+                    prijava.getPrvoVrijemePrijave(),
+                    prijava.getVrijemeOtklona())
+            );
+        });
+
+        return data;
     }
 
     @Override
@@ -189,10 +210,20 @@ public class PrijavaServiceImpl implements PrijavaService {
     }
 
     @Override
-    public Prijava findById(Long id) {
+    public PrijavaResponse findById(Long id) {
         Optional<Prijava> prijava=prijaveRepo.findById(id);
         if (prijava.isPresent()){
-            return prijava.get();
+            GradskiUred gradskiUred = gradskiUrediRepo.findByTipOstecenja(prijava.get().getTipOstecenja()).get();
+            return new PrijavaResponse(prijava.get().getId(),
+                    prijava.get().getNaziv(),
+                    prijava.get().getLokacija(),
+                    gradskiUred,
+                    prijava.get().getOpis(),
+                    prijava.get().getKreator(),
+                    prijava.get().getSlike(),
+                    prijava.get().getParentPrijava(),
+                    prijava.get().getPrvoVrijemePrijave(),
+                    prijava.get().getVrijemeOtklona());
         }else {
             throw new RecordNotFoundException("ne postoji prijava za dani id: "+id);
         }

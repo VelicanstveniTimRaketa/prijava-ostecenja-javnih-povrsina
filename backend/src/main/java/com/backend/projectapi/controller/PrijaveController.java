@@ -2,6 +2,7 @@ package com.backend.projectapi.controller;
 import com.backend.projectapi.DTO.PrijavaDTO;
 import com.backend.projectapi.ResponseData;
 import com.backend.projectapi.model.Prijava;
+import com.backend.projectapi.response.PrijavaResponse;
 import com.backend.projectapi.service.KorisnikService;
 import com.backend.projectapi.service.PrijavaService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,20 +30,20 @@ public class PrijaveController {
     }
 
     @GetMapping("/prijave")
-    public ResponseEntity<ResponseData<List<Prijava>>> getAllPrijave(@RequestParam(required = false) Long kreatorId,
-                                                                     @RequestParam(required = false) String active,
-                                                                     @RequestParam(required = false) Long parent_id,
-                                                                     @RequestParam(required = false) ZonedDateTime dateFrom,
-                                                                     @RequestParam(required = false) ZonedDateTime dateTo,
-                                                                     @RequestParam(required = false) Double lat,
-                                                                     @RequestParam(required = false) Double lng,
-                                                                     @RequestParam(required = false) Long... ostecenjeId){
+    public ResponseEntity<ResponseData<List<PrijavaResponse>>> getAllPrijave(@RequestParam(required = false) Long kreatorId,
+                                                                             @RequestParam(required = false) String active,
+                                                                             @RequestParam(required = false) Long parent_id,
+                                                                             @RequestParam(required = false) ZonedDateTime dateFrom,
+                                                                             @RequestParam(required = false) ZonedDateTime dateTo,
+                                                                             @RequestParam(required = false) Double lat,
+                                                                             @RequestParam(required = false) Double lng,
+                                                                             @RequestParam(required = false) Long... ostecenjeId){
         return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave(kreatorId,active,parent_id,dateFrom,dateTo,lat,lng, ostecenjeId)), HttpStatus.OK);
     }
 
     @GetMapping("/prijave/{id}")
-    public ResponseEntity<Object> getPrijavaById(@PathVariable("id") Long id){
-        return new ResponseEntity<>(ResponseData.success(prijavaService.findById(id)),HttpStatus.FOUND);
+    public ResponseEntity<ResponseData<PrijavaResponse>> getPrijavaById(@PathVariable("id") Long id){
+        return new ResponseEntity<>(ResponseData.success(prijavaService.findById(id)),HttpStatus.OK);
     }
 
     @PatchMapping("/makeChild")
