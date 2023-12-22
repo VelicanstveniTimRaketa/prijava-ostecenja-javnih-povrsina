@@ -21,4 +21,6 @@ public interface GradskiUrediService {
     Object potvrdaZahtjeva(Long korisnikId);
 
     Object odbijanjeZahjteva(Long korisnikId);
+
+    Object odbijiUred(Long id);
 }
