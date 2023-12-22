@@ -2,6 +2,7 @@ import { Checkbox, Button } from "antd";
 import { Prijava } from "../utils/types";
 import { useNavigate } from "react-router-dom";
 import CustomList from "./CustomList";
+import AlertBanner from "./AlertBanner";
 
 interface ReportListProps {
   data: Prijava[];
