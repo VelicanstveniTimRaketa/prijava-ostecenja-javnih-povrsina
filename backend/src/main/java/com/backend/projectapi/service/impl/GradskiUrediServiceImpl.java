@@ -185,5 +185,25 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
 
         return korisniciRepo.save(korisnik);
     }
+
+    @Override
+    public Object odbijiUred(Long id) {
+
+        Optional<GradskiUred> gradskiUredOptional = gradskiUredRepo.findById(id);
+        GradskiUred gradskiUred;
+
+        if(gradskiUredOptional.isPresent()){
+            gradskiUred=gradskiUredOptional.get();
+            if (gradskiUred.getActive().equals("true")){
+                throw new RecordNotFoundException("ured za dani id: "+id+ " je vec aktivan");
+            }
+        }else{
+            throw new RecordNotFoundException("ne postoji ured za dani id: "+id);
+        }
+
+        gradskiUredRepo.delete(gradskiUred);
+
+        return true;
+    }
 }
 

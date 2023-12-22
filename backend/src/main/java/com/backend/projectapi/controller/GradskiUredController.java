@@ -36,9 +36,14 @@ public class GradskiUredController {
         return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.addGradskiUred(gradskiUredDTO)),HttpStatus.OK);
     }
 
-    @PatchMapping("/makeActive")
+    @PatchMapping("/potvrdiUred")
     public ResponseEntity<ResponseData<Object>> makeActive(@RequestParam Long id){
         return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.makeActive(id)),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/odbijiUred")
+    public ResponseEntity<ResponseData<Object>> odbijiUred(@RequestParam Long id){
+        return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.odbijiUred(id)),HttpStatus.OK);
     }
 
     @PatchMapping("/zahtjevZaUlazak")
