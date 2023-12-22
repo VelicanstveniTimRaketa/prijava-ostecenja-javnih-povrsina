@@ -19,4 +19,6 @@ public interface GradskiUrediRepository extends JpaRepository<GradskiUred, Long>
     List<GradskiUred> findAktivneUrede();
   
     Optional<GradskiUred> findByTipOstecenja(TipOstecenja ostecenje);
+
+
 }

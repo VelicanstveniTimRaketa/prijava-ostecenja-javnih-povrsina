@@ -49,7 +49,7 @@ public class Korisnik implements UserDetails {
     private GradskiUred ured;
 
     @NonNull
-    @Column(columnDefinition = "VARCHAR(6) DEFAULT NULL")
+    @Column(columnDefinition = "VARCHAR(7) DEFAULT 'NULL'")
     @Pattern(regexp = "(NULL|pending|active)")
     private String ured_status;
 
