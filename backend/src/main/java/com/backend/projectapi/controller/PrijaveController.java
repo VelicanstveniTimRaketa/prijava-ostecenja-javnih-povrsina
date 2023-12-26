@@ -30,7 +30,7 @@ public class PrijaveController {
     }
 
     @GetMapping("/prijave")
-    public ResponseEntity<ResponseData<List<PrijavaResponse>>> getAllPrijave(@RequestParam(required = false) Long kreatorId,
+    public ResponseEntity<ResponseData<List<Prijava>>> getAllPrijave(@RequestParam(required = false) Long kreatorId,
                                                                              @RequestParam(required = false) String active,
                                                                              @RequestParam(required = false) Long parent_id,
                                                                              @RequestParam(required = false) ZonedDateTime dateFrom,
