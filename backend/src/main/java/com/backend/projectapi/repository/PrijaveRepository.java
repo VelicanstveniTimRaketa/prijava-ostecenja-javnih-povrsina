@@ -28,17 +28,8 @@ public interface PrijaveRepository extends JpaRepository<Prijava, Long> {
             "(:lng + 0.0005) and id != :ID", nativeQuery = true)
     List<Prijava> findClosePrijave (@Param("lat") Double lat, @Param("lng") Double lng, @Param("ID") Long ID);
 
-    @Query(value = "SELECT * FROM prijave  WHERE ostecenje_id = :id",nativeQuery = true)
+    @Query(value = "SELECT p.* FROM prijave p JOIN gradski_uredi g ON p.gradski_ured_Id=g.id where g.ostecenje_id= :id",nativeQuery = true)
     List<Prijava> findAllByTipOstecenja(@Param("id") Long id);
-
-    @Query(value = "SELECT * FROM prijave where id = :uvjeti",nativeQuery = true)
-    List<Prijava> findOvisnoOUvjetu(@Param("uvjeti") String uvjeti);
-
-    @Query(value = "SELECT * FROM prijave  where vrijeme_otklona is null and ostecenje_id = :id",nativeQuery = true)
-    List<Prijava> findAllByTipOstecenjaAndActive(@Param("id") Long id);
-
-    @Query(value = "SELECT * FROM prijave  where vrijeme_otklona is not null and ostecenje_id = :id",nativeQuery = true)
-    List<Prijava> findAllByTipOstecenjaAndNotActive(@Param("id") Long id);
 
     //WHERE timestamp_with_zone AT TIME ZONE 'UTC' = '2023-01-01T12:34:56.789Z'::timestamptz AT TIME ZONE 'UTC';
     @Query(value = "select * from prijave where prvo_vrijeme_prijave AT TIME ZONE 'CET' between :prvoVrijemePrijave and :prvoVrijemePrijave2",nativeQuery = true)
