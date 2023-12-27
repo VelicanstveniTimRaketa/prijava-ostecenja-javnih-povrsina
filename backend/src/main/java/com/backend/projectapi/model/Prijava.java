@@ -1,17 +1,8 @@
 package com.backend.projectapi.model;
-
-import com.backend.projectapi.service.TipOstecenjaService;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.extern.java.Log;
-
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "prijave")
@@ -35,9 +26,13 @@ public class Prijava {
     private Lokacija lokacija;
 
 
-    @ManyToOne(optional = false)
+    /*@ManyToOne(optional = false)
     @JoinColumn(name = "ostecenjeId")
-    private TipOstecenja tipOstecenja;
+    private TipOstecenja tipOstecenja;*/
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "gradski_ured_Id")
+    private GradskiUred gradskiUred;
 
     @Column(name = "opis")
     private String opis;
@@ -59,10 +54,10 @@ public class Prijava {
 
     private ZonedDateTime vrijemeOtklona;
 
-    public Prijava(Lokacija lokacija, String naziv, TipOstecenja tipOstecenja, String opis, @NonNull Korisnik kreator, List<Slika> slike, Prijava parentPrijava, @NonNull ZonedDateTime prvoVrijemePrijave, ZonedDateTime vrijemeOtklona) {
+    public Prijava(Lokacija lokacija, String naziv, GradskiUred gradskiUred, String opis, @NonNull Korisnik kreator, List<Slika> slike, Prijava parentPrijava, @NonNull ZonedDateTime prvoVrijemePrijave, ZonedDateTime vrijemeOtklona) {
         this.lokacija = lokacija;
         this.naziv = naziv;
-        this.tipOstecenja = tipOstecenja;
+        this.gradskiUred = gradskiUred;
         this.opis = opis;
         this.kreator = kreator;
         this.slike = slike;

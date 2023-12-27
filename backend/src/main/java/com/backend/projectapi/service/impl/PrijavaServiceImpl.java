@@ -53,7 +53,7 @@ public class PrijavaServiceImpl implements PrijavaService {
     }
 
     @Override
-    public List<PrijavaResponse> getAllPrijave(Long kreatorId, String active, Long parentId, ZonedDateTime dateFrom, ZonedDateTime dateTo, Double lat, Double lng, Long... ostecenjeId) {
+    public List<Prijava> getAllPrijave(Long kreatorId, String active, Long parentId, ZonedDateTime dateFrom, ZonedDateTime dateTo, Double lat, Double lng, Long... ostecenjeId) {
 
         List<Prijava> rez=new ArrayList<>(prijaveRepo.findAll());
 
@@ -98,11 +98,12 @@ public class PrijavaServiceImpl implements PrijavaService {
             rez.retainAll(listLokacija);
         }
 
-        return setPrijavaResponse(rez);
+        //return setPrijavaResponse(rez);
+        return rez;
     }
 
 
-    public List<PrijavaResponse> setPrijavaResponse(List<Prijava> prijave){
+/*    public List<PrijavaResponse> setPrijavaResponse(List<Prijava> prijave){
         List<PrijavaResponse> data = new LinkedList<>();
         prijave.forEach(prijava -> {
             GradskiUred gradskiUred = gradskiUrediRepo.findByTipOstecenja(prijava.getTipOstecenja()).get();
@@ -120,7 +121,7 @@ public class PrijavaServiceImpl implements PrijavaService {
         });
 
         return data;
-    }
+    }*/
 
     @Override
     public List<Prijava> getChildPrijave(Long id) {
@@ -148,7 +149,7 @@ public class PrijavaServiceImpl implements PrijavaService {
         Prijava prijava=new Prijava(
                 lok,
                 prijavaDTO.getNaziv(),
-                gradskiUrediRepo.findById(prijavaDTO.getUred()).get().getTipOstecenja(),
+                gradskiUrediRepo.findById(prijavaDTO.getUred()).get(),
                 prijavaDTO.getOpis(),
                 korisnikRepo.findById(1L).get(),
                 null,
@@ -213,11 +214,11 @@ public class PrijavaServiceImpl implements PrijavaService {
     public PrijavaResponse findById(Long id) {
         Optional<Prijava> prijava=prijaveRepo.findById(id);
         if (prijava.isPresent()){
-            GradskiUred gradskiUred = gradskiUrediRepo.findByTipOstecenja(prijava.get().getTipOstecenja()).get();
+            //GradskiUred gradskiUred = gradskiUrediRepo.findByTipOstecenja(prijava.get().getTipOstecenja()).get();
             return new PrijavaResponse(prijava.get().getId(),
                     prijava.get().getNaziv(),
                     prijava.get().getLokacija(),
-                    gradskiUred,
+                    prijava.get().getGradskiUred(),
                     prijava.get().getOpis(),
                     prijava.get().getKreator(),
                     prijava.get().getSlike(),
@@ -252,7 +253,8 @@ public class PrijavaServiceImpl implements PrijavaService {
 
         newPrijava.setNaziv(prijavaDTO.getNaziv());
         newPrijava.setOpis(prijavaDTO.getOpis());
-        newPrijava.setTipOstecenja(gradskiUrediRepo.findById(prijavaDTO.getUred()).get().getTipOstecenja());
+        newPrijava.setGradskiUred(gradskiUrediRepo.findById(prijavaDTO.getUred()).get());
+        //newPrijava.setTipOstecenja(gradskiUrediRepo.findById(prijavaDTO.getUred()).get().getTipOstecenja());
         Lokacija lok=new Lokacija(prijavaDTO.getLatitude(), prijavaDTO.getLongitude());
         lokacijRepo.save(lok);
         newPrijava.setLokacija(lok);
