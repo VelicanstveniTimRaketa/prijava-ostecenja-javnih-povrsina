@@ -56,7 +56,7 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
         );
 
         GradskiUred gradskiUredSaved = gradskiUredRepo.save(gradskiUred);
-
+        
         return gradskiUredSaved;
     }
 

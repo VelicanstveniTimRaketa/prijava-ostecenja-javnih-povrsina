@@ -28,11 +28,11 @@ insert into public.gradski_uredi (ostecenje_id, naziv) values
 
 
 insert into public.prijave
-(ostecenje_id, opis, lokacija_id, kreator_id, prvo_vrijeme_prijave, parent_prijava_id, vrijeme_otklona) values
+(gradski_ured_Id, opis, lokacija_id, kreator_id, prvo_vrijeme_prijave, parent_prijava_id, vrijeme_otklona) values
                                                                                                            (1,'', 1, 1, current_timestamp, null, null),
                                                                                                            (2,'', 3, 1, current_timestamp, null, null);
 insert into public.prijave
-(ostecenje_id, opis, lokacija_id, kreator_id, prvo_vrijeme_prijave, parent_prijava_id, vrijeme_otklona) values
+(gradski_ured_Id, opis, lokacija_id, kreator_id, prvo_vrijeme_prijave, parent_prijava_id, vrijeme_otklona) values
                                                                                                            (2,'', 2, 2, current_timestamp, 1, null),
                                                                                                            (4,'', 6, 3, current_timestamp, 1, null),
                                                                                                            (1,'', 6, 2, current_timestamp - '10 hours' :: interval, null, current_timestamp),
