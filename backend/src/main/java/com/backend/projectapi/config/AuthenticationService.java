@@ -31,6 +31,7 @@ public class AuthenticationService {
                 .username(req.getUsername())
                 .email(req.getEmail())
                 .role(Role.USER)
+                .active("true")
                 .password(encoder.encode(req.getPassword()))
                 .build();
 

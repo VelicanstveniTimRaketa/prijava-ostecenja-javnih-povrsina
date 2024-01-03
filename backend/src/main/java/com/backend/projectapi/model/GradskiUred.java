@@ -1,5 +1,6 @@
 package com.backend.projectapi.model;
 
+import com.backend.projectapi.DTO.KorisnikDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -26,7 +27,6 @@ public class GradskiUred {
     @NotBlank
     @Column(name = "naziv",nullable = false)
     private String naziv;
-
 
     @NotNull
     @ManyToOne(optional = false)

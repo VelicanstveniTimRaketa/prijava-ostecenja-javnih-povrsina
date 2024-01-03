@@ -41,15 +41,17 @@ public class Korisnik implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+
     @Column(columnDefinition = "VARCHAR(6) DEFAULT 'true'")
     private String active;
+
 
     @ManyToOne
     @JoinColumn(name = "uredId")
     private GradskiUred ured;
 
-    @NonNull
-    @Column(columnDefinition = "VARCHAR(7) DEFAULT 'NULL'")
+
+    @Column(columnDefinition = "VARCHAR(7) DEFAULT NULL")
     @Pattern(regexp = "(NULL|pending|active)")
     private String ured_status;
 

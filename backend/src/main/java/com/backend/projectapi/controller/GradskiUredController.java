@@ -41,7 +41,7 @@ public class GradskiUredController {
         return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.makeActive(id)),HttpStatus.OK);
     }
 
-    @DeleteMapping("/odbijiUred")
+    @DeleteMapping("/odbijUred")
     public ResponseEntity<ResponseData<Object>> odbijiUred(@RequestParam Long id){
         return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.odbijiUred(id)),HttpStatus.OK);
     }
@@ -51,7 +51,7 @@ public class GradskiUredController {
         return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.zahtjevZaUlazak(korisnikId,uredId)),HttpStatus.OK);
     }
 
-    @GetMapping("/sviZahjtevi")
+    @GetMapping("/sviZahtjevi")
     public ResponseEntity<ResponseData<List<Korisnik>>> sviZahtjevi(){
         return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.sviZahtjevi()),HttpStatus.OK);
     }

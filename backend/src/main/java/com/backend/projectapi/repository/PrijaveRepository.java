@@ -31,6 +31,9 @@ public interface PrijaveRepository extends JpaRepository<Prijava, Long> {
     @Query(value = "SELECT p.* FROM prijave p JOIN gradski_uredi g ON p.gradski_ured_Id=g.id where g.ostecenje_id= :id",nativeQuery = true)
     List<Prijava> findAllByTipOstecenja(@Param("id") Long id);
 
+    @Query(value = "SELECT p.* FROM prijave p where p.gradski_ured_id = :id ",nativeQuery = true)
+    List<Prijava> findAllByGradskiUred(@Param("id") Long id);
+
     //WHERE timestamp_with_zone AT TIME ZONE 'UTC' = '2023-01-01T12:34:56.789Z'::timestamptz AT TIME ZONE 'UTC';
     @Query(value = "select * from prijave where prvo_vrijeme_prijave AT TIME ZONE 'CET' between :prvoVrijemePrijave and :prvoVrijemePrijave2",nativeQuery = true)
     List<Prijava> findAllByPrvoVrijemePrijaveBetween(@NonNull ZonedDateTime prvoVrijemePrijave, @NonNull ZonedDateTime prvoVrijemePrijave2);
