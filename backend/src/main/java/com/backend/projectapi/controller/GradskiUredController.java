@@ -15,7 +15,7 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 @RestController
-public class GradskiUredController {
+public class GradskiUredController extends ApplicationController {
     private final GradskiUrediService gradskaVijecaService;
     public GradskiUredController(GradskiUrediService gradskaVijecaService){
         this.gradskaVijecaService = gradskaVijecaService;

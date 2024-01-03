@@ -1,6 +1,7 @@
 package com.backend.projectapi.controller;
 import com.backend.projectapi.DTO.PrijavaDTO;
 import com.backend.projectapi.ResponseData;
+import com.backend.projectapi.model.Korisnik;
 import com.backend.projectapi.model.Prijava;
 import com.backend.projectapi.response.PrijavaResponse;
 import com.backend.projectapi.service.KorisnikService;
@@ -8,6 +9,7 @@ import com.backend.projectapi.service.PrijavaService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +22,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
-public class PrijaveController {
+public class PrijaveController extends ApplicationController {
 
 
     private final PrijavaService prijavaService;
@@ -43,7 +45,8 @@ public class PrijaveController {
     }
 
     @GetMapping("/prijave/{id}")
-    public ResponseEntity<ResponseData<PrijavaResponse>> getPrijavaById(@PathVariable("id") Long id){
+    public ResponseEntity<ResponseData<PrijavaResponse>> getPrijavaById(@PathVariable("id") Long id, Model model){
+        System.out.println(currentUser.getId());
         return new ResponseEntity<>(ResponseData.success(prijavaService.findById(id)),HttpStatus.OK);
     }
 

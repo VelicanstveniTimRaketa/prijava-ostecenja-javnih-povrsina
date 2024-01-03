@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class KorisnikController {
+public class KorisnikController extends ApplicationController {
     private final KorisnikService service;
     private final AuthenticationService authService;
     public KorisnikController(KorisnikService service, AuthenticationService authService){
