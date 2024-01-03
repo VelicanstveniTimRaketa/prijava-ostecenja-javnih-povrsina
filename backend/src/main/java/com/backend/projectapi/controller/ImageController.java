@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 
 
 @Controller
-public class ImageController {
+public class ImageController extends ApplicationController{
 
     @GetMapping("/getImage/{id}/{name}")
     @ResponseBody

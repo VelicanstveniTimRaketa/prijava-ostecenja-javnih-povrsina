@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class TipOstecenjaController {
+public class TipOstecenjaController extends ApplicationController {
     private final TipOstecenjaService service;
     public TipOstecenjaController(TipOstecenjaService ostecenjaService){
         this.service = ostecenjaService;
