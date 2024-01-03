@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 @Controller
 public class ImageController {
 
-    @GetMapping("/staticc/{id}/{name}")
+    @GetMapping("/getImage/{id}/{name}")
     @ResponseBody
     public ResponseEntity<Resource> serveImage(@PathVariable("id") String id,@PathVariable("name") String name) {
         // Load image dynamically based on imageName
