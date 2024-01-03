@@ -1,7 +1,7 @@
 import { Content } from "antd/es/layout/layout";
-import CustomList from "../components/CustomList";
 import { useUsers } from "../hooks/useUsers";
 import { Button, Checkbox, Typography } from "antd";
+import CustomList from "../components/CustomList";
 
 function Users() {
   const users = useUsers();

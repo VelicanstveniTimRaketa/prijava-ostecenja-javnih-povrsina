@@ -1,13 +1,23 @@
 import { Button, Form, Input, Select, Typography } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { useOstecenja } from "../hooks/useOstecenja";
+import { addGradskiUred } from "../utils/fetch";
 
 function NewGradskiUred() {
   const [form] = useForm();
   const ostecenja = useOstecenja();
 
   function onSubmit() {
-    console.log("ured submit");
+    const data = {
+      nazivUreda: form.getFieldValue("uredName"),
+      tipOstecenjeID: form.getFieldValue("ostecenje"),
+      //osnivac: form.getFieldValue("email"),
+      opis: form.getFieldValue("description"),
+      noviTipOstecenjeID: form.getFieldValue("newOstecenje"), // string
+    };
+    addGradskiUred(data).then(
+      v => console.log(v)
+    );
   }
 
   return (
@@ -30,7 +40,7 @@ function NewGradskiUred() {
         </Form.Item>
         <Form.Item noStyle shouldUpdate={(prevValues, currentValues) => prevValues.ostecenje !== currentValues.ostecenje}>
           {({ getFieldValue }) => getFieldValue("ostecenje") === "other" ? (
-            <Form.Item name="ured" label="Novi tip oštećenja: " rules={[{ required: true, message: "Molimo unesite ime nove vrste oštećenja" }]}>
+            <Form.Item name="newOstecenje" label="Novi tip oštećenja: " rules={[{ required: true, message: "Molimo unesite ime nove vrste oštećenja" }]}>
               <Input prefix="Oštećenje " placeholder="..." />
             </Form.Item>
           ) : null}

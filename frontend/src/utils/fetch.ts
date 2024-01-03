@@ -78,6 +78,11 @@ export function getGradskiUredi(): Promise<Response<GradskiUred[]>> {
   return Fetcher.get("/api/uredi");
 }
 
+export function getNeaktivniGradskiUredi(): Promise<Response<GradskiUred[]>> {
+  return Fetcher.get("/api/urediNeaktivni");
+}
+
+
 export function getAllUsers(): Promise<Response<User[]>> {
   return Fetcher.get("/api/korisnici");
 }
@@ -112,9 +117,24 @@ export function register(data: UserRegiser): Promise<Response<LoginData>> {
   return Fetcher.post("/api/register", data);
 }
 
+export function addGradskiUred(data: unknown): Promise<Response<LoginData>> {
+  return Fetcher.post("/api/addGradskiUred", data);
+}
+
+
 // PATCH REQUESTS
 
 export function connectPrijave(idOneConnecting: number, idTo: number): Promise<Response<unknown>> {
   return Fetcher.patch("/api/makeChild", { child_id: idOneConnecting.toString(), parent_id: idTo.toString() });
 }
+
+export function potvrdiUred(id: number): Promise<Response<unknown>> {
+  return Fetcher.patch("/api/potvrdiUred", { id: id.toString() });
+}
+
+export function odbijUred(id: number): Promise<Response<unknown>> {
+  return Fetcher.patch("/api/odbijUred", { id: id.toString() });
+}
+
+
 

@@ -28,6 +28,7 @@ function Report(props: ReportProps) {
 
   if (isIdBad || !prijava) return <div>Loading</div>;
   const marker = locationToGoogle(prijava.lokacija);
+  console.log(prijava);
 
   return (
     <Check if={!isIdBad && !!prijava} elseNavigateTo="/">
@@ -43,7 +44,7 @@ function Report(props: ReportProps) {
             <div style={{ fontWeight: "bold" }}>Parent:</div>
             <div>{prijava.parentPrijava ? prijava.parentPrijava.id : "<nema>"}</div>
             <div style={{ fontWeight: "bold" }}>Slike:</div>
-            <div>{prijava.slike.length == 0 ? "<nista>" : prijava.slike[0]}</div>
+            <div>{prijava.slike.length == 0 ? "<nista>" : prijava.slike[0].podatak}</div>
             <Button style={{ margin: "2em 2em 0 0" }} onClick={() => navigate(-1)}>Natrag</Button>
             {props.enableEditing && <Button danger>Izbriši prijavu</Button>}
           </div>
