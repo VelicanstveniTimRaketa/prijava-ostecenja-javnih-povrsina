@@ -83,6 +83,8 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
      * @param uredId
      * @return true
      */
+
+    //todo korisnikId se salje preko tokena
     @Override
     public Object zahtjevZaUlazak(Long korisnikId, Long uredId) {
 
@@ -128,6 +130,7 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
         return korisniciRepo.save(korisnik);
     }
 
+    //todo napraviti jos jednu rutu samo za pripadnike odredenog ureda koji ce moci videjti zahtjeve samo za taj ured
     @Override
     public List<Korisnik> sviZahtjevi() {
         return korisniciRepo.findByPendingZahthev();

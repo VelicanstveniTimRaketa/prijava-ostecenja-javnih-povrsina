@@ -53,7 +53,7 @@ public class PrijavaServiceImpl implements PrijavaService {
     }
 
     @Override
-    public List<Prijava> getAllPrijave(Long kreatorId, String active, Long parentId, ZonedDateTime dateFrom, ZonedDateTime dateTo, Double lat, Double lng, Long... ostecenjeId) {
+    public List<Prijava> getAllPrijave(Long kreatorId, String active, Long parentId, ZonedDateTime dateFrom, ZonedDateTime dateTo, Double lat, Double lng,Long uredId, Long... ostecenjeId) {
 
         List<Prijava> rez=new ArrayList<>(prijaveRepo.findAll());
 
@@ -88,40 +88,24 @@ public class PrijavaServiceImpl implements PrijavaService {
             }
         }
         List<Prijava> listDate=new ArrayList<>();
-        if (dateFrom!=null && dateTo!=null){ // triba dodati ako posalje samo jedan datum da baci error
+        if (dateFrom != null && dateTo != null){ // triba dodati ako posalje samo jedan datum da baci error
             listDate=prijaveRepo.findAllByPrvoVrijemePrijaveBetween(dateFrom,dateTo);
             rez.retainAll(listDate);
         }
-        List<Prijava> listLokacija=new ArrayList<>();
+        List<Prijava> listLokacija = new ArrayList<>();
         if (lat!=null && lng !=null){
             listLokacija=prijaveRepo.findAllByLokacija(lat,lng);
             rez.retainAll(listLokacija);
         }
 
-        //return setPrijavaResponse(rez);
+        List<Prijava> listUred = new ArrayList<>();
+        if(uredId != null){
+            listUred = prijaveRepo.findAllByGradskiUred(uredId);
+            rez.retainAll(listUred);
+        }
+
         return rez;
     }
-
-
-/*    public List<PrijavaResponse> setPrijavaResponse(List<Prijava> prijave){
-        List<PrijavaResponse> data = new LinkedList<>();
-        prijave.forEach(prijava -> {
-            GradskiUred gradskiUred = gradskiUrediRepo.findByTipOstecenja(prijava.getTipOstecenja()).get();
-            data.add(new PrijavaResponse(prijava.getId(),
-                    prijava.getNaziv(),
-                    prijava.getLokacija(),
-                    gradskiUred,
-                    prijava.getOpis(),
-                    prijava.getKreator(),
-                    prijava.getSlike(),
-                    prijava.getParentPrijava(),
-                    prijava.getPrvoVrijemePrijave(),
-                    prijava.getVrijemeOtklona())
-            );
-        });
-
-        return data;
-    }*/
 
     @Override
     public List<Prijava> getChildPrijave(Long id) {
@@ -177,7 +161,7 @@ public class PrijavaServiceImpl implements PrijavaService {
 //todo change file creating system in case of adding new photos through updating PRIJAVA
     public List<Slika> addSlike(MultipartFile[] slike, Prijava prijava){
         List<Slika> savedSlike = new LinkedList<>();
-        String uploadDirectory = "backend/src/main/resources/static/"+(prijava.getId().toString())+"/";
+        String uploadDirectory = "src/main/resources/static/"+(prijava.getId().toString())+"/";
         try {
             for(MultipartFile slika:slike) {
                 String savePath =uploadDirectory+slika.getOriginalFilename();
@@ -186,12 +170,27 @@ public class PrijavaServiceImpl implements PrijavaService {
                 FileUtils.cleanDirectory(file);
                 Files.copy(slika.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 System.out.println("Slika spremljena na: " + savePath);
+                savePath=parseImagePath(savePath);
                 savedSlike.add(slikaRepo.save(new Slika(savePath, prijava)));
             }
         } catch (IOException e) {
             throw new RecordNotFoundException("Record not found");
         }
         return savedSlike;
+    }
+
+    private static String parseImagePath(String fullPath) {
+        // Find the index of "static/" in the path
+        int staticIndex = fullPath.indexOf("static/");
+
+        if (staticIndex != -1) {
+            // Extract the substring starting from "static/"
+            String relativePath = fullPath.substring(staticIndex + "static/".length());
+            return relativePath;
+        } else {
+            // "static/" not found, return the original path
+            return fullPath;
+        }
     }
 
     @Override
@@ -263,6 +262,23 @@ public class PrijavaServiceImpl implements PrijavaService {
 
         prijaveRepo.save(newPrijava);
         return true;
+    }
+
+    @Override
+    public Object dovrsiPrijavu(Long id) {
+        Optional<Prijava> prijavaOptional = prijaveRepo.findById(id);
+        Prijava prijava;
+
+        if (prijavaOptional.isPresent()){
+            prijava=prijavaOptional.get();
+        }else{
+            throw new RecordNotFoundException("ne postoji prijava za dani id: "+id);
+        }
+
+        prijava.setVrijemeOtklona(ZonedDateTime.now());
+
+        return prijaveRepo.save(prijava);
+
     }
 
 }

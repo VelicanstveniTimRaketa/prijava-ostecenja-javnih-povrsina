@@ -37,8 +37,9 @@ public class PrijaveController {
                                                                              @RequestParam(required = false) ZonedDateTime dateTo,
                                                                              @RequestParam(required = false) Double lat,
                                                                              @RequestParam(required = false) Double lng,
+                                                                             @RequestParam(required = false) Long uredId,
                                                                              @RequestParam(required = false) Long... ostecenjeId){
-        return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave(kreatorId,active,parent_id,dateFrom,dateTo,lat,lng, ostecenjeId)), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave(kreatorId,active,parent_id,dateFrom,dateTo,lat,lng,uredId, ostecenjeId)), HttpStatus.OK);
     }
 
     @GetMapping("/prijave/{id}")
@@ -70,5 +71,12 @@ public class PrijaveController {
     @PatchMapping("/updatePrijava")
     public ResponseEntity<Object> updatePrijava(@RequestParam Long id, @RequestParam PrijavaDTO prijavaDTO,@RequestParam MultipartFile[] slike){
         return new ResponseEntity<>(ResponseData.success(prijavaService.updatePrijava(id,prijavaDTO,slike)),HttpStatus.OK);
+    }
+
+
+    //todo mogu joj pristupiti ADMIN i korisnici ureda od te prijave
+    @PatchMapping("/dovrsiPrijavu")
+    public ResponseEntity<Object> dovrsiPrijavu(@RequestParam Long id){
+        return new ResponseEntity<>(ResponseData.success(prijavaService.dovrsiPrijavu(id)),HttpStatus.OK);
     }
 }

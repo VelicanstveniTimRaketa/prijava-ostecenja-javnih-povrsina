@@ -18,7 +18,7 @@ import java.util.Optional;
 
 public interface PrijavaService {
 
-    public List<Prijava> getAllPrijave(Long kreatorId, String active, Long parent_id, ZonedDateTime dateFrom, ZonedDateTime dateTo, Double lat, Double lng, Long... ostecenje_id);
+    public List<Prijava> getAllPrijave(Long kreatorId, String active, Long parent_id, ZonedDateTime dateFrom, ZonedDateTime dateTo, Double lat, Double lng,Long uredId, Long... ostecenje_id);
     public List<Prijava> getChildPrijave(Long id);
     public Object getClosePrijave(Double latitude, Double longitude, Long ID);
     public Object addPrijave(PrijavaDTO prijavaDTO, HttpServletRequest req);
@@ -26,4 +26,6 @@ public interface PrijavaService {
     PrijavaResponse findById(Long id);
     boolean deletePrijava(Long id);
     Object updatePrijava(Long id, PrijavaDTO prijavaDTO, MultipartFile[] slike);
+
+    Object dovrsiPrijavu(Long id);
 }

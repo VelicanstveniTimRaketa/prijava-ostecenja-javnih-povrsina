@@ -17,3 +17,5 @@ docs/*.synctex.gz
 docs/*.toc
 docs/*.fdb_latexmk
 docs/*.fls
+
+static
