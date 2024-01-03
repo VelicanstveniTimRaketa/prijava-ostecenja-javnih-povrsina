@@ -19,6 +19,7 @@ import Check from "../components/Check";
 import EditProfile from "./EditProfile";
 import Profile from "./Profile";
 import UserReports from "./UserReports";
+import MyOffice from "../components/MyOffice";
 
 const items: MenuPropsWithComponent = [
   {
@@ -104,6 +105,7 @@ function Main() {
         {items.map(item => (
           <Route key={item.item.key} path={item.item.key as string} element={<item.component />} />
         ))}
+        <Route path="myOffice" element={<MyOffice />} />
         <Route path="search/:id" element={<Report enableEditing={global.user?.role === "ADMIN"} />} />
         <Route path="users" element={<Users />} />
         <Route path="report" element={<NewReport />} />
