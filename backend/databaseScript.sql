@@ -29,20 +29,18 @@ insert into public.gradski_uredi (ostecenje_id, naziv) values
 
 insert into public.prijave
 (gradski_ured_Id, opis, lokacija_id, kreator_id, prvo_vrijeme_prijave, parent_prijava_id, vrijeme_otklona) values
-                                                                                                           (1,'', 1, 1, current_timestamp, null, null),
-                                                                                                           (2,'', 3, 1, current_timestamp, null, null);
-insert into public.prijave
-(gradski_ured_Id, opis, lokacija_id, kreator_id, prvo_vrijeme_prijave, parent_prijava_id, vrijeme_otklona) values
-                                                                                                           (2,'', 2, 2, current_timestamp, 1, null),
-                                                                                                           (4,'', 6, 3, current_timestamp, 1, null),
+                                                                                                           (1,'fsafsrfs', 1, 1, current_timestamp, null, null),
+                                                                                                           (2,'gsgsgs', 3, 1, current_timestamp, null, null),
+                                                                                                           (2,'ae', 2, 2, current_timestamp, 1, null);
+                                                                                                           /*(4,'', 6, 3, current_timestamp, 1, null),
                                                                                                            (1,'', 6, 2, current_timestamp - '10 hours' :: interval, null, current_timestamp),
                                                                                                            (2,'', 2, 4, current_timestamp - '1 day'::interval, 2, null),
                                                                                                            (4,'', 7, 1, current_timestamp - '2 hours' :: interval, null, null),
                                                                                                            (2,'', 7, 2, current_timestamp - '5 hours' :: interval, 2, null),
                                                                                                            (3,'', 4, 3, current_timestamp - '12 hours' :: interval, null, current_timestamp),
-                                                                                                           (1,'', 2, 4, current_timestamp - '3 days' :: interval, 1, null),
+                                                                                                           (1,'fkmfksfkmsfm', 2, 4, current_timestamp - '3 days' :: interval, 1, null),
                                                                                                            (2,'', 4, 4, current_timestamp - '7 days' :: interval, null, current_timestamp - '1 day' :: interval),
-                                                                                                           (2,'', 3, 1, current_timestamp - '10 days' :: interval, 2 , null);
+                                                                                                           (2,'', 3, 1, current_timestamp - '10 days' :: interval, 2 , null);*/
 
 
 select * from korisnici;

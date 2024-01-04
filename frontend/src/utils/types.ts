@@ -41,6 +41,7 @@ export type GradskiUred = {
   id: number;
   naziv: string;
   tipOstecenja: TipOstecenja;
+  active: "true" | "false";
 }
 
 export type TipOstecenja = {
@@ -56,17 +57,22 @@ export type BarebonesPrijava = {
   longitude: number;
 }
 
+export type Slika = {
+  podatak: string;
+  id: number;
+}
+
 export type Prijava = {
   id: number;
   naziv: string;
   opis: string;
   lokacija: Location;
-  ured: GradskiUred;
+  gradskiUred: GradskiUred;
   kreator?: User;
   parentPrijava?: Prijava;
   prvoVrijemePrijave: Date;
   vrijemeOtklona?: Date;
-  slike: string[];
+  slike: Slika[];
 }
 
 export type PrijaveOptions = {
