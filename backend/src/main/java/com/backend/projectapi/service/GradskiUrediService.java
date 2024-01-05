@@ -25,4 +25,6 @@ public interface GradskiUrediService {
     Object odbijiUred(Long id);
 
     Object zahtjeviZaOdredeniUred(GradskiUred ured,String uredStatus);
+
+    Object getUred(Long id);
 }
