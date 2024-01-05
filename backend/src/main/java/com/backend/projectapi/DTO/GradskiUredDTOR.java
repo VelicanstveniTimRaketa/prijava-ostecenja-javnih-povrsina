@@ -56,6 +56,19 @@ public class GradskiUredDTOR {
         return nazivUreda;
     }
 
+    public Long getUred_id() {
+        return ured_id;
+    }
+
+    public void setUred_id(Long ured_id) {
+        this.ured_id = ured_id;
+    }
+
+    public List<KorisnikDTO> getClanovi() {
+        return clanovi;
+    }
+
+
     public void setNazivUreda(String nazivUreda) {
         this.nazivUreda = nazivUreda;
     }

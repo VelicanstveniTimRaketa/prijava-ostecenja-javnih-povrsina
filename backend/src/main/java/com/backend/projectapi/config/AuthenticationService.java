@@ -49,6 +49,13 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request){
+
+        var korisnikk= korisnikRepo.findByEmail(request.getEmail()).orElseThrow();
+
+        System.out.println("podudaranje poslane sifre i spremljene sifre: "+encoder.matches(request.password,korisnikk.getPassword()));
+        System.out.println(request.getPassword());
+        System.out.println(request.getEmail());
+
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -57,12 +64,13 @@ public class AuthenticationService {
                     )
             );
         }catch (AuthenticationException exc){
-            throw new RecordNotFoundException("Pogrešan email ili lozinka.");
+            throw new RecordNotFoundException("Pogrešan email ili lozinka: "+exc.getMessage());
+
         }
 
         var korisnik= korisnikRepo.findByEmail(request.getEmail()).orElseThrow();
 
-        // System.out.println(encoder.matches(request.password,korisnik.getPassword()));
+
         var jwtToken = jwtService.generateToken(korisnik);
         return AuthenticationResponse.builder()
                 .token(jwtToken)

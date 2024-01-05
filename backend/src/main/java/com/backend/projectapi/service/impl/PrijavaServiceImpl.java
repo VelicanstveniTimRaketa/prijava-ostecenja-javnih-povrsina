@@ -127,7 +127,7 @@ public class PrijavaServiceImpl implements PrijavaService {
     }
 
     @Override
-    public Object addPrijave(PrijavaDTO prijavaDTO, HttpServletRequest req) {
+    public Object addPrijave(PrijavaDTO prijavaDTO, HttpServletRequest req, Long id) {
         Lokacija lok=new Lokacija(prijavaDTO.getLatitude(), prijavaDTO.getLongitude());
         lokacijRepo.save(lok);
         Prijava prijava=new Prijava(
@@ -135,7 +135,7 @@ public class PrijavaServiceImpl implements PrijavaService {
                 prijavaDTO.getNaziv(),
                 gradskiUrediRepo.findById(prijavaDTO.getUred()).get(),
                 prijavaDTO.getOpis(),
-                korisnikRepo.findById(1L).get(),
+                korisnikRepo.findById(id).get(),
                 null,
                 null,
                 ZonedDateTime.now(),
@@ -279,6 +279,11 @@ public class PrijavaServiceImpl implements PrijavaService {
 
         return prijaveRepo.save(prijava);
 
+    }
+
+    @Override
+    public List<Prijava> getMojePrijave(Long id) {
+        return prijaveRepo.findAllByKreatorId(id);
     }
 
 }

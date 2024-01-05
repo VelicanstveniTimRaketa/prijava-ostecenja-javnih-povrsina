@@ -32,13 +32,13 @@ public class GradskiUredController extends ApplicationController {
     }
 
     @PostMapping("/addGradskiUred")
-    public ResponseEntity<ResponseData<Object>> addGradskiUred(@RequestBody GradskiUredDTO gradskiUredDTO){
-        return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.addGradskiUred(gradskiUredDTO)),HttpStatus.OK);
+    public ResponseEntity<ResponseData<Object>> addGradskiUred(@RequestBody GradskiUredDTO gradskiUredDTO,@RequestParam(required = false) String tipOstecenjaNaziv){
+        return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.addGradskiUred(gradskiUredDTO,currentUser,tipOstecenjaNaziv)),HttpStatus.OK);
     }
 
     @PatchMapping("/potvrdiUred")
-    public ResponseEntity<ResponseData<Object>> makeActive(@RequestParam Long id){
-        return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.makeActive(id)),HttpStatus.OK);
+    public ResponseEntity<ResponseData<Object>> potvrdiUred(@RequestParam Long id){
+        return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.potvrdiUred(id)),HttpStatus.OK);
     }
 
     @DeleteMapping("/odbijUred")
@@ -47,13 +47,18 @@ public class GradskiUredController extends ApplicationController {
     }
 
     @PatchMapping("/zahtjevZaUlazak")
-    public ResponseEntity<ResponseData<Object>> zahtjevZaUlazak(@RequestParam Long korisnikId, @RequestParam Long uredId){
-        return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.zahtjevZaUlazak(korisnikId,uredId)),HttpStatus.OK);
+    public ResponseEntity<ResponseData<Object>> zahtjevZaUlazak(@RequestParam Long uredId){
+        return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.zahtjevZaUlazak(currentUser.getId(), uredId)),HttpStatus.OK);
     }
 
     @GetMapping("/sviZahtjevi")
     public ResponseEntity<ResponseData<List<Korisnik>>> sviZahtjevi(){
         return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.sviZahtjevi()),HttpStatus.OK);
+    }
+
+    @GetMapping("/zahtjeviZaOdredeniUred")
+    public ResponseEntity<ResponseData<Object>> zahtjeviZaOdredeniUred(){
+        return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.zahtjeviZaOdredeniUred(currentUser.getUred(),currentUser.getUred_status())),HttpStatus.OK);
     }
 
     @PatchMapping("/potvrdaZahtjeva")

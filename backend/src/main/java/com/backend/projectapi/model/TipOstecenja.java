@@ -28,6 +28,11 @@ public class TipOstecenja {
     @OneToMany(mappedBy = "tipOstecenja", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<GradskiUred> gradskiUredi;
 
+    public TipOstecenja(@NonNull String naziv, List<GradskiUred> gradskiUredi) {
+        this.naziv = naziv;
+        this.gradskiUredi = gradskiUredi;
+    }
+
     /*@NotNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "ostecenjeId")

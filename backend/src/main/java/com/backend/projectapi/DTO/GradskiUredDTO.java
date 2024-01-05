@@ -6,22 +6,22 @@ public class GradskiUredDTO {
 
     private String nazivUreda;
 
-    private Long osnivac;
+    //private Long osnivac;
     //todo makniti Long osnivac jer se to kupi preko tokena
     //todo napraviti da se more dodati novo ostecenje (ako se oce nocvo pasa se string koji je naziv)
-    public GradskiUredDTO(Long tipOstecenjeID, String nazivUreda,Long osnivac) {
+    public GradskiUredDTO(Long tipOstecenjeID, String nazivUreda) {
         this.tipOstecenjeID = tipOstecenjeID;
         this.nazivUreda = nazivUreda;
-        this.osnivac = osnivac;
+
     }
 
-    public Long getOsnivac() {
-        return osnivac;
-    }
-
-    public void setOsnivac(Long osnivac) {
-        this.osnivac = osnivac;
-    }
+//    public Long getOsnivac() {
+//        return osnivac;
+//    }
+//
+//    public void setOsnivac(Long osnivac) {
+//        this.osnivac = osnivac;
+//    }
 
     public Long getTipOstecenjeID() {
         return tipOstecenjeID;
