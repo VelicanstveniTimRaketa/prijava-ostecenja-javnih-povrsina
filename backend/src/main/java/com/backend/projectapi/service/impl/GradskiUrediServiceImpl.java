@@ -46,16 +46,16 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
         System.out.println(gradskiUredDTO.getNazivUreda());
         System.out.println(gradskiUredDTO.getTipOstecenjeID());
 
-        boolean kreiranNoviTipOstecenja=false;
+
 
         ArrayList<Korisnik> listaKorisnika= new ArrayList<>();
-        listaKorisnika.add(kreator);
+//        listaKorisnika.add(kreator);
 
         TipOstecenja praviTipOstecenja;
 
         if (ostecenjaRepo.findById(gradskiUredDTO.getTipOstecenjeID()).isEmpty()){
             //ne postoji predani tip ostecenja te se sad kreira novi tip
-            kreiranNoviTipOstecenja=true;
+
             List<GradskiUred> gradskiUredList = new ArrayList<>();
             TipOstecenja tipOstecenja = new TipOstecenja(tipOstecenjaNaziv,gradskiUredList);
             praviTipOstecenja=ostecenjaRepo.save(tipOstecenja);
@@ -73,12 +73,6 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
 
         GradskiUred gradskiUredSaved = gradskiUredRepo.save(gradskiUred);
 
-
-        praviTipOstecenja=ostecenjaRepo.findById(praviTipOstecenja.getId()).get();
-        List<GradskiUred> gradskiUredList = praviTipOstecenja.getGradskiUredi();
-        gradskiUredList.add(gradskiUredSaved);
-        praviTipOstecenja.setGradskiUredi(gradskiUredList);
-        ostecenjaRepo.save(praviTipOstecenja);
 
         kreator.setUred_status("pending");
         kreator.setUred(gradskiUredSaved);
@@ -193,11 +187,16 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
 
         GradskiUred gradskiUred = gradskiUredRepo.findById(korisnik.getUred().getId()).get();
 
+
+        if (gradskiUred.getActive().equals("false")){
+            throw new RecordNotFoundException("ured nije aktivan te se član ne može njemu učlaniti");
+        }
+
         korisnik.setUred_status("active");
 
-        List<Korisnik> listaClanova = gradskiUred.getKorisnikList();
-        listaClanova.add(korisnik);
-        gradskiUred.setKorisnikList(listaClanova);
+//        List<Korisnik> listaClanova = gradskiUred.getKorisnikList();
+//        listaClanova.add(korisnik);
+//        gradskiUred.setKorisnikList(listaClanova);
 
         korisniciRepo.save(korisnik);
 
@@ -255,6 +254,14 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
         }
 
         return korisniciRepo.findByPendingZahtjevOdredeniUred(ured.getId());
+    }
+
+    @Override
+    public Object getUred(Long id) {
+        GradskiUred gradskiUred = gradskiUredRepo.findById(id).get();
+
+        return new GradskiUredDTOR(gradskiUred.getId(),gradskiUred.getTipOstecenja().getId(), gradskiUred.getNaziv(), gradskiUred.getKorisnikList());
+
     }
 }
 

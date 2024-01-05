@@ -26,6 +26,11 @@ public class GradskiUredController extends ApplicationController {
         return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.getAll("true")), HttpStatus.OK);
     }
 
+    @GetMapping("/ured/{id}")
+    public ResponseEntity<ResponseData<Object>> getGradskiUred(@PathVariable("id") Long id){
+        return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.getUred(id)),HttpStatus.OK);
+    }
+
     @GetMapping("/urediNeaktivni")
     public ResponseEntity<ResponseData<List<GradskiUred>>> getAllNeaktivniUredi(){
         return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.getAll("false")), HttpStatus.OK);
