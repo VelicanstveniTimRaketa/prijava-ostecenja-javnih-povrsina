@@ -10,9 +10,9 @@ import java.util.List;
 public interface GradskiUrediService {
 
     List<GradskiUred> getAll(String active);
-    Object addGradskiUred(GradskiUredDTO gradskiUredDTO);
+    Object addGradskiUred(GradskiUredDTO gradskiUredDTO,Korisnik kreator,String tipOstecenjaNaziv);
 
-    Object makeActive(Long id);
+    Object potvrdiUred(Long id);
 
     Object zahtjevZaUlazak(Long korisnikId, Long uredId);
 
@@ -23,4 +23,6 @@ public interface GradskiUrediService {
     Object odbijanjeZahjteva(Long korisnikId);
 
     Object odbijiUred(Long id);
+
+    Object zahtjeviZaOdredeniUred(GradskiUred ured,String uredStatus);
 }

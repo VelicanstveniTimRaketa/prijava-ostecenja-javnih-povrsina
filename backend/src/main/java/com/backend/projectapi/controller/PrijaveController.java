@@ -41,7 +41,13 @@ public class PrijaveController extends ApplicationController {
                                                                              @RequestParam(required = false) Double lng,
                                                                              @RequestParam(required = false) Long uredId,
                                                                              @RequestParam(required = false) Long... ostecenjeId){
+
         return new ResponseEntity<>(ResponseData.success(prijavaService.getAllPrijave(kreatorId,active,parent_id,dateFrom,dateTo,lat,lng,uredId, ostecenjeId)), HttpStatus.OK);
+    }
+
+    @GetMapping("/mojePrijave")
+    public ResponseEntity<ResponseData<List<Prijava>>> getMojePrijave(){
+        return new ResponseEntity<>(ResponseData.success(prijavaService.getMojePrijave(currentUser.getId())),HttpStatus.OK);
     }
 
     @GetMapping("/prijave/{id}")
@@ -63,7 +69,7 @@ public class PrijaveController extends ApplicationController {
         System.out.println(prijavaDTO.getUred());
         System.out.println(prijavaDTO.getLatitude());
         System.out.println(prijavaDTO.getLongitude());
-        return new ResponseEntity<>(ResponseData.success(prijavaService.addPrijave(prijavaDTO,req)),HttpStatus.OK);
+        return new ResponseEntity<>(ResponseData.success(prijavaService.addPrijave(prijavaDTO,req,currentUser.getId())),HttpStatus.OK);
     }
 
     @DeleteMapping("/deletePrijava")

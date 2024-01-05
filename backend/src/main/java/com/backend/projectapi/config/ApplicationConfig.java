@@ -20,6 +20,8 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService(){
+        System.out.println("u user detail service su sam");
+
         return username -> korisniciRepo.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }

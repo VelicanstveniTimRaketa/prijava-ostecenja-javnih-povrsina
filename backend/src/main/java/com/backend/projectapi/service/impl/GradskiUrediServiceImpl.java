@@ -1,9 +1,11 @@
 package com.backend.projectapi.service.impl;
 
 import com.backend.projectapi.DTO.GradskiUredDTO;
+import com.backend.projectapi.DTO.GradskiUredDTOR;
 import com.backend.projectapi.exception.RecordNotFoundException;
 import com.backend.projectapi.model.GradskiUred;
 import com.backend.projectapi.model.Korisnik;
+import com.backend.projectapi.model.TipOstecenja;
 import com.backend.projectapi.repository.GradskiUrediRepository;
 import com.backend.projectapi.repository.KorisniciRepository;
 import com.backend.projectapi.repository.TipoviOstecenjaRepository;
@@ -39,31 +41,57 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
     }
 
     @Override
-    public Object addGradskiUred( GradskiUredDTO gradskiUredDTO){
+    public Object addGradskiUred(GradskiUredDTO gradskiUredDTO,Korisnik kreator,String tipOstecenjaNaziv){
 
         System.out.println(gradskiUredDTO.getNazivUreda());
         System.out.println(gradskiUredDTO.getTipOstecenjeID());
-        System.out.println(gradskiUredDTO.getOsnivac());
+
+        boolean kreiranNoviTipOstecenja=false;
 
         ArrayList<Korisnik> listaKorisnika= new ArrayList<>();
-        listaKorisnika.add(korisniciRepo.findById(gradskiUredDTO.getOsnivac()).get());
+        listaKorisnika.add(kreator);
+
+        TipOstecenja praviTipOstecenja;
+
+        if (ostecenjaRepo.findById(gradskiUredDTO.getTipOstecenjeID()).isEmpty()){
+            //ne postoji predani tip ostecenja te se sad kreira novi tip
+            kreiranNoviTipOstecenja=true;
+            List<GradskiUred> gradskiUredList = new ArrayList<>();
+            TipOstecenja tipOstecenja = new TipOstecenja(tipOstecenjaNaziv,gradskiUredList);
+            praviTipOstecenja=ostecenjaRepo.save(tipOstecenja);
+        }else{
+            praviTipOstecenja=ostecenjaRepo.findById(gradskiUredDTO.getTipOstecenjeID()).get();
+        }
+
 
         GradskiUred gradskiUred = new GradskiUred(
                 gradskiUredDTO.getNazivUreda(),
-                ostecenjaRepo.findById(gradskiUredDTO.getTipOstecenjeID()).get(),
+                praviTipOstecenja,
                 listaKorisnika,
                 "false"
         );
 
         GradskiUred gradskiUredSaved = gradskiUredRepo.save(gradskiUred);
+
+
+        praviTipOstecenja=ostecenjaRepo.findById(praviTipOstecenja.getId()).get();
+        List<GradskiUred> gradskiUredList = praviTipOstecenja.getGradskiUredi();
+        gradskiUredList.add(gradskiUredSaved);
+        praviTipOstecenja.setGradskiUredi(gradskiUredList);
+        ostecenjaRepo.save(praviTipOstecenja);
+
+        kreator.setUred_status("pending");
+        kreator.setUred(gradskiUredSaved);
+        korisniciRepo.save(kreator);
+
         
-        return gradskiUredSaved;
+        return new GradskiUredDTOR(gradskiUredSaved.getId(),gradskiUredSaved.getTipOstecenja().getId(),gradskiUredSaved.getNaziv(),gradskiUredSaved.getKorisnikList());
     }
 
 
     //samo ADMIN moze ovo
     @Override
-    public Object makeActive(Long id) {
+    public Object potvrdiUred(Long id) {
 
         GradskiUred gradskiUred=null;
         Optional<GradskiUred> gradskiUredOpt= gradskiUredRepo.findById(id);
@@ -72,7 +100,16 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
         }
         gradskiUred.setActive("true");
 
-        return gradskiUredRepo.save(gradskiUred);
+        GradskiUred gradskiUredSaved= gradskiUredRepo.save(gradskiUred);
+        System.out.println("taman prije returna");
+
+
+        Korisnik korisnik = korisniciRepo.findByPendingZahtjevOdredeniUred(id).get(0);
+        korisnik.setUred_status("active");
+        korisniciRepo.save(korisnik);
+
+
+        return new GradskiUredDTOR(gradskiUredSaved.getId(),gradskiUredSaved.getTipOstecenja().getId(),gradskiUredSaved.getNaziv(),gradskiUredSaved.getKorisnikList());
     }
 
 
@@ -83,8 +120,6 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
      * @param uredId
      * @return true
      */
-
-    //todo korisnikId se salje preko tokena
     @Override
     public Object zahtjevZaUlazak(Long korisnikId, Long uredId) {
 
@@ -130,7 +165,10 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
         return korisniciRepo.save(korisnik);
     }
 
-    //todo napraviti jos jednu rutu samo za pripadnike odredenog ureda koji ce moci videjti zahtjeve samo za taj ured
+
+
+
+
     @Override
     public List<Korisnik> sviZahtjevi() {
         return korisniciRepo.findByPendingZahthev();
@@ -207,6 +245,16 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
         gradskiUredRepo.delete(gradskiUred);
 
         return true;
+    }
+
+    @Override
+    public Object zahtjeviZaOdredeniUred(GradskiUred ured,String uredStatus) {
+
+        if(!uredStatus.equals("active")){
+            throw new RecordNotFoundException("korisnik još nije član ureda");
+        }
+
+        return korisniciRepo.findByPendingZahtjevOdredeniUred(ured.getId());
     }
 }
 
