@@ -22,8 +22,6 @@ public class ImageController extends ApplicationController{
     public ResponseEntity<Resource> serveImage(@PathVariable("id") String id,@PathVariable("name") String name) {
         // Load image dynamically based on imageName
         // ...
-        System.out.println("davor je picka mala");
-
         // Replace "path/to/dynamic/images" with the actual directory where you store dynamic images
         Path imagePath = Paths.get("src/main/resources/static/").resolve(id).resolve(name);
 
