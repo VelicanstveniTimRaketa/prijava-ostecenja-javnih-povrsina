@@ -69,7 +69,7 @@ public class PrijaveController extends ApplicationController {
         System.out.println(prijavaDTO.getUred());
         System.out.println(prijavaDTO.getLatitude());
         System.out.println(prijavaDTO.getLongitude());
-        return new ResponseEntity<>(ResponseData.success(prijavaService.addPrijave(prijavaDTO,req,currentUser.getId())),HttpStatus.OK);
+        return new ResponseEntity<>(ResponseData.success(prijavaService.addPrijave(prijavaDTO,req,currentUser)),HttpStatus.OK);
     }
 
     @DeleteMapping("/deletePrijava")

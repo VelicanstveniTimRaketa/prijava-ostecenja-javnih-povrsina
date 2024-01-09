@@ -1,6 +1,7 @@
 package com.backend.projectapi.service;
 
 import com.backend.projectapi.DTO.PrijavaDTO;
+import com.backend.projectapi.model.Korisnik;
 import com.backend.projectapi.model.Prijava;
 import com.backend.projectapi.response.PrijavaResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +22,7 @@ public interface PrijavaService {
     public List<Prijava> getAllPrijave(Long kreatorId, String active, Long parent_id, ZonedDateTime dateFrom, ZonedDateTime dateTo, Double lat, Double lng,Long uredId, Long... ostecenje_id);
     public List<Prijava> getChildPrijave(Long id);
     public Object getClosePrijave(Double latitude, Double longitude, Long ID);
-    public Object addPrijave(PrijavaDTO prijavaDTO, HttpServletRequest req,Long id);
+    public Object addPrijave(PrijavaDTO prijavaDTO, HttpServletRequest req, Korisnik Kreator);
     Boolean makeChildPrijavu(Long parent_id, Long child_id);
     PrijavaResponse findById(Long id);
     boolean deletePrijava(Long id);
