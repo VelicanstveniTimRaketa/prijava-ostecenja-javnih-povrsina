@@ -55,18 +55,10 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request){
-
-
-        var korisnikk= korisnikRepo.findByEmail(request.getEmail()).orElseThrow();
-
-        System.out.println("podudaranje poslane sifre i spremljene sifre: "+encoder.matches(request.password,korisnikk.getPassword()));
-        System.out.println(request.getPassword());
-        System.out.println(request.getEmail());
-
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            request.getEmail(),
+                            request.getUsername(),
                             request.getPassword()
                     )
             );
@@ -75,15 +67,14 @@ public class AuthenticationService {
 
         }
 
-        var korisnik= korisnikRepo.findByEmail(request.getEmail()).orElseThrow();
+        var korisnik= korisnikRepo.findByUsername(request.getUsername()).orElseThrow();
 
 
         var jwtToken = jwtService.generateToken(korisnik);
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(korisnik.getId());
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
-                .refreshToken(refreshToken.getToken())
-                .korisnik(korisnikRepo.findByEmail(request.getEmail()).get())
+                .korisnik(korisnikRepo.findByUsername(request.getUsername()).get())
                 .build();
     }
 }
