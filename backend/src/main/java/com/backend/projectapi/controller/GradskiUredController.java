@@ -68,7 +68,7 @@ public class GradskiUredController extends ApplicationController {
 
     @PatchMapping("/potvrdaZahtjeva")
     public ResponseEntity<ResponseData<Object>> potvrdaZahtjeva(@RequestParam Long korisnikId){
-        return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.potvrdaZahtjeva(korisnikId)),HttpStatus.OK);
+        return new ResponseEntity<>(ResponseData.success(gradskaVijecaService.potvrdaZahtjeva(korisnikId,currentUser)),HttpStatus.OK);
     }
 
     @PatchMapping("/odbijanjeZahtjeva")

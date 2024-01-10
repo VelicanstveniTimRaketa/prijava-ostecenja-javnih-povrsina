@@ -18,7 +18,7 @@ public interface GradskiUrediService {
 
     List<Korisnik> sviZahtjevi();
 
-    Object potvrdaZahtjeva(Long korisnikId);
+    Object potvrdaZahtjeva(Long korisnikId,Korisnik korisnik);
 
     Object odbijanjeZahjteva(Long korisnikId);
 

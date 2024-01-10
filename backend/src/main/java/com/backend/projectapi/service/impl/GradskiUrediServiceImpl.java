@@ -5,6 +5,7 @@ import com.backend.projectapi.DTO.GradskiUredDTOR;
 import com.backend.projectapi.exception.RecordNotFoundException;
 import com.backend.projectapi.model.GradskiUred;
 import com.backend.projectapi.model.Korisnik;
+import com.backend.projectapi.model.Role;
 import com.backend.projectapi.model.TipOstecenja;
 import com.backend.projectapi.repository.GradskiUrediRepository;
 import com.backend.projectapi.repository.KorisniciRepository;
@@ -169,7 +170,9 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
     }
 
     @Override
-    public Object potvrdaZahtjeva(Long korisnikId) {
+    public Object potvrdaZahtjeva(Long korisnikId,Korisnik clan) {
+
+
 
         Optional<Korisnik> korisnikOptional = korisniciRepo.findById(korisnikId);
         Korisnik korisnik;
@@ -180,6 +183,10 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
                 throw new RecordNotFoundException("korisnik nema predan zahtjev za ulazak u ured");
             }else if (korisnik.getUred_status().equals("active")){
                 throw new RecordNotFoundException("korisnik je vec clan tog ureda");
+            }else if (clan.getRole()!= Role.ADMIN) {
+                if(korisnik.getUred()!=clan.getUred()){
+                    throw new RecordNotFoundException("Korisnik koji zeli potvrditi zahtjev nije član istog ureda");
+                }
             }
         }else{
             throw new RecordNotFoundException("ne postoji korisnik za dani id: "+korisnikId);
