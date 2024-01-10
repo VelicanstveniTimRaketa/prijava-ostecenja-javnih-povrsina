@@ -11,7 +11,8 @@ insert into public.gradski_uredi (ostecenje_id, naziv,active) values
                                                                   (4,'Gradski ured za cijevi','true');
 
 insert into public.korisnici (ured_id,ured_status,email,username,ime,prezime,password,role) values
-                                                                                                (NUll,'active','anon@anon.com','ANON','ANON','ANON','','ANON'), --dodavanje anonimnog korisnika
+                                                                                                (NUll,'active','anon@anon.com','ANON','ANON','ANON','','ANON'),--dodavanje anonimnog korisnika
+                                                                                                (NULL,'active','admin@admin.com','ADMIN','ADMIN','ADMIN','','ADMIN'),--dodavanje admin korisnika
                                                                                                 ('1','active','guest@gmail.com', 'guest','josip','Sare','','USER'),
                                                                                                 ('1','active','korisnik1@gmail.com', 'korisnik1','bigD','Najev','','USER'),
                                                                                                 ('2','pending','korisnik2@gmail.com', 'korisnik2','smallD','Zoricic','','USER'),
