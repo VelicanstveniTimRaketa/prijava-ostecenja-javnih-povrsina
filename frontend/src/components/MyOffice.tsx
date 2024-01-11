@@ -20,6 +20,7 @@ function MyOffice() {
 
   const getData = useCallback(() => {
     const id = global.user?.ured?.id.toString();
+    console.log("oofers");
     // getKorisniciUreda({ uredId: id }).then(v -> setUsersInOffice(v.data))
     // getNepotvrdeniKorisniciUreda({ uredId: id }).then(v -> setUsersRequesting(v.data))
     getPrijave({ uredId: id, active: "true" }).then(v => setNedovrsenePrijave(v.data));
@@ -59,7 +60,7 @@ function MyOffice() {
       { title: "Datum prijave:", value: prijava.prvoVrijemePrijave.toLocaleDateString() },
       { title: "Otklonjeno:", value: <Checkbox className="normalCursor" checked={!!prijava.vrijemeOtklona} /> },
       { value: <Button style={{ marginLeft: "2em" }} onClick={() => navigate("/explore/" + prijava.id.toString())} type="primary">Detalji</Button> },
-      { value: <Button style={{ marginLeft: "2em" }} onClick={() => dovrsiPrijavu(prijava.id)} type="primary">Označi otklonjenom</Button> }
+      { value: <Button style={{ marginLeft: "2em" }} onClick={() => dovrsiPrijavu(prijava.id).then(getData)} type="primary">Označi otklonjenom</Button> }
     ]
   }));
   if (!global.user?.ured) return <div></div>;

@@ -1,9 +1,8 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { Button, Divider, Row, Typography, notification } from "antd";
 import { Content } from "antd/es/layout/layout";
-import { useGradskiUredi } from "../hooks/useGradskiUredi";
 import { StateContext } from "../utils/state";
-import { getNeaktivniGradskiUredi, odbijUred, potvrdiUred, udiUUred } from "../utils/fetch";
+import { getGradskiUredi, getNeaktivniGradskiUredi, odbijUred, potvrdiUred, udiUUred } from "../utils/fetch";
 import { GradskiUred } from "../utils/types";
 import { Link } from "react-router-dom";
 import CustomList from "../components/CustomList";
@@ -28,9 +27,13 @@ function notify(v: { success: boolean, errors?: string[] }) {
 
 function GradskiUredi() {
   const { global } = useContext(StateContext);
-  const uredi = useGradskiUredi();
+  const [uredi, setUredi] = useState<GradskiUred[]>();
   const [newUred, setNewUred] = useState(false);
   const [neaktivniUredi, setNeaktivniUredi] = useState<GradskiUred[]>();
+
+  useEffect(() => {
+    getGradskiUredi().then(res => setUredi(res.data));
+  }, []);
 
   useEffect(() => {
     if (global.user?.role !== "ADMIN") return;
@@ -63,14 +66,19 @@ function GradskiUredi() {
           value: <Button style={{ marginLeft: "2em" }} onClick={() => {
             potvrdiUred(ured.id).then(v => {
               notify(v);
-              if (!v.success) return;
+              getGradskiUredi().then(res => setUredi(res.data));
               getNeaktivniGradskiUredi().then(res => setNeaktivniUredi(res.data));
             });
           }} type="primary">Potvrdi</Button>
         }] : []),
         ...(global.user ? [{
           value: <Button style={{ marginLeft: "2em" }} onClick={() => {
-            odbijUred(ured.id).then(v => console.log(v));
+            odbijUred(ured.id).then(v => {
+              console.log(v);
+              notify(v);
+              getGradskiUredi().then(res => setUredi(res.data));
+              getNeaktivniGradskiUredi().then(res => setNeaktivniUredi(res.data));
+            });
           }} type="primary">Odbij</Button>
         }] : []),
       ]
