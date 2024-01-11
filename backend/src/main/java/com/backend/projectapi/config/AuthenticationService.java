@@ -6,6 +6,7 @@ import com.backend.projectapi.model.Korisnik;
 import com.backend.projectapi.model.RefreshToken;
 import com.backend.projectapi.model.Role;
 import com.backend.projectapi.repository.KorisniciRepository;
+import com.backend.projectapi.repository.RefreshTokenRepository;
 import com.backend.projectapi.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
+    private final RefreshTokenRepository refreshTokenRepository;
     public AuthenticationResponse register(RegisterRequest req){
         var korisnik = Korisnik.builder()
                 .ime(req.getIme())
@@ -71,9 +73,11 @@ public class AuthenticationService {
 
 
         var jwtToken = jwtService.generateToken(korisnik);
+        RefreshToken refreshToken = refreshTokenRepository.findByKorisnikId(korisnik.getId()).get();
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .refreshToken(refreshToken.getToken())
                 .korisnik(korisnikRepo.findByUsername(request.getUsername()).get())
                 .build();
     }

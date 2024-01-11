@@ -227,10 +227,25 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
             throw new RecordNotFoundException("ne postoji korisnik za dani id: "+korisnikId);
         }
 
-        korisnik.setUred_status("NULL");
+        System.out.println("++++++++++++++++++++++++");
+        Long UredId = korisnik.getUred().getId();
+        String UredStatus = korisnik.getUred_status();
+        System.out.println("------------------------------------");
+        System.out.println(UredId);
+        System.out.println(UredStatus);
+
+
+        korisnik.setUred_status(null);
         korisnik.setUred(null);
 
-        return korisniciRepo.save(korisnik);
+        Korisnik korisnikReturn = korisniciRepo.save(korisnik);
+
+        GradskiUred gradskiUred = gradskiUredRepo.findById(UredId).get();
+        if ((gradskiUred.getActive().equals("false"))&&(UredStatus.equals("pending"))){
+            gradskiUredRepo.delete(gradskiUred);
+        }
+
+        return korisnikReturn;
     }
 
     @Override
@@ -247,6 +262,11 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
         }else{
             throw new RecordNotFoundException("ne postoji ured za dani id: "+id);
         }
+
+        Korisnik korisnik = korisniciRepo.findByPendingZahtjevOdredeniUred(id).get(0);
+        korisnik.setUred(null);
+        korisnik.setUred_status(null);
+        korisniciRepo.save(korisnik);
 
         gradskiUredRepo.delete(gradskiUred);
 
