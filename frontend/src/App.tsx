@@ -12,6 +12,9 @@ function App() {
   const [global, setGlobal] = useState(STATE);
 
   useEffect(() => {
+    if (global.user) {
+      localStorage.setItem("token", global.user?.token);
+    }
     Fetcher.setToken(global.user?.token);
   }, [global.user]);
 

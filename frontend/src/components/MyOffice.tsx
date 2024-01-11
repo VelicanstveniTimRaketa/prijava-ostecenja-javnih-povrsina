@@ -1,20 +1,34 @@
-import { Button, Row, Typography } from "antd";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { Button, Checkbox, Typography } from "antd";
 import { Content } from "antd/es/layout/layout";
 import { Prijava, User } from "../utils/types";
-import { useEffect, useState } from "react";
+import { dovrsiPrijavu, getPrijave, odbijZahtjevUUred, potvrdiZahtjevUUred } from "../utils/fetch";
+import { StateContext } from "../utils/state";
+import { useNavigate } from "react-router-dom";
 import CustomList from "./CustomList";
 import AlertBanner from "./AlertBanner";
 import ReportList from "./ReportList";
 
 function MyOffice() {
+  const { global } = useContext(StateContext);
+  const navigate = useNavigate();
+
   const [usersInOffice, setUsersInOffice] = useState<User[]>();
   const [usersRequesting, setUsersRequesting] = useState<User[]>();
   const [dovrsenePrijave, setDovrsenePrijave] = useState<Prijava[]>();
   const [nedovrsenePrijave, setNedovrsenePrijave] = useState<Prijava[]>();
 
+  const getData = useCallback(() => {
+    const id = global.user?.ured?.id.toString();
+    // getKorisniciUreda({ uredId: id }).then(v -> setUsersInOffice(v.data))
+    // getNepotvrdeniKorisniciUreda({ uredId: id }).then(v -> setUsersRequesting(v.data))
+    getPrijave({ uredId: id, active: "true" }).then(v => setNedovrsenePrijave(v.data));
+    getPrijave({ uredId: id, active: "false" }).then(v => setDovrsenePrijave(v.data));
+  }, [global.user?.ured?.id]);
+
   useEffect(() => {
-    //getNeaktivniGradskiUredi().then(res => setUsersRequesting(res.data));
-  }, []);
+    getData();
+  }, [getData]);
 
   const usersInOfficeItems = usersInOffice?.map(user => ({
     id: user.id,
@@ -31,27 +45,44 @@ function MyOffice() {
       { title: "ID:", value: user.id },
       { title: "Korisničko ime:", value: user.username },
       { title: "Email", value: user.email },
-      { value: <Button>Prihvati</Button> },
-      { value: <Button>Izbriši</Button> },
+      { value: <Button onClick={() => potvrdiZahtjevUUred(user.id).then(getData)}>Prihvati</Button> },
+      { value: <Button onClick={() => odbijZahtjevUUred(user.id).then(getData)}>Izbriši</Button> },
     ]
   }));
 
+  const nedovrsenePrijaveItems = nedovrsenePrijave?.map(prijava => ({
+    id: prijava.id,
+    items: [
+      { title: "ID:", value: prijava.id },
+      { title: "Naziv:", value: prijava.naziv },
+      { title: "Prijavitelj:", value: prijava.kreator?.username || "Anoniman" },
+      { title: "Datum prijave:", value: prijava.prvoVrijemePrijave.toLocaleDateString() },
+      { title: "Otklonjeno:", value: <Checkbox className="normalCursor" checked={!!prijava.vrijemeOtklona} /> },
+      { value: <Button style={{ marginLeft: "2em" }} onClick={() => navigate("/explore/" + prijava.id.toString())} type="primary">Detalji</Button> },
+      { value: <Button style={{ marginLeft: "2em" }} onClick={() => dovrsiPrijavu(prijava.id)} type="primary">Označi otklonjenom</Button> }
+    ]
+  }));
+  if (!global.user?.ured) return <div></div>;
+  const ured = global.user.ured;
+
   return (
-    <Content style={{ display: "flex", margin: "2em" }}>
-      <Row style={{ justifyContent: "space-around", flex: 1 }}>
+    <Content style={{ display: "flex", margin: "2em", flexDirection: "column", alignItems: "center" }}>
+      <Typography.Title level={2}>Moj ured</Typography.Title>
+      <Typography style={{ fontSize: "1.5em" }}>{ured.naziv} za {ured.tipOstecenja.naziv}, ID: {ured.id}</Typography>
+      <div style={{ display: "flex", justifyContent: "space-around", flex: 1, width: "100%" }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1 }}>
           <Typography.Title level={2}>Korisnici u uredu</Typography.Title>
           {usersInOfficeItems && <CustomList data={usersInOfficeItems} />}
           <Typography.Title level={2}>Korisnici koji žele ući u ured</Typography.Title>
-          {usersRequestingItems && usersRequestingItems.length !== 0 ? <CustomList data={usersRequestingItems} /> : <AlertBanner message="Nema dostupnih gradskih ureda" />}
+          {usersRequestingItems && usersRequestingItems.length !== 0 ? <CustomList data={usersRequestingItems} /> : <AlertBanner message="Nema korisnika koji su zatražili ulazak" />}
         </div>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 2 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1 }}>
           <Typography.Title level={2}>Nedovršene Prijave</Typography.Title>
-          {nedovrsenePrijave && nedovrsenePrijave.length !== 0 ? <ReportList data={nedovrsenePrijave} /> : <AlertBanner message="Nema nedovršenih prijava" />}
+          {nedovrsenePrijaveItems && nedovrsenePrijaveItems.length !== 0 ? <CustomList data={nedovrsenePrijaveItems} /> : <AlertBanner message="Nema neotklonjenih prijava" />}
           <Typography.Title level={2}>Dovršene Prijave</Typography.Title>
-          {dovrsenePrijave && dovrsenePrijave.length !== 0 ? <ReportList data={dovrsenePrijave} /> : <AlertBanner message="Nema dovršenih prijava" />}
+          {dovrsenePrijave && dovrsenePrijave.length !== 0 ? <ReportList data={dovrsenePrijave} /> : <AlertBanner message="Nema otklonjenih prijava" />}
         </div>
-      </Row>
+      </div>
     </Content>
   );
 }
