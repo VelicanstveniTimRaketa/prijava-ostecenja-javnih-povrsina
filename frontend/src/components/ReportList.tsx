@@ -8,6 +8,7 @@ interface ReportListProps {
   onClick?: (p: Prijava) => void;
   onButtonClick?: (p: Prijava) => void;
   buttonText?: string;
+  hoverText?: string;
 }
 
 function ReportList(props: ReportListProps) {

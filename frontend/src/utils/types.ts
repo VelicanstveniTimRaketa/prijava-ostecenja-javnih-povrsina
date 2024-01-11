@@ -16,7 +16,7 @@ export type UserRegiser = UserBase & {
 }
 
 export type UserLogin = {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -26,6 +26,7 @@ export type User = UserBase & {
   id: number;
   role: UserRole;
   ured?: GradskiUred;
+  ured_status: undefined | "pending" | "active";
 }
 
 export type CurrentUser = User & {
@@ -83,6 +84,7 @@ export type PrijaveOptions = {
   dateTo?: string;
   lat?: string;
   lng?: string;
+  uredId?: string;
 };
 
 export type Response<T> = {

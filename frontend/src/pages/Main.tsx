@@ -105,7 +105,7 @@ function Main() {
         {items.map(item => (
           <Route key={item.item.key} path={item.item.key as string} element={<item.component />} />
         ))}
-        <Route path="myOffice" element={<MyOffice />} />
+        <Route path="offices/myOffice" element={<MyOffice />} />
         <Route path="search/:id" element={<Report enableEditing={global.user?.role === "ADMIN"} />} />
         <Route path="users" element={<Users />} />
         <Route path="report" element={<NewReport />} />
