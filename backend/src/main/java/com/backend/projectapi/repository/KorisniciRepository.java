@@ -1,6 +1,7 @@
 package com.backend.projectapi.repository;
 
 import com.backend.projectapi.model.Korisnik;
+import com.backend.projectapi.service.impl.KorisnikServiceImpl;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

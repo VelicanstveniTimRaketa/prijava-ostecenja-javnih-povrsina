@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class AuthenticationService {
     private final KorisniciRepository korisnikRepo;
     private final PasswordEncoder encoder;
@@ -30,6 +30,16 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
     private final RefreshTokenRepository refreshTokenRepository;
+
+    public AuthenticationService(KorisniciRepository korisnikRepo, PasswordEncoder encoder, JwtService jwtService, AuthenticationManager authenticationManager, RefreshTokenService refreshTokenService, RefreshTokenRepository refreshTokenRepository) {
+        this.korisnikRepo = korisnikRepo;
+        this.encoder = encoder;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+        this.refreshTokenService = refreshTokenService;
+        this.refreshTokenRepository = refreshTokenRepository;
+    }
+
     public AuthenticationResponse register(RegisterRequest req){
         var korisnik = Korisnik.builder()
                 .ime(req.getIme())

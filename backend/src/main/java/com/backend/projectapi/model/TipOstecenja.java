@@ -33,6 +33,12 @@ public class TipOstecenja {
         this.gradskiUredi = gradskiUredi;
     }
 
+//    public TipOstecenja(Long id, @NonNull String naziv, List<GradskiUred> gradskiUredi) {
+//        Id = id;
+//        this.naziv = naziv;
+//        this.gradskiUredi = gradskiUredi;
+//    }
+
     /*@NotNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "ostecenjeId")

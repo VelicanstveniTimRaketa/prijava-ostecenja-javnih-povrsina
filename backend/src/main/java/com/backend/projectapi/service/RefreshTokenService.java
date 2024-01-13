@@ -4,8 +4,6 @@ import com.backend.projectapi.exception.TokenRefreshException;
 import com.backend.projectapi.model.RefreshToken;
 import com.backend.projectapi.repository.KorisniciRepository;
 import com.backend.projectapi.repository.RefreshTokenRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,11 +16,14 @@ public class RefreshTokenService {
 
     private Long refreshTokenDurationMs = (long) (1000 * 60 * 24);
 
-    @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
 
-    @Autowired
-    private KorisniciRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final KorisniciRepository korisnikRepo;
+
+    public RefreshTokenService(RefreshTokenRepository refreshTokenRepository, KorisniciRepository userRepository) {
+        this.refreshTokenRepository = refreshTokenRepository;
+        this.korisnikRepo = userRepository;
+    }
 
     public Optional<RefreshToken> findByToken(String token) {
         return refreshTokenRepository.findByToken(token);
@@ -31,7 +32,7 @@ public class RefreshTokenService {
     public RefreshToken createRefreshToken(Long userId) {
         RefreshToken refreshToken = new RefreshToken();
 
-        refreshToken.setUser(userRepository.findById(userId).get());
+        refreshToken.setUser(korisnikRepo.findById(userId).get());
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         refreshToken.setToken(UUID.randomUUID().toString());
 
@@ -50,6 +51,6 @@ public class RefreshTokenService {
 
     @Transactional
     public int deleteByUserId(Long userId) {
-        return refreshTokenRepository.deleteByUser(userRepository.findById(userId).get());
+        return refreshTokenRepository.deleteByUser(korisnikRepo.findById(userId).get());
     }
 }

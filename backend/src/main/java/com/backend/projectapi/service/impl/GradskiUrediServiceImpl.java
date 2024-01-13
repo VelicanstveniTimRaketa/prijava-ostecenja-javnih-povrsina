@@ -80,7 +80,7 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
         korisniciRepo.save(kreator);
 
         
-        return new GradskiUredDTOR(gradskiUredSaved.getId(),gradskiUredSaved.getTipOstecenja().getId(),gradskiUredSaved.getNaziv(),gradskiUredSaved.getKorisnikList());
+        return new GradskiUredDTOR(gradskiUredSaved.getId(), gradskiUred.getActive(), gradskiUredSaved.getTipOstecenja().getId(),gradskiUredSaved.getNaziv(),gradskiUredSaved.getKorisnikList());
     }
 
 
@@ -104,7 +104,7 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
         korisniciRepo.save(korisnik);
 
 
-        return new GradskiUredDTOR(gradskiUredSaved.getId(),gradskiUredSaved.getTipOstecenja().getId(),gradskiUredSaved.getNaziv(),gradskiUredSaved.getKorisnikList());
+        return new GradskiUredDTOR(gradskiUredSaved.getId(),gradskiUred.getActive(),gradskiUredSaved.getTipOstecenja().getId(),gradskiUredSaved.getNaziv(),gradskiUredSaved.getKorisnikList());
     }
 
 
@@ -285,9 +285,16 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
 
     @Override
     public Object getUred(Long id) {
-        GradskiUred gradskiUred = gradskiUredRepo.findById(id).get();
 
-        return new GradskiUredDTOR(gradskiUred.getId(),gradskiUred.getTipOstecenja().getId(), gradskiUred.getNaziv(), gradskiUred.getKorisnikList());
+        Optional<GradskiUred> gradskiUredOptional = gradskiUredRepo.findById(id);
+        GradskiUred gradskiUred;
+        if (gradskiUredOptional.isEmpty()){
+            throw new RecordNotFoundException("Ne postoji gradski ured za dani id: "+id);
+        }else{
+            gradskiUred=gradskiUredOptional.get();
+        }
+
+        return new GradskiUredDTOR(gradskiUred.getId(), gradskiUred.getActive(), gradskiUred.getTipOstecenja().getId(), gradskiUred.getNaziv(), gradskiUred.getKorisnikList());
 
     }
 }

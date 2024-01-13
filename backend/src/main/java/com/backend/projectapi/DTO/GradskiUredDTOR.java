@@ -10,13 +10,16 @@ public class GradskiUredDTOR {
     private Long ured_id;
     private Long tipOstecenjeID;
 
+    private String active;
+
     private String nazivUreda;
 
     private List<KorisnikDTO> clanovi;
 
 
-    public GradskiUredDTOR(Long ured_id,Long tipOstecenjeID, String nazivUreda,List<Korisnik> clanovi) {
+    public GradskiUredDTOR(Long ured_id,String active,Long tipOstecenjeID, String nazivUreda,List<Korisnik> clanovi) {
         this.ured_id=ured_id;
+        this.active=active;
         this.tipOstecenjeID=tipOstecenjeID;
         this.nazivUreda=nazivUreda;
         this.clanovi = setClanovi(clanovi);
@@ -43,6 +46,13 @@ public class GradskiUredDTOR {
         return response;
     }
 
+    public String getActive() {
+        return active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
+    }
 
     public Long getTipOstecenjeID() {
         return tipOstecenjeID;
