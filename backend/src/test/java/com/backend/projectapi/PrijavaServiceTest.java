@@ -1,29 +1,24 @@
 package com.backend.projectapi;
-
-
 import com.backend.projectapi.DTO.PrijavaDTO;
 import com.backend.projectapi.model.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
 import com.backend.projectapi.repository.*;
 import com.backend.projectapi.service.impl.PrijavaServiceImpl;
-import org.junit.Test;
-import org.junit.runner.Result;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class PrijavaServiceTest {
     @Mock
     private PrijaveRepository prijaveRepo;
@@ -43,35 +38,42 @@ public class PrijavaServiceTest {
     @InjectMocks
     private PrijavaServiceImpl prijavaService;
 
-
     @Test
-    public void testGetAllPrijave() {
-        TipOstecenja ostecenje = new TipOstecenja();
-        ostecenje.setId(1L);
-        ostecenje.setNaziv("ostecenje1");
+    @DisplayName("Dohvacanje svih prijava koje se filtriraju ovisno o poslanim parametrima")
+    public void testGetAllPrijave(){
+        List<Prijava> prijave = Arrays.asList(createTestPrijava(1L, "Prijava1", 1L, ZonedDateTime.now(), null, 45.0, 15.0),
+                                              createTestPrijava(2L, "Prijava2", 2L, ZonedDateTime.now().minusDays(5), ZonedDateTime.now(), 47.0, 17.0),
+                                              createTestPrijava(3L, "Prijava3", 3L, ZonedDateTime.now().minusDays(6), null, 50.0, 20.0));
 
-        GradskiUred ured = new GradskiUred();
-        ured.setId(1L);
-        ured.setTipOstecenja(ostecenje);
+        when(prijaveRepo.findAll()).thenReturn(prijave);
+        when(prijaveRepo.findAllByKreatorId(1L)).thenReturn(Arrays.asList(prijave.get(0)));
+        when(prijaveRepo.getAllByVrijemeOtklonaIsNull()).thenReturn(Arrays.asList(prijave.get(0), prijave.get(2)));
+        when(prijaveRepo.findAllByPrvoVrijemePrijaveBetween(any(ZonedDateTime.class), any(ZonedDateTime.class))).thenReturn(prijave);
 
+        List<Prijava> res = prijavaService.getAllPrijave(1L, "true", null, ZonedDateTime.now().minusDays(10), ZonedDateTime.now().plusDays(1), null, null, null, null);
+
+        assertNotNull(res);
+        assertEquals(1, res.size());
+        assertEquals("Prijava1", res.get(0).getNaziv());
+    }
+
+    private Prijava createTestPrijava(Long id, String naziv, Long kreatorId, ZonedDateTime prvoVrijemePrijave, ZonedDateTime vrijemeOtklona, Double lat, Double longitude){
         Prijava prijava = new Prijava();
-        prijava.setId(1L);
-        prijava.setNaziv("prijava1");
-        prijava.setGradskiUred(ured);
+        prijava.setId(id);
+        prijava.setNaziv(naziv);
+        prijava.setPrvoVrijemePrijave(prvoVrijemePrijave);
+        prijava.setVrijemeOtklona(vrijemeOtklona);
+        Korisnik kreator = new Korisnik("username", "ime", "prezime", "pass", "email");
+        kreator.setId(kreatorId);
+        prijava.setKreator(kreator);
+        Lokacija lokacija = new Lokacija(lat, longitude);
+        prijava.setLokacija(lokacija);
 
-        Prijava prijava2 = new Prijava();
-        prijava2.setId(1L);
-        prijava2.setNaziv("prijava2");
-
-        when(prijaveRepo.findAll()).thenReturn(Arrays.asList(prijava, prijava2));
-        when(prijaveRepo.findAllByTipOstecenja(ostecenje.getId())).thenReturn(Arrays.asList(prijava));
-
-        List<Prijava> res = prijavaService.getAllPrijave(null, null, null, null, null, null, null, null, ostecenje.getId());
-
-        assertEquals("prijava1", res.get(0).getNaziv());
+        return prijava;
     }
 
     @Test
+    @DisplayName("Stvaranje nove Prijave i pohrana u bazu")
     public void testAddPrijave() {
         PrijavaDTO prijavaDTO = new PrijavaDTO("Test Prijava", "Opis", 1L, 45.0, 15.0, new MultipartFile[]{});
         GradskiUred gradskiUred = new GradskiUred("Gradski ured", null, null, "true");
@@ -81,7 +83,6 @@ public class PrijavaServiceTest {
         prijava.setId(1L);
 
         when(gradskiUrediRepo.findById(1L)).thenReturn(Optional.of(gradskiUred));
-        when(korisnikRepo.findById(1L)).thenReturn(Optional.of(korisnik));
         when(lokacijaRepo.save(any(Lokacija.class))).thenReturn(lokacija);
         when(prijaveRepo.save(any(Prijava.class))).thenReturn(prijava);
 
@@ -100,7 +101,6 @@ public class PrijavaServiceTest {
 
         verify(lokacijaRepo).save(any(Lokacija.class));
         verify(gradskiUrediRepo).findById(1L);
-        // 2 poziva zbog prisutnih slika
         verify(prijaveRepo, times(2)).save(any(Prijava.class));
     }
 }
