@@ -45,7 +45,7 @@ public class PrijavaServiceTest {
 
 
     @Test
-    public void testGetAllPrijave(){
+    public void testGetAllPrijave() {
         TipOstecenja ostecenje = new TipOstecenja();
         ostecenje.setId(1L);
         ostecenje.setNaziv("ostecenje1");
@@ -72,10 +72,10 @@ public class PrijavaServiceTest {
     }
 
     @Test
-    public void testAddPrijave(){
+    public void testAddPrijave() {
         PrijavaDTO prijavaDTO = new PrijavaDTO("Test Prijava", "Opis", 1L, 45.0, 15.0, new MultipartFile[]{});
         GradskiUred gradskiUred = new GradskiUred("Gradski ured", null, null, "true");
-        Korisnik korisnik = new Korisnik("username", "name","password" ,"surname", "email@gmail.com");
+        Korisnik korisnik = new Korisnik("username", "name", "password", "surname", "email@gmail.com");
         Lokacija lokacija = new Lokacija(45.0, 15.0);
         Prijava prijava = new Prijava(lokacija, "test prijava", gradskiUred, "Opis", korisnik, null, null, ZonedDateTime.now(), null);
         prijava.setId(1L);
@@ -85,7 +85,7 @@ public class PrijavaServiceTest {
         when(lokacijaRepo.save(any(Lokacija.class))).thenReturn(lokacija);
         when(prijaveRepo.save(any(Prijava.class))).thenReturn(prijava);
 
-        Object result = prijavaService.addPrijave(prijavaDTO, null, 1L);
+        Object result = prijavaService.addPrijave(prijavaDTO, null, korisnik);
 
         assertNotNull(result);
         assertTrue(result instanceof Map);
@@ -100,7 +100,7 @@ public class PrijavaServiceTest {
 
         verify(lokacijaRepo).save(any(Lokacija.class));
         verify(gradskiUrediRepo).findById(1L);
-        verify(korisnikRepo).findById(1L);
         // 2 poziva zbog prisutnih slika
         verify(prijaveRepo, times(2)).save(any(Prijava.class));
     }
+}
