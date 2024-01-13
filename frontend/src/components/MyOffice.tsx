@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { Button, Checkbox, Typography } from "antd";
 import { Content } from "antd/es/layout/layout";
 import { Prijava, User } from "../utils/types";
-import { dovrsiPrijavu, getPrijave, odbijZahtjevUUred, potvrdiZahtjevUUred } from "../utils/fetch";
+import { dovrsiPrijavu, getNepotvrdeniKorisniciUreda, getPrijave, odbijZahtjevUUred, potvrdiZahtjevUUred } from "../utils/fetch";
 import { StateContext } from "../utils/state";
 import { useNavigate } from "react-router-dom";
 import CustomList from "./CustomList";
@@ -20,9 +20,8 @@ function MyOffice() {
 
   const getData = useCallback(() => {
     const id = global.user?.ured?.id.toString();
-    console.log("oofers");
     // getKorisniciUreda({ uredId: id }).then(v -> setUsersInOffice(v.data))
-    // getNepotvrdeniKorisniciUreda({ uredId: id }).then(v -> setUsersRequesting(v.data))
+    getNepotvrdeniKorisniciUreda().then(v => setUsersRequesting(v.data));
     getPrijave({ uredId: id, active: "true" }).then(v => setNedovrsenePrijave(v.data));
     getPrijave({ uredId: id, active: "false" }).then(v => setDovrsenePrijave(v.data));
   }, [global.user?.ured?.id]);
