@@ -96,7 +96,7 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
         gradskiUred.setActive("true");
 
         GradskiUred gradskiUredSaved= gradskiUredRepo.save(gradskiUred);
-        System.out.println("taman prije returna");
+
 
 
         Korisnik korisnik = korisniciRepo.findByPendingZahtjevOdredeniUred(id).get(0);
