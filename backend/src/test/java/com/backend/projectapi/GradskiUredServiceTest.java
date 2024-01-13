@@ -1,6 +1,4 @@
 package com.backend.projectapi;
-
-
 import com.backend.projectapi.DTO.GradskiUredDTOR;
 import com.backend.projectapi.controller.ApplicationController;
 import com.backend.projectapi.model.GradskiUred;
@@ -13,20 +11,14 @@ import com.backend.projectapi.service.impl.GradskiUrediServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-
-import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -94,7 +86,6 @@ public class GradskiUredServiceTest {
         assertEquals("Ured za popravak cesta",gradskiUredDTOR.getNazivUreda());
         assertEquals("false",gradskiUredDTOR.getActive());
         assertEquals(1L,gradskiUredDTOR.getTipOstecenjeID());
-
     }
 
 
@@ -106,12 +97,10 @@ public class GradskiUredServiceTest {
         when(gradskiUredRepo.save(any(GradskiUred.class))).thenReturn(gradskiUredSaved);
         when(korisniciRepo.findByPendingZahtjevOdredeniUred(anyLong())).thenReturn(List.of(korisnik));
 
-        // Act
         GradskiUredDTOR result = (GradskiUredDTOR) gradskiUrediServiceImpl.potvrdiUred(1L);
 
         assertEquals("true",result.getActive());
         assertEquals("active", korisnik.getUred_status());
-
 
         verify(gradskiUredRepo, times(1)).findById(1L);
         verify(gradskiUredRepo, times(1)).save(gradskiUred);

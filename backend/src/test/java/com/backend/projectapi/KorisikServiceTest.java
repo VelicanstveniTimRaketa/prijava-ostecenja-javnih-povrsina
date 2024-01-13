@@ -1,6 +1,4 @@
 package com.backend.projectapi;
-
-
 import com.backend.projectapi.exception.RecordNotFoundException;
 import com.backend.projectapi.model.Korisnik;
 import com.backend.projectapi.repository.KorisniciRepository;
@@ -8,16 +6,12 @@ import com.backend.projectapi.service.impl.KorisnikServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -34,11 +28,9 @@ public class KorisikServiceTest {
     @Test
     @DisplayName("metoda getKorisnik koja treba vratiti iznimku o ne postojećem korisniku")
     public void GetKorisnikFalse(){
-        // Arrange
         Long userId = 1L;
         when(korisniciRepo.findById(userId)).thenReturn(Optional.empty());
 
-        // Act & Assert
         assertThrows(RecordNotFoundException.class, () -> korisnikService.getAllUsers(userId));
 
     }
@@ -46,7 +38,6 @@ public class KorisikServiceTest {
     @Test
     @DisplayName("metoda getKorisnik koja vraća sve korisnike")
     public void getKorisnikAll() {
-        // Arrange
         List<Korisnik> userList = new ArrayList<>();
         Korisnik korisnik1 = new Korisnik();
         korisnik1.setId(1L);
