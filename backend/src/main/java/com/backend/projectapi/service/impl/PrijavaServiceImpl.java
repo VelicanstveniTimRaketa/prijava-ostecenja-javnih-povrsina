@@ -127,15 +127,21 @@ public class PrijavaServiceImpl implements PrijavaService {
     }
 
     @Override
-    public Object addPrijave(PrijavaDTO prijavaDTO, HttpServletRequest req, Long id) {
+    public Object addPrijave(PrijavaDTO prijavaDTO, HttpServletRequest req, Korisnik kreator) {
         Lokacija lok=new Lokacija(prijavaDTO.getLatitude(), prijavaDTO.getLongitude());
         lokacijRepo.save(lok);
+        Korisnik korisnik;
+        if (kreator==null){
+            korisnik=korisnikRepo.findById(1L).get();
+        }else {
+            korisnik=kreator;
+        }
         Prijava prijava=new Prijava(
                 lok,
                 prijavaDTO.getNaziv(),
                 gradskiUrediRepo.findById(prijavaDTO.getUred()).get(),
                 prijavaDTO.getOpis(),
-                korisnikRepo.findById(id).get(),
+                korisnik,
                 null,
                 null,
                 ZonedDateTime.now(),

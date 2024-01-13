@@ -39,7 +39,8 @@ function Login() {
 
   async function onSubmit() {
     setLoading(true);
-    const data = { email: form.getFieldValue("email"), password: form.getFieldValue("password") };
+    const data = { username: form.getFieldValue("username"), password: form.getFieldValue("password") };
+    console.log(data);
     login(data).then(v => {
       setResponse(v);
       setLoading(false);
@@ -59,10 +60,10 @@ function Login() {
             style={{ width: "100%", maxWidth: "20em" }}
           >
             <Form.Item
-              name="email"
-              rules={[{ required: true, type: "email", message: "Molimo unesite važeći email" }]}
+              name="username"
+              rules={[{ required: true, message: "Molimo unesite važeće korisničko ime" }]}
             >
-              <Input prefix={<MailOutlined style={{ color: "rgba(0, 0, 0, 0.25)" }} />} placeholder="Email" autoFocus />
+              <Input prefix={<MailOutlined style={{ color: "rgba(0, 0, 0, 0.25)" }} />} placeholder="Korisničko ime" autoFocus />
             </Form.Item>
             <Form.Item
               name="password"

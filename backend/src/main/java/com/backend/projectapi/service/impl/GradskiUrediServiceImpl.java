@@ -5,6 +5,7 @@ import com.backend.projectapi.DTO.GradskiUredDTOR;
 import com.backend.projectapi.exception.RecordNotFoundException;
 import com.backend.projectapi.model.GradskiUred;
 import com.backend.projectapi.model.Korisnik;
+import com.backend.projectapi.model.Role;
 import com.backend.projectapi.model.TipOstecenja;
 import com.backend.projectapi.repository.GradskiUrediRepository;
 import com.backend.projectapi.repository.KorisniciRepository;
@@ -79,7 +80,7 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
         korisniciRepo.save(kreator);
 
         
-        return new GradskiUredDTOR(gradskiUredSaved.getId(),gradskiUredSaved.getTipOstecenja().getId(),gradskiUredSaved.getNaziv(),gradskiUredSaved.getKorisnikList());
+        return new GradskiUredDTOR(gradskiUredSaved.getId(), gradskiUred.getActive(), gradskiUredSaved.getTipOstecenja().getId(),gradskiUredSaved.getNaziv(),gradskiUredSaved.getKorisnikList());
     }
 
 
@@ -103,7 +104,7 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
         korisniciRepo.save(korisnik);
 
 
-        return new GradskiUredDTOR(gradskiUredSaved.getId(),gradskiUredSaved.getTipOstecenja().getId(),gradskiUredSaved.getNaziv(),gradskiUredSaved.getKorisnikList());
+        return new GradskiUredDTOR(gradskiUredSaved.getId(),gradskiUred.getActive(),gradskiUredSaved.getTipOstecenja().getId(),gradskiUredSaved.getNaziv(),gradskiUredSaved.getKorisnikList());
     }
 
 
@@ -169,7 +170,9 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
     }
 
     @Override
-    public Object potvrdaZahtjeva(Long korisnikId) {
+    public Object potvrdaZahtjeva(Long korisnikId,Korisnik clan) {
+
+
 
         Optional<Korisnik> korisnikOptional = korisniciRepo.findById(korisnikId);
         Korisnik korisnik;
@@ -180,6 +183,10 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
                 throw new RecordNotFoundException("korisnik nema predan zahtjev za ulazak u ured");
             }else if (korisnik.getUred_status().equals("active")){
                 throw new RecordNotFoundException("korisnik je vec clan tog ureda");
+            }else if (clan.getRole()!= Role.ADMIN) {
+                if(korisnik.getUred()!=clan.getUred()){
+                    throw new RecordNotFoundException("Korisnik koji zeli potvrditi zahtjev nije član istog ureda");
+                }
             }
         }else{
             throw new RecordNotFoundException("ne postoji korisnik za dani id: "+korisnikId);
@@ -220,10 +227,25 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
             throw new RecordNotFoundException("ne postoji korisnik za dani id: "+korisnikId);
         }
 
-        korisnik.setUred_status("NULL");
+        System.out.println("++++++++++++++++++++++++");
+        Long UredId = korisnik.getUred().getId();
+        String UredStatus = korisnik.getUred_status();
+        System.out.println("------------------------------------");
+        System.out.println(UredId);
+        System.out.println(UredStatus);
+
+
+        korisnik.setUred_status(null);
         korisnik.setUred(null);
 
-        return korisniciRepo.save(korisnik);
+        Korisnik korisnikReturn = korisniciRepo.save(korisnik);
+
+        GradskiUred gradskiUred = gradskiUredRepo.findById(UredId).get();
+        if ((gradskiUred.getActive().equals("false"))&&(UredStatus.equals("pending"))){
+            gradskiUredRepo.delete(gradskiUred);
+        }
+
+        return korisnikReturn;
     }
 
     @Override
@@ -240,6 +262,11 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
         }else{
             throw new RecordNotFoundException("ne postoji ured za dani id: "+id);
         }
+
+        Korisnik korisnik = korisniciRepo.findByPendingZahtjevOdredeniUred(id).get(0);
+        korisnik.setUred(null);
+        korisnik.setUred_status(null);
+        korisniciRepo.save(korisnik);
 
         gradskiUredRepo.delete(gradskiUred);
 
@@ -258,9 +285,16 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
 
     @Override
     public Object getUred(Long id) {
-        GradskiUred gradskiUred = gradskiUredRepo.findById(id).get();
 
-        return new GradskiUredDTOR(gradskiUred.getId(),gradskiUred.getTipOstecenja().getId(), gradskiUred.getNaziv(), gradskiUred.getKorisnikList());
+        Optional<GradskiUred> gradskiUredOptional = gradskiUredRepo.findById(id);
+        GradskiUred gradskiUred;
+        if (gradskiUredOptional.isEmpty()){
+            throw new RecordNotFoundException("Ne postoji gradski ured za dani id: "+id);
+        }else{
+            gradskiUred=gradskiUredOptional.get();
+        }
+
+        return new GradskiUredDTOR(gradskiUred.getId(), gradskiUred.getActive(), gradskiUred.getTipOstecenja().getId(), gradskiUred.getNaziv(), gradskiUred.getKorisnikList());
 
     }
 }

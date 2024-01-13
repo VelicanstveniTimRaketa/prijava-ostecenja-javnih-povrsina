@@ -1,5 +1,6 @@
 package com.backend.projectapi;
 
+
 import com.backend.projectapi.DTO.PrijavaDTO;
 import com.backend.projectapi.model.*;
 
@@ -103,4 +104,3 @@ public class PrijavaServiceTest {
         // 2 poziva zbog prisutnih slika
         verify(prijaveRepo, times(2)).save(any(Prijava.class));
     }
-}

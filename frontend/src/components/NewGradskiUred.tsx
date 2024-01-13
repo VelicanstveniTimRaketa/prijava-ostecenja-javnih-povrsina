@@ -1,4 +1,4 @@
-import { Button, Form, Input, Select, Typography } from "antd";
+import { Button, Form, Input, Select, Typography, notification } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { useOstecenja } from "../hooks/useOstecenja";
 import { addGradskiUred } from "../utils/fetch";
@@ -9,14 +9,22 @@ function NewGradskiUred() {
 
   function onSubmit() {
     const data = {
-      nazivUreda: form.getFieldValue("uredName"),
+      nazivUreda: "Ured za " + form.getFieldValue("uredName"),
       tipOstecenjeID: form.getFieldValue("ostecenje"),
-      //osnivac: form.getFieldValue("email"),
-      opis: form.getFieldValue("description"),
-      noviTipOstecenjeID: form.getFieldValue("newOstecenje"), // string
+      //opis: form.getFieldValue("description"),
+      //noviTipOstecenjeID: "Oštećenje " + form.getFieldValue("newOstecenje"), // string
     };
-    addGradskiUred(data).then(
-      v => console.log(v)
+    addGradskiUred(data).then(v => v.success ?
+      notification.success({
+        message: "Dodavanje gradskog ureda uspješno",
+        description: "",
+        placement: "top",
+      }) :
+      notification.error({
+        message: "Dodavanje gradskog ureda uspješno",
+        description: v.errors && v.errors[0],
+        placement: "top",
+      })
     );
   }
 
@@ -25,11 +33,11 @@ function NewGradskiUred() {
       <Typography.Title level={3}>Novi gradski ured</Typography.Title>
       <Form id="noviUred" form={form} onFinish={onSubmit} labelCol={{ span: 6 }} wrapperCol={{ span: 15 }} style={{ width: "100%", flex: 1 }}>
         <Form.Item label="Naziv: " name="uredName" rules={[{ required: true, message: "Molimo unesite naziv novog ureda" }]}>
-          <Input prefix="Ured za " placeholder="..." />
+          <Input prefix="Ured za " placeholder="..." onChange={e => console.log(e.target.value)} />
         </Form.Item>
-        <Form.Item label="Opis: " name="description" rules={[{ required: true, message: "Molimo unesite opis ureda" }]}>
+        {/*<Form.Item label="Opis: " name="description" rules={[{ required: true, message: "Molimo unesite opis ureda" }]}>
           <Input.TextArea rows={4} />
-        </Form.Item>
+        </Form.Item>*/}
         <Form.Item required name="ostecenje" label="Tip oštećenja" rules={[{ required: true, message: "Molimo označite tip oštećenja." }]}>
           <Select onChange={() => form.setFieldValue("ured", undefined)}>
             {ostecenja && ostecenja.map(ostecenje => (

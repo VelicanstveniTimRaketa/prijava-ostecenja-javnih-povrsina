@@ -8,7 +8,7 @@ export class Fetcher {
     this.token = token;
   }
 
-  static request<T>(method: "GET" | "PATCH", path: string, params?: Record<string, string>): Promise<Response<T>> {
+  static request<T>(method: "GET" | "PATCH" | "DELETE", path: string, params?: Record<string, string>): Promise<Response<T>> {
     const headers = this.token ? { Authorization: "Bearer " + this.token } : undefined;
     let fullPath = path;
     if (params) fullPath += "?" + new URLSearchParams(params);
@@ -27,6 +27,10 @@ export class Fetcher {
 
   static patch<T>(path: string, params?: Record<string, string>): Promise<Response<T>> {
     return this.request<T>("PATCH", path, params);
+  }
+
+  static delete<T>(path: string, params?: Record<string, string>): Promise<Response<T>> {
+    return this.request<T>("DELETE", path, params);
   }
 
   static post<T>(path: string, data: FormData | unknown): Promise<Response<T>> {
@@ -82,10 +86,18 @@ export function getNeaktivniGradskiUredi(): Promise<Response<GradskiUred[]>> {
   return Fetcher.get("/api/urediNeaktivni");
 }
 
+export function getUserFromToken(): Promise<Response<User>> {
+  return Fetcher.get("/api/me");
+}
 
 export function getAllUsers(): Promise<Response<User[]>> {
   return Fetcher.get("/api/korisnici");
 }
+
+export function getNepotvrdeniKorisniciUreda(): Promise<Response<User[]>> {
+  return Fetcher.get("/api/zahtjeviZaOdredeniUred");
+}
+
 
 // POST REQUESTS
 
@@ -132,9 +144,24 @@ export function potvrdiUred(id: number): Promise<Response<unknown>> {
   return Fetcher.patch("/api/potvrdiUred", { id: id.toString() });
 }
 
-export function odbijUred(id: number): Promise<Response<unknown>> {
-  return Fetcher.patch("/api/odbijUred", { id: id.toString() });
+export function potvrdiZahtjevUUred(id: number): Promise<Response<unknown>> {
+  return Fetcher.patch("/api/potvrdaZahtjeva", { id: id.toString() });
 }
 
+export function odbijZahtjevUUred(id: number): Promise<Response<unknown>> {
+  return Fetcher.patch("/api/odbijanjeZahtjeva", { id: id.toString() });
+}
 
+export function udiUUred(id: number): Promise<Response<unknown>> {
+  return Fetcher.patch("/api/zahtjevZaUlazak", { id: id.toString() });
+}
 
+export function dovrsiPrijavu(id: number): Promise<Response<unknown>> {
+  return Fetcher.patch("/api/dovrsiPrijavu", { id: id.toString() });
+}
+
+// DELETE REQUESTS
+
+export function odbijUred(id: number): Promise<Response<unknown>> {
+  return Fetcher.delete("/api/odbijUred", { id: id.toString() });
+}
