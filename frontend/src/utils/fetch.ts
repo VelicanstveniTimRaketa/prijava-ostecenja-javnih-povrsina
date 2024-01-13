@@ -86,10 +86,18 @@ export function getNeaktivniGradskiUredi(): Promise<Response<GradskiUred[]>> {
   return Fetcher.get("/api/urediNeaktivni");
 }
 
+export function getUserFromToken(): Promise<Response<User>> {
+  return Fetcher.get("/api/me");
+}
 
 export function getAllUsers(): Promise<Response<User[]>> {
   return Fetcher.get("/api/korisnici");
 }
+
+export function getNepotvrdeniKorisniciUreda(): Promise<Response<User[]>> {
+  return Fetcher.get("/api/zahtjeviZaOdredeniUred");
+}
+
 
 // POST REQUESTS
 
