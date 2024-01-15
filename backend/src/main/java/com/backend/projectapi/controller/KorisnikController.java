@@ -1,7 +1,10 @@
 package com.backend.projectapi.controller;
 
+import com.backend.projectapi.DTO.KorisnikDTO;
 import com.backend.projectapi.ResponseData;
 import com.backend.projectapi.config.*;
+import com.backend.projectapi.exception.ErrorDataResponse;
+import com.backend.projectapi.exception.RecordNotFoundException;
 import com.backend.projectapi.exception.TokenRefreshException;
 import com.backend.projectapi.model.Korisnik;
 import com.backend.projectapi.model.RefreshToken;
@@ -16,6 +19,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,9 +44,15 @@ public class KorisnikController extends ApplicationController {
     }
 
     @GetMapping("/korisnici")
-    public ResponseEntity<ResponseData<List<Korisnik>>> getAllUsers(@RequestParam(required = false) Long id) {
-        return new ResponseEntity<>(ResponseData.success(service.getAllUsers(id)), HttpStatus.OK);
-        //return new ResponseEntity<>(service.getAllUsers(), HttpStatus.OK);
+    public ResponseEntity<ResponseData<List<KorisnikDTO>>> getAllUsers(@RequestParam(required = false) Long id) {
+        List<KorisnikDTO> korisnikDTOS = new ArrayList<>();
+        List<Korisnik> korisnikList = service.getAllUsers(id);
+
+        korisnikList.forEach(korisnik -> korisnikDTOS.add(service.mapToKorisnikDTO(korisnik)));
+
+
+        return new ResponseEntity<>(ResponseData.success(korisnikDTOS), HttpStatus.OK);
+
     }
 
     @PatchMapping("/deleteKorisnici")
@@ -91,21 +101,25 @@ public class KorisnikController extends ApplicationController {
 
                 String username = jwtService.extractUsername(token);
                 Optional<Korisnik> korisnikOpt = korisniciRepo.findByUsername(username);
-                Korisnik korisnik = null;
+
 
                 if (korisnikOpt.isPresent()) {
-                    korisnik = korisnikOpt.get();
+                    Korisnik korisnik = korisnikOpt.get();
+
+                    KorisnikDTO korisnikDTO = service.mapToKorisnikDTO(korisnik);
+
                     if (!jwtService.isTokenValid(token, korisnik))
-                        return ResponseEntity.ok(null);
-                    this.currentUser = korisnik;
+                        return new ResponseEntity<>(new ErrorDataResponse(Collections.singletonList("Token is not valid")), HttpStatus.NO_CONTENT);
+
+                    return new ResponseEntity<>(ResponseData.success(korisnikDTO), HttpStatus.OK);
                 }
-                return ResponseEntity.ok(korisnik);
+
             } catch (Exception e) {
-                return ResponseEntity.ok(null);
+                return new ResponseEntity<>(ResponseData.error(Collections.singletonList(e.getMessage())), HttpStatus.BAD_REQUEST);
             }
         }
 
-        return ResponseEntity.ok(null);
+        throw new RecordNotFoundException("Authorization header doesn't exist or it doesn't starts with Bearer");
 
     }
 }
