@@ -100,21 +100,30 @@ export function getNepotvrdeniKorisniciUreda(): Promise<Response<User[]>> {
 
 
 // POST REQUESTS
-
-export async function addPrijava(prijava: BarebonesPrijava, images: RcFile[]): Promise<Response<AddPrijavaResponse>> {
+async function postRequest(path: string, prijava: BarebonesPrijava, images: RcFile[], id?: number): Promise<Response<AddPrijavaResponse>> {
   const data = new FormData();
-
+  if (id !== undefined) {
+    data.append("id", id.toString());
+  }
   Object.entries(prijava).forEach((entry) =>
     data.append(entry[0], typeof entry[1] === "string" ? entry[1] : JSON.stringify(entry[1]))
   );
   images.forEach((im) => data.append("slike", im, im.name));
 
-  const r = await Fetcher.post<AddPrijavaResponse>("/api/addPrijava", data);
+  const r = await Fetcher.post<AddPrijavaResponse>(path, data);
   if (r.data) {
     fixPrijava(r.data?.newReport);
     r.data.nearbyReports.forEach(fixPrijava);
   }
   return r;
+}
+
+export async function addPrijava(prijava: BarebonesPrijava, images: RcFile[]): Promise<Response<AddPrijavaResponse>> {
+  return postRequest("/api/addPrijava", prijava, images, undefined);
+}
+
+export async function updatePrijava(id: number, prijava: BarebonesPrijava, images: RcFile[]): Promise<Response<unknown>> {
+  return postRequest("/api/updatePrijava", prijava, images, id);
 }
 
 export function deleteUser(id: number): Promise<Response<unknown>> {

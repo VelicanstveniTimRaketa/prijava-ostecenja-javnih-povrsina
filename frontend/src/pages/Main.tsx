@@ -20,6 +20,7 @@ import EditProfile from "./EditProfile";
 import Profile from "./Profile";
 import UserReports from "./UserReports";
 import MyOffice from "../components/MyOffice";
+import EditReport from "./EditReport";
 
 const items: MenuPropsWithComponent = [
   {
@@ -117,6 +118,11 @@ function Main() {
               <Route path="reports/:id" element={<Report enableEditing={true} />} />
               <Route path="edit" element={<EditProfile />} />
             </Routes>
+          </Check>
+        } />
+        <Route path="editReport/:id" element={
+          <Check if={global.user?.role === "ADMIN"} elseNavigateTo="search/:id">
+            <EditReport />
           </Check>
         } />
       </Routes>

@@ -28,8 +28,6 @@ function Report(props: ReportProps) {
 
   if (isIdBad || !prijava) return <div>Loading</div>;
   const marker = locationToGoogle(prijava.lokacija);
-  console.log(prijava);
-  console.log(prijava.gradskiUred.tipOstecenja.naziv);
   return (
     <Check if={!isIdBad && !!prijava} elseNavigateTo="/">
       <Layout style={{ margin: "2em" }}>
@@ -59,14 +57,14 @@ function Report(props: ReportProps) {
               <div style={{ fontWeight: "bold" }}>Slike:</div>
               <div style={{ display: "flex", gap: "0.2em", flexWrap: "wrap" }}>{prijava.slike.length == 0 ? "Nema priloženih slika" : (
                 prijava.slike.map((slika, index) => (
-                  <Image width={180} height={130} src={`/api/getImage/${slika.podatak}`} alt={`Slika-${index}`} />
+                  <Image id={slika.id.toString()} width={180} height={130} src={`/api/getImage/${slika.podatak}`} alt={`Slika-${index}`} />
                 ))
               )}
               </div>
             </Card>
             <div style={{ display: "flex", gap: "0.8em", margin: "0.8em 0.8em" }}>
               <Button onClick={() => navigate(-1)}>Natrag</Button>
-              {props.enableEditing && <Button>Uredi prijavu</Button>}
+              {props.enableEditing && <Button onClick={() => navigate(`/editReport/${prijava.id}`)}>Uredi prijavu</Button>}
               {props.enableEditing && <Button danger>Izbriši prijavu</Button>}
             </div>
           </div>
