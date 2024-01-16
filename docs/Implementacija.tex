@@ -121,9 +121,14 @@ virtualnog DOM-a, te omogućuje podršku za ponovnu uporabivost komponenti i nad
 		
 		\section{Dijagram razmještaja}
 			
-			\textbf{\textit{dio 2. revizije}}
-			
-			 \textit{Potrebno je umetnuti \textbf{specifikacijski} dijagram razmještaja i opisati ga. Moguće je umjesto specifikacijskog dijagrama razmještaja umetnuti dijagram razmještaja instanci, pod uvjetom da taj dijagram bolje opisuje neki važniji dio sustava.}
+			 Dijagram razmještaja opisuje topologiju virtualnih i fizičkih čvorova i komunikacijske puteve između istih. U našem slučaju sustav je temeljen na klijent-poslužitelj odnosu u kojem klijentsko računalo http protokolom razmjenjuje podatke sa serverskim uređajem. Serverska je strana implemenirana pomoću Render web servisa.
+			 
+			 \begin{figure}[H]
+			\includegraphics[scale=0.5]{slike/deploymentDiagram.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Dijagram razmještaja}
+			\label{fig:implementacija}
+		\end{figure}
 			
 			\eject 
 		
