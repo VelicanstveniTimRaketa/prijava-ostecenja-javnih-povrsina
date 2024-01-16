@@ -80,7 +80,7 @@ public class PrijaveController extends ApplicationController {
     }
 
     @PatchMapping("/updatePrijava")
-    public ResponseEntity<Object> updatePrijava(@ModelAttribute Long id, @RequestParam PrijavaDTO prijavaDTO,@RequestParam MultipartFile[] slike){
+    public ResponseEntity<Object> updatePrijava(@RequestParam Long id, @ModelAttribute PrijavaDTO prijavaDTO,@RequestParam MultipartFile[] slike){
         return new ResponseEntity<>(ResponseData.success(prijavaService.updatePrijava(id,prijavaDTO,slike)),HttpStatus.OK);
     }
 
