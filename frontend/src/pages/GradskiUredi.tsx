@@ -74,7 +74,6 @@ function GradskiUredi() {
         ...(global.user ? [{
           value: <Button style={{ marginLeft: "2em" }} onClick={() => {
             odbijUred(ured.id).then(v => {
-              console.log(v);
               notify(v);
               getGradskiUredi().then(res => setUredi(res.data));
               global.user?.role !== "ADMIN" && getNeaktivniGradskiUredi().then(res => setNeaktivniUredi(res.data));
