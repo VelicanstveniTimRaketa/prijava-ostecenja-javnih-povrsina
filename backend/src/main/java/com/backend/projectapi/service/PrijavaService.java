@@ -26,7 +26,7 @@ public interface PrijavaService {
     Boolean makeChildPrijavu(Long parent_id, Long child_id);
     PrijavaResponse findById(Long id);
     boolean deletePrijava(Long id);
-    Object updatePrijava(Long id, PrijavaDTO prijavaDTO, MultipartFile[] slike);
+    Object updatePrijava(Long id, PrijavaDTO prijavaDTO);
 
     Object dovrsiPrijavu(Long id);
 
