@@ -39,7 +39,6 @@ function Login() {
   async function onSubmit() {
     setLoading(true);
     const data = { username: form.getFieldValue("username"), password: form.getFieldValue("password") };
-    console.log(data);
     login(data).then(v => {
       setResponse(v);
       setLoading(false);

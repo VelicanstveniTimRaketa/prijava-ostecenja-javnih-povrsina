@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { deletePrijava, getPrijava } from "../utils/fetch";
 import { Prijava } from "../utils/types";
-import { Button, Layout, Image, Card, Checkbox } from "antd";
+import { Button, Layout, Image, Card, Checkbox, notification } from "antd";
 import { locationToGoogle } from "../utils/location";
 import MapJsApi from "../components/MapJsApi";
 import Check from "../components/Check";
@@ -27,9 +27,14 @@ function Report(props: ReportProps) {
   }, [isIdBad, prijava, realId]);
 
   function izbrisiPrijavu() {
-    deletePrijava(realId).then(response => console.log(response))
-      .catch(error => ({ success: false, errors: [error.toString()] }));
-    navigate("/search");
+    deletePrijava(realId).then(r => {
+      if (r.success) {
+        notification.success({ message: "Prijava uspješno izbrisana", placement: "top" });
+        navigate("/search");
+      } else {
+        notification.error({ message: "Pogreška pri brisanju prijave", description: r.errors && r.errors[0], placement: "top" });
+      }
+    });
   }
 
   if (isIdBad || !prijava) return <div>Loading</div>;
