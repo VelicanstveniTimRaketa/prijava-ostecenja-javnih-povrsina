@@ -32,8 +32,7 @@ function Login() {
       console.error("no response data");
       return;
     }
-    console.log(response.data.korisnik);
-    setGlobal({ ...global, user: { ...response.data.korisnik, token: response.data.token } });
+    setGlobal({ ...global, user: { ...response.data.korisnik, token: response.data.token, refreshToken: response.data.refreshToken } });
     navigate("/");
   }, [global, setGlobal, navigate, response]);
 

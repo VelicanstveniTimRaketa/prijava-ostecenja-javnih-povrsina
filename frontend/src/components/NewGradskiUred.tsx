@@ -9,12 +9,12 @@ function NewGradskiUred() {
 
   function onSubmit() {
     const ostecenjeName = form.getFieldValue("newOstecenje");
-    const noviTipOstecenjaNaziv = ostecenjeName && "Oštećenje " + form.getFieldValue("newOstecenje");
+    const tipOstecenjaNaziv = ostecenjeName && "Oštećenje " + form.getFieldValue("newOstecenje");
     const data = {
       nazivUreda: "Ured za " + form.getFieldValue("uredName"),
-      tipOstecenjeID: form.getFieldValue("ostecenje") === "drugi" ? "0" : form.getFieldValue("ostecenje"),
+      tipOstecenjeID: form.getFieldValue("ostecenje") === "other" ? "0" : form.getFieldValue("ostecenje"),
     };
-    addGradskiUred(data, noviTipOstecenjaNaziv).then(v => v.success ?
+    addGradskiUred(data, tipOstecenjaNaziv).then(v => v.success ?
       notification.success({
         message: "Dodavanje gradskog ureda uspješno",
         description: "",
