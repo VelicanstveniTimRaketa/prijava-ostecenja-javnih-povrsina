@@ -59,7 +59,6 @@ function MapJsApi(props: MapJsApiProps) {
   function setMapInteractivityEnabled(e: boolean) {
     map?.setOptions({ draggable: e, zoomControl: e, scrollwheel: e, disableDoubleClickZoom: !e });
   }
-
   return (
     <Layout className="shadow" style={{ ...props.style, ...containerStyle, borderRadius: "1em" }}>
       {isLoaded && (
@@ -75,6 +74,7 @@ function MapJsApi(props: MapJsApiProps) {
           {props.marker && (
             <Marker position={props.marker}></Marker>
           )}
+          <Marker position={{lat:1.44232,lng:1.543224}}></Marker>
           {props.secondaryMarkers && props.secondaryMarkers.map((marker, i) => (
             <Fragment key={i}>
               <Marker position={marker}></Marker>

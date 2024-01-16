@@ -14,6 +14,7 @@ function UserIcon() {
 
   function onLogout() {
     setGlobal({ ...global, user: undefined });
+    localStorage.removeItem("token");
     navigate("/login");
   }
 
