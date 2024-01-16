@@ -28,6 +28,81 @@ virtualnog DOM-a, te omogućuje podršku za ponovnu uporabivost komponenti i nad
 			\subsection{Ispitivanje komponenti}
 			\textit{Potrebno je provesti ispitivanje jedinica (engl. unit testing) nad razredima koji implementiraju temeljne funkcionalnosti. Razraditi \textbf{minimalno 6 ispitnih slučajeva} u kojima će se ispitati redovni slučajevi, rubni uvjeti te izazivanje pogreške (engl. exception throwing). Poželjno je stvoriti i ispitni slučaj koji koristi funkcionalnosti koje nisu implementirane. Potrebno je priložiti izvorni kôd svih ispitnih slučajeva te prikaz rezultata izvođenja ispita u razvojnom okruženju (prolaz/pad ispita). }
 			
+			U ovom potpoglavlju razrađeno je testiranje backend dijela aplikacije sa konkretno implementiranim testovima. Testovi su JUnit testovi, a na slici 5.1 prikazan je vremenski interval svakog od 7 testova, kao i verifikacija za njihov prolaz.\\
+			\\
+			\textbf{Test 1: Metoda koja vraća registrirani gradski ured u bazi podataka}\\
+			\\ U ovom je testu cilj bio iz baze podataka "izvući" jedan gradski ured koji odgovara određenim atributima. Dobivena relacije je perotvorena u DTO oblik za lakše rukovanje u sustavu.\\
+			\begin{figure}[H]
+			\includegraphics[scale=0.4]{slike/getUred.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Pregled gradskog ureda određenih atributa metodom getGradskiUred()}
+			\label{fig:implementacija}
+		\end{figure}
+			
+			
+			 \textbf{Test 2: Metoda koja provjerava postojanost novostvorenog ureda}\\
+			\\ U ovom je testu cilj bio pregledati sadržaj baze podataka nakon stvaranja novog gradskog ureda, kokretnije ispravnost zapisa njegovih atributa.
+			
+			\begin{figure}[H]
+			\includegraphics[scale=0.4]{slike/potvrdiUred.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Potvrđivanje novonastalog gradskog ureda metodom potvrdiGradskiUred()}
+			\label{fig:implementacija}
+		\end{figure}
+		
+		
+		\textbf{Test 3: Pretraživanje nepostojećeg korisnika u bazi podataka}\\
+			\\ U ovom je testu cilj bio pronaći nepostojećeg korisnika u bazi podataka i uočiti baca li se adekvatna iznimka.
+			
+			\begin{figure}[H]
+			\includegraphics[scale=0.6]{slike/nepostojeciUser.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Pregled postojanosti nepostojećeg korisnika}
+			\label{fig:implementacija}
+		\end{figure}
+		
+		\pagebreak 
+		
+		\textbf{Test 4: Pregled svih postojećih korisnika u sustavu}\\
+			\\ U testu prikazanom na idućoj slici kreirano više korisnika sa vlastitim atributima. Novonastali korisnici su dodani u listu te je na testa kraju vraćena odgovarajuća lista u koju su dodani spomenuti korisnici kako bi se provejrio zapis objekata u bazi podataka.
+			
+			\begin{figure}[H]
+			\includegraphics[scale=0.6]{slike/allUsers.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Pregled liste svih postojećih korisnika sa svojim atrubutima u sustavu metodom getKorisnikAll()}
+			\label{fig:implementacija}
+		\end{figure}
+		
+		\textbf{Test 5: Registracija novog korinsika u sustav}\\
+			\\ U testu broj pet kreiran je jedan user sa svojim pripadajućim atributima i spremljen u bazu podataka. Cilj je dobiti istog tog korisnika pretragom po određenom atributu i učiti ispravnost zapisa novonastalog objekta
+			
+			\begin{figure}[H]
+			\includegraphics[scale=0.5]{slike/allUsers.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Registracija novog korisnika}
+			\label{fig:implementacija}
+		\end{figure}
+		
+		\textbf{Test 6: Pregled svih prijava u sustavu}\\
+			\\ U predzadnjem provedenom testu kreirane su nove prijave. Cilj je bio iz baze podataka izvući sve porstojeće prijave u sustavu kako bi se provjerila točnost njihovog zapisa u bazi podataka.
+			
+			\begin{figure}[H]
+			\includegraphics[scale=0.5]{slike/svePrijave.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Pretraga svih prijava regsitriranih u bazi podataka}
+			\label{fig:implementacija}
+		\end{figure}
+		
+		\textbf{Test 7: Dodavanje nove prijave u sustav}\\
+			\\ U zadnjem provedenom testu kreirane su nove prijave. Cilj je bio potvrditi postojanost zapisa nove prijave u bazi podataka.
+			
+			\begin{figure}[H]
+			\includegraphics[scale=0.5]{slike/addPrijava.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Kreacija novih prijava u sustavu}
+			\label{fig:implementacija}
+		\end{figure}
+			
 			
 			
 			\subsection{Ispitivanje sustava}
