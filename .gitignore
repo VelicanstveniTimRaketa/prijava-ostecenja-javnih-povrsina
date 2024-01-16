@@ -2,6 +2,7 @@
 **/.vscode
 **/.DS_Store
 **/.env
+**/.vite
 
 frontend/dist
 frontend/node_modules
