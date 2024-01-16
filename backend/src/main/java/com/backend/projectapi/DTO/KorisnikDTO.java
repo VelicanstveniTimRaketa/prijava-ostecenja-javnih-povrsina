@@ -1,4 +1,5 @@
 package com.backend.projectapi.DTO;
+import com.backend.projectapi.model.GradskiUred;
 import com.backend.projectapi.model.Prijava;
 import com.backend.projectapi.model.Role;
 import java.util.List;
@@ -10,7 +11,7 @@ public class KorisnikDTO {
     private String ime;
     private String prezime;
 
-    public KorisnikDTO(Long Id, String username, String ime, String prezime, Role role, String active, String ured_status, String email) {
+    public KorisnikDTO(Long Id, String username, String ime, String prezime, Role role, String active, String ured_status, GradskiUred ured, String email) {
         this.Id = Id;
         this.username = username;
         this.ime = ime;
@@ -19,6 +20,7 @@ public class KorisnikDTO {
         this.active = active;
         this.ured_status = ured_status;
         this.email = email;
+        this.ured = ured;
     }
 
     public Long getId() {
@@ -93,10 +95,20 @@ public class KorisnikDTO {
         this.prijave = prijave;
     }
 
+    public GradskiUred getUred() {
+        return ured;
+    }
+
+    public void setUred(GradskiUred ured) {
+        this.ured = ured;
+    }
+
     private Role role;
     private String active;
     private String ured_status;
     private String email;
     private List<Prijava> prijave;
+
+    private GradskiUred ured;
 
 }

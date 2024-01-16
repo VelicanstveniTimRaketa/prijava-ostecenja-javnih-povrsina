@@ -38,7 +38,7 @@ public class GradskiUredDTOR {
                             korisnik.getRole(),
                             korisnik.getActive(),
                             korisnik.getUred_status(),
-                            korisnik.getEmail()
+                            korisnik.getUred(), korisnik.getEmail()
                     )
             );
         }
