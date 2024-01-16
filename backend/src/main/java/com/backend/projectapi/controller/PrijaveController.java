@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 import java.time.ZonedDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -74,7 +75,8 @@ public class PrijaveController extends ApplicationController {
 
     @DeleteMapping("/deletePrijava")
     public ResponseEntity<Object> deletePrijava(@RequestParam Long id){
-        return new ResponseEntity<>(ResponseData.success(prijavaService.deletePrijava(id)), HttpStatus.OK);
+        boolean status = prijavaService.deletePrijava(id);
+        return new ResponseEntity<>(status ? ResponseData.success("Prijava obrisana") : ResponseData.error(Arrays.asList("Prijava neuspjesno obrisana")), HttpStatus.OK);
     }
 
     @PatchMapping("/updatePrijava")
