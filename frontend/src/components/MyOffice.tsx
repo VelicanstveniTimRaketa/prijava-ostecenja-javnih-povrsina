@@ -2,7 +2,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { Button, Checkbox, Typography } from "antd";
 import { Content } from "antd/es/layout/layout";
 import { Prijava, User } from "../utils/types";
-import { dovrsiPrijavu, getNepotvrdeniKorisniciUreda, getPrijave, odbijZahtjevUUred, potvrdiZahtjevUUred } from "../utils/fetch";
+import { dovrsiPrijavu, getNepotvrdeniKorisniciUreda, getPrijave, getUred, odbijZahtjevUUred, potvrdiZahtjevUUred } from "../utils/fetch";
 import { StateContext } from "../utils/state";
 import { useNavigate } from "react-router-dom";
 import CustomList from "./CustomList";
@@ -19,11 +19,15 @@ function MyOffice() {
   const [nedovrsenePrijave, setNedovrsenePrijave] = useState<Prijava[]>();
 
   const getData = useCallback(() => {
-    const id = global.user?.ured?.id.toString();
-    // getKorisniciUreda({ uredId: id }).then(v -> setUsersInOffice(v.data))
+    const id = global.user?.ured?.id;
+    if (!id) {
+      console.error("no ured id");
+      return;
+    }
+    getUred(id).then(v => setUsersInOffice(v.data?.clanovi));
     getNepotvrdeniKorisniciUreda().then(v => setUsersRequesting(v.data));
-    getPrijave({ uredId: id, active: "true" }).then(v => setNedovrsenePrijave(v.data));
-    getPrijave({ uredId: id, active: "false" }).then(v => setDovrsenePrijave(v.data));
+    getPrijave({ uredId: id.toString(), active: "true" }).then(v => setNedovrsenePrijave(v.data));
+    getPrijave({ uredId: id.toString(), active: "false" }).then(v => setDovrsenePrijave(v.data));
   }, [global.user?.ured?.id]);
 
   useEffect(() => {

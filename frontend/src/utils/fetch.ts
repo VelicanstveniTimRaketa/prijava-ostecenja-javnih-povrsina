@@ -1,5 +1,5 @@
 import { RcFile } from "antd/es/upload";
-import { AddPrijavaResponse, BarebonesPrijava, GradskiUred, LoginData, Prijava, PrijaveOptions, Response, TipOstecenja, User, UserLogin, UserRegiser } from "./types";
+import { AddPrijavaResponse, BarebonesPrijava, GradskiUred, GradskiUredDetailed, LoginData, NewGradskiUred, Prijava, PrijaveOptions, Response, TipOstecenja, User, UserLogin, UserRegiser } from "./types";
 
 export class Fetcher {
   static token?: string;
@@ -33,15 +33,18 @@ export class Fetcher {
     return this.request<T>("DELETE", path, params);
   }
 
-  static post<T>(path: string, data: FormData | unknown): Promise<Response<T>> {
+  static post<T>(path: string, data: FormData | unknown, params?: Record<string, string>): Promise<Response<T>> {
     const headers: HeadersInit = {};
     if (this.token) headers.Authorization = "Bearer " + this.token;
     if (!(data instanceof FormData)) headers["Content-Type"] = "application/json";
 
+    let fullPath = path;
+    if (params) fullPath += "?" + new URLSearchParams(params);
+
     const body = data instanceof FormData ? data : JSON.stringify(data);
 
     return new Promise(res => {
-      fetch(path, { method: "POST", body, headers })
+      fetch(fullPath, { method: "POST", body, headers })
         .then(resp => resp.json())
         .then(res)
         .catch((error) => res({ success: false, errors: [error.toString()] }));
@@ -98,8 +101,12 @@ export function getNepotvrdeniKorisniciUreda(): Promise<Response<User[]>> {
   return Fetcher.get("/api/zahtjeviZaOdredeniUred");
 }
 
+export function getUred(id: number): Promise<Response<GradskiUredDetailed>> {
+  return Fetcher.get("/api/ured/" + id);
+}
 
 // POST REQUESTS
+
 async function postRequest(path: string, prijava: BarebonesPrijava, images: RcFile[], id?: number): Promise<Response<AddPrijavaResponse>> {
   const data = new FormData();
   if (id !== undefined) {
@@ -138,10 +145,9 @@ export function register(data: UserRegiser): Promise<Response<LoginData>> {
   return Fetcher.post("/api/register", data);
 }
 
-export function addGradskiUred(data: unknown): Promise<Response<LoginData>> {
-  return Fetcher.post("/api/addGradskiUred", data);
+export function addGradskiUred(data: NewGradskiUred, noviTipOstecenjaNaziv?: string): Promise<Response<LoginData>> {
+  return Fetcher.post("/api/addGradskiUred", data, noviTipOstecenjaNaziv ? { noviTipOstecenjaNaziv } : undefined);
 }
-
 
 // PATCH REQUESTS
 
