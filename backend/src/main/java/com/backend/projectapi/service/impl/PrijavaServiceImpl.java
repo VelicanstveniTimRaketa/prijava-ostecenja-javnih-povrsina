@@ -240,9 +240,13 @@ public class PrijavaServiceImpl implements PrijavaService {
         Optional<Prijava> optionalPrijava = prijaveRepo.findById(id);
 
         if (optionalPrijava.isPresent()) {
-            Prijava prijava = optionalPrijava.get();
-
-            prijaveRepo.delete(prijava);
+            Prijava currentPrijava = optionalPrijava.get();
+            List<Prijava> relatedPrijave = prijaveRepo.findAllByParentPrijava(currentPrijava);
+            relatedPrijave.forEach(prijava -> {
+                prijava.setParentPrijava(null);
+                prijaveRepo.save(prijava);
+            });
+            prijaveRepo.delete(currentPrijava);
             return true;
         }
         return false;
