@@ -124,10 +124,6 @@ export async function updatePrijava(id: number, prijava: BarebonesPrijava, image
   return r;
 }
 
-export function deleteUser(id: number): Promise<Response<unknown>> {
-  return Fetcher.post("/api/makeChild", { id });
-}
-
 export function login(data: UserLogin): Promise<Response<LoginData>> {
   return Fetcher.post("/api/login", data);
 }
@@ -168,6 +164,10 @@ export function udiUUred(id: number): Promise<Response<unknown>> {
 
 export function dovrsiPrijavu(id: number): Promise<Response<unknown>> {
   return Fetcher.patch("/api/dovrsiPrijavu", { id: id.toString() });
+}
+
+export function deleteUser(id: number): Promise<Response<unknown>> {
+  return Fetcher.patch("/api/deleteKorisnici", { id: id.toString() });
 }
 
 // DELETE REQUESTS

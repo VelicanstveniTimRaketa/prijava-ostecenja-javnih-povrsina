@@ -72,7 +72,7 @@ function MyOffice() {
   return (
     <Content style={{ display: "flex", margin: "2em", flexDirection: "column", alignItems: "center" }}>
       <Typography.Title level={2}>Moj ured</Typography.Title>
-      <Typography style={{ fontSize: "1.5em" }}>{ured.naziv} za {ured.tipOstecenja.naziv}, ID: {ured.id}</Typography>
+      <Typography style={{ fontSize: "1.5em" }}><i>{ured.naziv}</i> za <i>{ured.tipOstecenja.naziv}</i>, ID: {ured.id}</Typography>
       <div style={{ display: "flex", justifyContent: "space-around", flex: 1, width: "100%" }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1 }}>
           <Typography.Title level={2}>Korisnici u uredu</Typography.Title>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { deletePrijava, getPrijava } from "../utils/fetch";
 import { Prijava } from "../utils/types";
-import { Button, Layout, Image, Card, Flex, Checkbox } from "antd";
+import { Button, Layout, Image, Card, Checkbox } from "antd";
 import { locationToGoogle } from "../utils/location";
 import MapJsApi from "../components/MapJsApi";
 import Check from "../components/Check";
@@ -28,8 +28,8 @@ function Report(props: ReportProps) {
 
   function izbrisiPrijavu() {
     deletePrijava(realId).then(response => console.log(response))
-      .catch(error => ({ success: false, errors: [error.toString()] }));;
-    navigate(`/search`);
+      .catch(error => ({ success: false, errors: [error.toString()] }));
+    navigate("/search");
   }
 
   if (isIdBad || !prijava) return <div>Loading</div>;
@@ -82,7 +82,7 @@ function Report(props: ReportProps) {
               <div style={{ fontWeight: "bold" }}>Slike:</div>
               <div style={{ display: "flex", gap: "0.2em", flexWrap: "wrap" }}>{prijava.slike.length == 0 ? "Nema priloženih slika" : (
                 prijava.slike.map((slika, index) => (
-                  <Image id={slika.id.toString()} width={180} height={130} src={`/api/getImage/${slika.podatak}`} alt={`Slika-${index}`} />
+                  <Image id={slika.podatak.toString()} width={180} height={130} src={`/api/getImage/${slika.podatak}`} alt={`Slika-${index}`} />
                 ))
               )}
               </div>
@@ -94,11 +94,7 @@ function Report(props: ReportProps) {
             </div>
           </div>
           <div>
-            <MapJsApi
-              zoom={16}
-              center={marker}
-              marker={marker}
-            />
+            <MapJsApi zoom={16} center={marker} marker={marker} />
           </div>
         </div>
       </Layout>
