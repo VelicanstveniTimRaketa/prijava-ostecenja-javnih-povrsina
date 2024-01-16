@@ -45,6 +45,10 @@ export type GradskiUred = {
   active: "true" | "false";
 }
 
+export type GradskiUredDetailed = GradskiUred & {
+  clanovi: User[];
+};
+
 export type TipOstecenja = {
   id: number;
   naziv: string;
@@ -102,6 +106,11 @@ export type AddPrijavaResponse = {
   newReport: Prijava,
   nearbyReports: Prijava[]
 };
+
+export type NewGradskiUred = {
+  nazivUreda: string;
+  tipOstecenjeID?: string;
+}
 
 // this is some vile black magic fr
 export type MenuPropsWithComponent = MenuProps["items"] extends ((infer T)[] | undefined) ? ({ item: T extends null ? { key: string } : T, component: React.FC, admin?: boolean })[] : never;
