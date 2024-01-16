@@ -27,9 +27,7 @@ function NewReportForm(props: NewReportFormProps) {
   const [locationFromImage, setLocationFromImage] = useState<google.maps.LatLngLiteral | undefined>(undefined);
   const ostecenja = useOstecenja();
   const uredi = useGradskiUredi();
-  console.log(props.initialData);
-  console.log(props.initialData && locationToGoogle(props.initialData?.lokacija))
-  console.log(location, center);  
+
   function locationValidator() {
     return location !== undefined ? Promise.resolve() : Promise.reject();
   }

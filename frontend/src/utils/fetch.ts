@@ -136,8 +136,12 @@ export function register(data: UserRegiser): Promise<Response<LoginData>> {
   return Fetcher.post("/api/register", data);
 }
 
-export function addGradskiUred(data: NewGradskiUred, noviTipOstecenjaNaziv?: string): Promise<Response<LoginData>> {
-  return Fetcher.post("/api/addGradskiUred", data, noviTipOstecenjaNaziv ? { noviTipOstecenjaNaziv } : undefined);
+export function addGradskiUred(data: NewGradskiUred, tipOstecenjaNaziv?: string): Promise<Response<LoginData>> {
+  return Fetcher.post("/api/addGradskiUred", data, tipOstecenjaNaziv ? { tipOstecenjaNaziv } : undefined);
+}
+
+export function refreshToken(): Promise<Response<unknown>> {
+  return Fetcher.post("/api/refreshtoken", {});
 }
 
 // PATCH REQUESTS

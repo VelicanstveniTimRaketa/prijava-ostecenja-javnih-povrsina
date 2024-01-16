@@ -2,10 +2,14 @@ import { Image } from "antd";
 import { Link } from "react-router-dom";
 import LogoImage from "../assets/logo.webp";
 
-function Logo() {
+interface LogoProps {
+  size?: string;
+}
+
+function Logo(props: LogoProps) {
   return (
     <Link to="/">
-      <Image src={LogoImage} preview={false} alt="Logo Image" style={{ height: "2.5em" }} />
+      <Image src={LogoImage} preview={false} alt="Logo Image" style={{ height: props.size ?? "2.5em" }} />
     </Link>
   );
 }
