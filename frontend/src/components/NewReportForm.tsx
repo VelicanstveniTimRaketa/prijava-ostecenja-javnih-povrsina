@@ -60,14 +60,15 @@ function NewReportForm(props: NewReportFormProps) {
     };
     props.onSubmit(prijava);
   }
-  // const initialData = props.initialData && {
-  //   reportName: props.initialData.naziv,
-  //   opis: props.initialData.opis,
-  //   ostecenja: props.initialData.gradskiUred.tipOstecenja.naziv,
-  //   ured: props.initialData.gradskiUred.naziv,
-  // }
+  const initialData = props.initialData && {
+    reportName: props.initialData.naziv,
+    opis: props.initialData.opis,
+    ostecenja: props.initialData.gradskiUred.tipOstecenja.naziv,
+    ured: props.initialData.gradskiUred.naziv,
+  };
+
   return (
-    <Form id="addPrijava" form={form} onFinish={onSubmit} labelCol={{ span: "5" }} wrapperCol={{ span: "20" }} style={{ width: "100%" }}>
+    <Form id="addPrijava" form={form} onFinish={onSubmit} initialValues={initialData} labelCol={{ span: "5" }} wrapperCol={{ span: "20" }} style={{ width: "100%" }}>
       <Form.Item required name="reportName" label="Naziv: " rules={[{ required: true, message: "Molimo unesite naziv prijave." }]}>
         <Input />
       </Form.Item>

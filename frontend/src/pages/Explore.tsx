@@ -51,7 +51,7 @@ function Explore() {
 
     setLoading(true);
     getPrijave(options).then(res => {
-      setData(res.data);
+      setData(res.data?.sort((p1, p2) => p2.prvoVrijemePrijave.getTime() - p1.prvoVrijemePrijave.getTime()));
       setLoading(false);
     });
   }
@@ -133,16 +133,16 @@ function Explore() {
         <Typography.Title level={5} style={{ margin: "0.5em" }}>Broj pronađenih prijava: {data.length}</Typography.Title>
         <div style={{ display: "flex" }}>
           <ReportList onClick={p => setSelectedPrijava({ ...p })} data={data} />
-          {data.length > 0 ? 
+          {data.length > 0 ?
             <MapJsApi
-            style={{ display: "flex", position: "sticky", top: "30vh", margin: "1em 2em" }}
-            marker={selectedPrijavaSpot}
-            center={selectedPrijavaSpot}
-            zoom={selectedPrijava && 15}
-            secondaryMarkers={selectedPrijava ? undefined : data.map(p => locationToGoogle(p.lokacija))}
+              style={{ display: "flex", position: "sticky", top: "30vh", margin: "1em 2em" }}
+              marker={selectedPrijavaSpot}
+              center={selectedPrijavaSpot}
+              zoom={selectedPrijava && 15}
+              secondaryMarkers={selectedPrijava ? undefined : data.map(p => locationToGoogle(p.lokacija))}
             />
             :
-            <AlertBanner message="Nema prijava za odabrane filtere!"/>
+            <AlertBanner message="Nema prijava za odabrane filtere!" />
           }
         </div>
       </>}

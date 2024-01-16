@@ -79,8 +79,9 @@ function Main() {
         <Layout style={{ display: "flex", flexDirection: "row", background: "white", alignItems: "center" }}>
           <Logo />
           <Menu
-            style={{ display: "flex", padding: "0 1em", minWidth: "fit-content" }}
+            style={{ display: "flex", padding: "0 1em", maxWidth: "fit-content" }}
             mode="horizontal"
+            disabledOverflow={true}
             onClick={info => navigate(info.key)}
             selectedKeys={[currentPage]}
             items={menuItems}

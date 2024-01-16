@@ -12,7 +12,7 @@ import AlertBanner from "../components/AlertBanner";
 function notify(v: { success: boolean, errors?: string[] }) {
   if (v.success) {
     notification.success({
-      message: "Uspijeh",
+      message: "Uspjeh",
       description: "",
       placement: "top",
     });
@@ -67,7 +67,7 @@ function GradskiUredi() {
             potvrdiUred(ured.id).then(v => {
               notify(v);
               getGradskiUredi().then(res => setUredi(res.data));
-              getNeaktivniGradskiUredi().then(res => setNeaktivniUredi(res.data));
+              global.user?.role !== "ADMIN" && getNeaktivniGradskiUredi().then(res => setNeaktivniUredi(res.data));
             });
           }} type="primary">Potvrdi</Button>
         }] : []),
@@ -77,7 +77,7 @@ function GradskiUredi() {
               console.log(v);
               notify(v);
               getGradskiUredi().then(res => setUredi(res.data));
-              getNeaktivniGradskiUredi().then(res => setNeaktivniUredi(res.data));
+              global.user?.role !== "ADMIN" && getNeaktivniGradskiUredi().then(res => setNeaktivniUredi(res.data));
             });
           }} type="primary">Odbij</Button>
         }] : []),
