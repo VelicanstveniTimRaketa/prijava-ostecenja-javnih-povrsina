@@ -19,10 +19,6 @@ virtualnog DOM-a, te omogućuje podršku za ponovnu uporabivost komponenti i nad
 		
 	
 		\section{Ispitivanje programskog rješenja}
-			
-			\textbf{\textit{dio 2. revizije}}\\
-			
-			 \textit{U ovom poglavlju je potrebno opisati provedbu ispitivanja implementiranih funkcionalnosti na razini komponenti i na razini cijelog sustava s prikazom odabranih ispitnih slučajeva. Studenti trebaju ispitati temeljnu funkcionalnost i rubne uvjete.}
 	
 			
 			\subsection{Ispitivanje komponenti}
@@ -135,7 +131,7 @@ virtualnog DOM-a, te omogućuje podršku za ponovnu uporabivost komponenti i nad
 		\section{Upute za puštanje u pogon}
 		
 			\subsection{Konfiguracija frontenda}
-			Pri konfiguraciji frontend-a na poslužitelju Render potrebno je GitHub račun s Renderom. Idući je korak kreirati novi servis i odabrati projekt Gradska šteta. Regiaj je Frankfurt (EU Central), za root directory se odabire frontend. Environment se treba postaviti na Node, dok je build command potrebno postaviti na npm run build, a start command na npm run server. Zadnji korak je postaviti evnironment varijable ka na idućoj slici i kliknuti Create Web Server.
+			Pri konfiguraciji frontenda na poslužitelju Render potrebno je GitHub račun spojiti s Renderom. Idući je korak kreirati novi servis i odabrati projekt Gradska šteta. Regija je Frankfurt (EU Central), za root directory se odabire frontend. Environment se treba postaviti na Node, dok je build command potrebno postaviti na npm run build, a start command na npm run server. Zadnji korak je postaviti evnironment varijable ka na idućoj slici i kliknuti Create Web Server.
 			
 			
 			\begin{figure}[H]
@@ -143,6 +139,28 @@ virtualnog DOM-a, te omogućuje podršku za ponovnu uporabivost komponenti i nad
 			\centering
 			\caption{Environment varijable za frontend dio}
 			\label{fig:implementacija}
+		\end{figure}
+		
+		\subsection{Konfiguracija backenda}
+			
+			Pri konfiguraciji backenda na poslužitelju Render potrebno je GitHub račun spojiti s Renderom. Idući je korak kreirati novi servis i odabrati projekt Gradska šteta. Kao regiju treba odabrati Frankfurt (EU Central), za root directory se odabire backend. Dockerfile se nalazi u backend direktoriju (/backend), a Docker Build Context directory je /backend. Na idućoj slici su prikazane environment varijable koje treba postaviti i kliknuti na Create Web Server.
+			
+			\begin{figure}[H]
+			\includegraphics[scale=0.4]{slike/backendEnvironment.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Environment varijable za backend dio}
+			\label{fig:implementacija}
+		\end{figure}
+		
+		\subsection{Konfiguracija baze podataka}
+			
+			Pri konfiguraciji poslužitelja baze podataka na Renderu potrebno je postaviti ime baze zajedno sa imenom korisnika baze. Kao regiju postavizi Frankfurt(EU Central) i dovršiti kreiranje sa klikom na Create Database. Environment varijable prikazane su na slici \ref{fig:implementacijaBaze}.
+			
+			\begin{figure}[H]
+			\includegraphics[scale=0.4]{slike/bazaEnvironment.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Environment varijable za bazu podataka}
+			\label{fig:implementacijaBaze}
 		\end{figure}
 			
 			\eject 
