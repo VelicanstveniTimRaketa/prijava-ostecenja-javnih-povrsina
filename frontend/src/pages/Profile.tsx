@@ -1,15 +1,27 @@
 import { useContext } from "react";
-import { Button, Card, Layout, Typography } from "antd";
+import { Button, Card, Layout, Tag, Typography, notification } from "antd";
 import { Content } from "antd/es/layout/layout";
 import { UserOutlined, EditOutlined } from "@ant-design/icons";
 import { StateContext } from "../utils/state";
 import { useNavigate } from "react-router";
+import { deleteUser } from "../utils/fetch";
 
 function Profile() {
   const { global: { user } } = useContext(StateContext);
   const navigate = useNavigate();
 
-  if (!user) throw TypeError();
+  if (!user) return <div></div>;
+
+  const onDelete = () => {
+    deleteUser(user.id).then(r => {
+      if (r.success) {
+        notification.success({ message: "Prijava uspješno izbrisana", placement: "top" });
+        navigate("/search");
+      } else {
+        notification.error({ message: "Pogreška pri brisanju prijave", description: r.errors && r.errors[0], placement: "top" });
+      }
+    });
+  };
 
   return (
     <Content style={{ display: "flex", margin: "2em", alignItems: "center", flexDirection: "column" }}>
@@ -32,10 +44,17 @@ function Profile() {
             </Layout>
           </div>
           <div style={{ flexDirection: "column" }}>
-            <Typography.Title level={1} style={{ marginTop: 0 }}>{user.ime} {user.prezime}</Typography.Title>
-            <Typography.Title level={3} style={{ margin: 0 }}>{user.username}</Typography.Title>
+            <Typography.Title level={1} style={{ marginTop: 0, display: "flex", alignItems: "center", gap: "0.5em" }}>
+              {user.username}
+              {user.role === "ADMIN" && <Tag style={{ height: "fit-content" }} color="blue">Admin</Tag>}
+            </Typography.Title>
+            <Typography.Title level={3} style={{ margin: 0 }}>{user.ime} {user.prezime}</Typography.Title>
             <Typography.Title level={3} style={{ margin: 0, fontWeight: "normal" }}>{user.email}</Typography.Title>
-            <Button onClick={() => navigate("edit")} style={{ marginTop: "2em" }} icon={<EditOutlined />}>Izmijeni profil</Button>
+            {user.ured && <Typography.Title level={3} style={{ fontWeight: "normal" }}>{user.ured.naziv} <Button>Moj ured</Button></Typography.Title>}
+            <div style={{ display: "flex", marginTop: "2em", gap: "1em" }}>
+              <Button onClick={() => navigate("edit")} icon={<EditOutlined />}>Izmijeni podatke</Button>
+              <Button danger onClick={onDelete} icon={<EditOutlined />}>Izbriši profil</Button>
+            </div>
           </div>
         </div>
       </Card>

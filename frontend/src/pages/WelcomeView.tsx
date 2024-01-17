@@ -24,10 +24,8 @@ function WelcomeView() {
     getPrijave(settings).then(v => setPrijavaLocations(v.data?.map(p => locationToGoogle(p.lokacija))));
   }, []);
 
-  const background = "linear-gradient(30deg, rgb(115, 140, 199) 0%, rgb(215, 222, 232) 35%, rgb(248, 248, 249) 100%)";
-
   return (
-    <Layout style={{ padding: "5em 4em", display: "flex", flexDirection: "row", background }}>
+    <Layout style={{ padding: "5em 4em", display: "flex", flexDirection: "row" }} className="bgAnim">
       <Content style={{ display: "flex", flexDirection: "column", minHeight: 280, alignItems: "center", height: "fit-content" }}>
         <Logo size="8em" />
         <Typography.Title level={1}>Prijava oštećenja na javnim površinama</Typography.Title>

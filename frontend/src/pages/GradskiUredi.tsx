@@ -67,7 +67,7 @@ function GradskiUredi() {
             potvrdiUred(ured.id).then(v => {
               notify(v);
               getGradskiUredi().then(res => setUredi(res.data));
-              global.user?.role !== "ADMIN" && getNeaktivniGradskiUredi().then(res => setNeaktivniUredi(res.data));
+              global.user?.role === "ADMIN" && getNeaktivniGradskiUredi().then(res => setNeaktivniUredi(res.data));
             });
           }} type="primary">Potvrdi</Button>
         }] : []),
@@ -76,7 +76,7 @@ function GradskiUredi() {
             odbijUred(ured.id).then(v => {
               notify(v);
               getGradskiUredi().then(res => setUredi(res.data));
-              global.user?.role !== "ADMIN" && getNeaktivniGradskiUredi().then(res => setNeaktivniUredi(res.data));
+              global.user?.role === "ADMIN" && getNeaktivniGradskiUredi().then(res => setNeaktivniUredi(res.data));
             });
           }} type="primary">Odbij</Button>
         }] : []),

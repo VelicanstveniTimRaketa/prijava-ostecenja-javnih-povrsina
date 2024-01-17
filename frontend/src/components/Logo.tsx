@@ -9,7 +9,7 @@ interface LogoProps {
 function Logo(props: LogoProps) {
   return (
     <Link to="/">
-      <Image src={LogoImage} preview={false} alt="Logo Image" style={{ height: props.size ?? "2.5em" }} />
+      <Image src={LogoImage} preview={false} alt="Logo Image" style={{ height: props.size ?? "2.5em", width: "auto" }} />
     </Link>
   );
 }
