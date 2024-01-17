@@ -21,4 +21,9 @@ public interface KorisniciRepository extends JpaRepository<Korisnik, Long> {
 
     @Query(value = "select * from korisnici k where k.ured_status='pending' and k.ured_id= :ured_id ", nativeQuery = true)
     List<Korisnik> findByPendingZahtjevOdredeniUred(@Param("ured_id") Long ured_id);
+
+
+    @Query(value = "select * from korisnici k where k.active='true' ", nativeQuery = true)
+    List<Korisnik> findAllActive();
+
 }

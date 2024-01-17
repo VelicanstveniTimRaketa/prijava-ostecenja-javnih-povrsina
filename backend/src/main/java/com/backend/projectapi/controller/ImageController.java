@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 
 @Controller
@@ -30,9 +31,12 @@ public class ImageController extends ApplicationController{
         try {
             resource = new UrlResource(imagePath.toUri());
             if (resource.exists() && resource.isReadable()) {
-
-                String[] type = resource.getFilename().split("\\\\.");
-                 String typee=type[type.length-1];
+                System.out.println("------------------------------------------------------");
+                System.out.println(resource.getFilename());
+                String[] type = resource.getFilename().split("\\.");
+                String typee=type[type.length-1];
+                System.out.println(Arrays.toString(Arrays.stream(type).toArray()));
+                System.out.println(typee);
 
                 return ResponseEntity.ok()
                         .header(HttpHeaders.CONTENT_DISPOSITION, "filename=" + resource.getFilename())
