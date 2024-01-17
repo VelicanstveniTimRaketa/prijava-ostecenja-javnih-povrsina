@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import CustomList from "./CustomList";
 import AlertBanner from "./AlertBanner";
 import ReportList from "./ReportList";
+import Check from "./Check";
 
 function MyOffice() {
   const { global } = useContext(StateContext);
@@ -70,24 +71,26 @@ function MyOffice() {
   const ured = global.user.ured;
 
   return (
-    <Content style={{ display: "flex", margin: "2em", flexDirection: "column", alignItems: "center" }}>
-      <Typography.Title level={2}>Moj ured</Typography.Title>
-      <Typography style={{ fontSize: "1.5em" }}><i>{ured.naziv}</i> za <i>{ured.tipOstecenja.naziv}</i>, ID: {ured.id}</Typography>
-      <div style={{ display: "flex", justifyContent: "space-around", flex: 1, width: "100%" }}>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1 }}>
-          <Typography.Title level={2}>Korisnici u uredu</Typography.Title>
-          {usersInOfficeItems && <CustomList data={usersInOfficeItems} />}
-          <Typography.Title level={2}>Korisnici koji žele ući u ured</Typography.Title>
-          {usersRequestingItems && usersRequestingItems.length !== 0 ? <CustomList data={usersRequestingItems} /> : <AlertBanner message="Nema korisnika koji su zatražili ulazak" />}
+    <Check if={global.user.ured_status === "active"} elseNavigateTo="/">
+      <Content style={{ display: "flex", margin: "2em", flexDirection: "column", alignItems: "center" }}>
+        <Typography.Title level={2}>Moj ured</Typography.Title>
+        <Typography style={{ fontSize: "1.5em" }}><i>{ured.naziv}</i> za <i>{ured.tipOstecenja.naziv}</i>, ID: {ured.id}</Typography>
+        <div style={{ display: "flex", justifyContent: "space-around", flex: 1, width: "100%" }}>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1 }}>
+            <Typography.Title level={2}>Korisnici u uredu</Typography.Title>
+            {usersInOfficeItems && usersInOffice ? <CustomList data={usersInOfficeItems} /> : <div>Učitavanje...</div>}
+            <Typography.Title level={2}>Korisnici koji žele ući u ured</Typography.Title>
+            {usersRequestingItems && usersRequestingItems.length !== 0 ? <CustomList data={usersRequestingItems} /> : <AlertBanner message="Nema korisnika koji su zatražili ulazak" />}
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1 }}>
+            <Typography.Title level={2}>Nedovršene Prijave</Typography.Title>
+            {nedovrsenePrijaveItems && nedovrsenePrijaveItems.length !== 0 ? <CustomList data={nedovrsenePrijaveItems} /> : <AlertBanner message="Nema neotklonjenih prijava" />}
+            <Typography.Title level={2}>Dovršene Prijave</Typography.Title>
+            {dovrsenePrijave && dovrsenePrijave.length !== 0 ? <ReportList data={dovrsenePrijave} /> : <AlertBanner message="Nema otklonjenih prijava" />}
+          </div>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1 }}>
-          <Typography.Title level={2}>Nedovršene Prijave</Typography.Title>
-          {nedovrsenePrijaveItems && nedovrsenePrijaveItems.length !== 0 ? <CustomList data={nedovrsenePrijaveItems} /> : <AlertBanner message="Nema neotklonjenih prijava" />}
-          <Typography.Title level={2}>Dovršene Prijave</Typography.Title>
-          {dovrsenePrijave && dovrsenePrijave.length !== 0 ? <ReportList data={dovrsenePrijave} /> : <AlertBanner message="Nema otklonjenih prijava" />}
-        </div>
-      </div>
-    </Content>
+      </Content>
+    </Check>
   );
 }
 
