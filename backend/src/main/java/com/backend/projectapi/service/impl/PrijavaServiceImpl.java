@@ -20,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Path;
 import java.security.PrivateKey;
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 
@@ -170,10 +172,11 @@ public class PrijavaServiceImpl implements PrijavaService {
         String uploadDirectory = "src/main/resources/static/"+(prijava.getId().toString())+"/";
         try {
             for(MultipartFile slika:slike) {
-                String savePath =uploadDirectory+slika.getOriginalFilename();
+                String[] djelovi=slika.getOriginalFilename().split("\\.");
+                String ekstenzija= djelovi[djelovi.length-1];
+                String savePath =uploadDirectory+generateRandomString()+"."+ekstenzija;
                 File file = new File(savePath);
                 file.mkdirs();
-                FileUtils.cleanDirectory(file);
                 Files.copy(slika.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 System.out.println("Slika spremljena na: " + savePath);
                 savePath=parseImagePath(savePath);
@@ -183,6 +186,21 @@ public class PrijavaServiceImpl implements PrijavaService {
             throw new RecordNotFoundException("Record not found");
         }
         return savedSlike;
+    }
+
+    private static final String VALID_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+    public static String generateRandomString() {
+        SecureRandom random = new SecureRandom();
+        StringBuilder randomStringBuilder = new StringBuilder(10);
+
+        for (int i = 0; i < 10; i++) {
+            int randomIndex = random.nextInt(VALID_CHARACTERS.length());
+            char randomChar = VALID_CHARACTERS.charAt(randomIndex);
+            randomStringBuilder.append(randomChar);
+        }
+
+        return randomStringBuilder.toString();
     }
 
     private static String parseImagePath(String fullPath) {
@@ -247,6 +265,17 @@ public class PrijavaServiceImpl implements PrijavaService {
                 prijaveRepo.save(prijava);
             });
             prijaveRepo.delete(currentPrijava);
+
+            String uploadDirectory = "src/main/resources/static/"+(currentPrijava.getId().toString());
+            File file=new File(uploadDirectory);
+
+            String[]entries = file.list();
+            for(String s: entries){
+                File currentFile = new File(file.getPath(),s);
+                currentFile.delete();
+            }
+            file.delete();
+
             return true;
         }
         return false;
@@ -263,16 +292,16 @@ public class PrijavaServiceImpl implements PrijavaService {
         newPrijava.setNaziv(prijavaDTO.getNaziv());
         newPrijava.setOpis(prijavaDTO.getOpis());
         newPrijava.setGradskiUred(gradskiUrediRepo.findById(prijavaDTO.getUred()).get());
-        //newPrijava.setTipOstecenja(gradskiUrediRepo.findById(prijavaDTO.getUred()).get().getTipOstecenja());
+
         Lokacija lok=new Lokacija(prijavaDTO.getLatitude(), prijavaDTO.getLongitude());
         lokacijRepo.save(lok);
         newPrijava.setLokacija(lok);
-
-        if(prijavaDTO.getSlike() != null) {
-            List<Slika> savedSlike = addSlike(prijavaDTO.getSlike(), newPrijava);
-            newPrijava.setSlike(savedSlike);
-            prijaveRepo.save(newPrijava);
-        }
+//
+//        if(prijavaDTO.getSlike() != null) {
+//            List<Slika> savedSlike = addSlike(prijavaDTO.getSlike(), newPrijava);
+//            newPrijava.setSlike(savedSlike);
+//        }
+        prijaveRepo.save(newPrijava);
         return true;
     }
 

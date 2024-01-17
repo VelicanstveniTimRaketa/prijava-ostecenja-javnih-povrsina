@@ -1,6 +1,7 @@
 package com.backend.projectapi.controller;
 
 import com.backend.projectapi.config.*;
+import com.backend.projectapi.exception.RecordNotFoundException;
 import com.backend.projectapi.exception.TokenRefreshException;
 import com.backend.projectapi.model.Korisnik;
 import com.backend.projectapi.model.RefreshToken;
@@ -44,7 +45,7 @@ public class AuthController {
                     String token = jwtService.generateToken(user);
                     return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
                 })
-                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
+                .orElseThrow(() -> new RecordNotFoundException(
                         "Refresh token is not in database!"));
     }
 }

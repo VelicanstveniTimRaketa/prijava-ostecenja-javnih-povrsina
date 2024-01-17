@@ -75,7 +75,7 @@ public class AuthenticationService {
                     )
             );
         }catch (AuthenticationException exc){
-            throw new RecordNotFoundException("Pogrešan email ili lozinka: "+exc.getMessage());
+            throw new RecordNotFoundException("Pogrešno korisničko ime ili lozinka.");
 
         }
 

@@ -71,7 +71,7 @@ body,
   /*background: linear-gradient(30deg, rgb(115, 140, 199) 0%, rgb(215, 222, 232) 35%, rgb(248, 248, 249) 100%);*/
   background: linear-gradient(30deg, rgb(86, 112, 174) 0%, rgb(201, 211, 225) 35%, rgb(250, 250, 250) 65%, rgb(250, 250, 250) 100%);
 	background-size: 200% 200%;
-  animation: 5s infinite alternate bgGradientSlide;
+  animation: 3s infinite alternate bgGradientSlide;
 }
 
 @keyframes bgGradientSlide {

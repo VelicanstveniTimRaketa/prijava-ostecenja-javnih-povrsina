@@ -30,7 +30,7 @@ public class KorisnikServiceImpl implements KorisnikService {
                 throw new RecordNotFoundException("ne postoji korisnik za dani id: "+id);
             }
         }else{
-            return korisniciRepo.findAll();
+            return korisniciRepo.findAllActive();
         }
     }
 
