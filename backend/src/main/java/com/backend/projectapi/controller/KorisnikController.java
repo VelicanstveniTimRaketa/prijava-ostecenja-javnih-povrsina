@@ -109,7 +109,7 @@ public class KorisnikController extends ApplicationController {
                     KorisnikDTO korisnikDTO = service.mapToKorisnikDTO(korisnik);
 
                     if (!jwtService.isTokenValid(token, korisnik))
-                        return new ResponseEntity<>(new ErrorDataResponse(Collections.singletonList("Token is not valid")), HttpStatus.NO_CONTENT);
+                        return new ResponseEntity<>(ResponseData.error(Collections.singletonList("Token expired!")), HttpStatus.UNAUTHORIZED);
 
                     return new ResponseEntity<>(ResponseData.success(korisnikDTO), HttpStatus.OK);
                 }
@@ -119,7 +119,7 @@ public class KorisnikController extends ApplicationController {
             }
         }
 
-        throw new RecordNotFoundException("Authorization header doesn't exist or it doesn't starts with Bearer");
+        return new ResponseEntity<>(ResponseData.error(Collections.singletonList("Authorization header doesn't exist or it doesn't start with Bearer")), HttpStatus.UNAUTHORIZED);
 
     }
 }
