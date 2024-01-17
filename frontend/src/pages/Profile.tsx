@@ -50,8 +50,11 @@ function Profile() {
             </Typography.Title>
             <Typography.Title level={3} style={{ margin: 0 }}>{user.ime} {user.prezime}</Typography.Title>
             <Typography.Title level={3} style={{ margin: 0, fontWeight: "normal" }}>{user.email}</Typography.Title>
-            {user.ured && <Typography.Title level={3} style={{ fontWeight: "normal" }}>{user.ured.naziv} <Button>Moj ured</Button></Typography.Title>}
-            <div style={{ display: "flex", marginTop: "2em", gap: "1em" }}>
+            {user.ured && user.ured_status === "active" && <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <Typography.Title level={3} style={{ margin: "0.5em 0", fontWeight: "normal" }}>{user.ured.naziv}</Typography.Title>
+              <Button onClick={() => navigate("/offices/myOffice")}>Moj ured</Button>
+            </div>}
+            <div style={{ display: "flex", marginTop: "1em", gap: "1em" }}>
               <Button onClick={() => navigate("edit")} icon={<EditOutlined />}>Izmijeni podatke</Button>
               <Button danger onClick={onDelete} icon={<EditOutlined />}>Izbriši profil</Button>
             </div>

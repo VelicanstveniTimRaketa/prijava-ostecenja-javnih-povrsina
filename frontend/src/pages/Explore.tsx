@@ -2,7 +2,7 @@ import { Button, DatePicker, Divider, Form, Select, Typography } from "antd";
 import { CloseCircleFilled } from "@ant-design/icons";
 import { useForm } from "antd/es/form/Form";
 import { Content } from "antd/es/layout/layout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Prijava, PrijaveOptions } from "../utils/types";
 import { getPrijave } from "../utils/fetch";
 import { useOstecenja } from "../hooks/useOstecenja";
@@ -29,6 +29,11 @@ function Explore() {
   const [locationActive, toggleLocation, ref] = useToggleable(false);
   const [loading, setLoading] = useState(false);
   const ostecenja = useOstecenja();
+
+  useEffect(() => {
+    onSubmit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function onSubmit() {
     const options: PrijaveOptions = {};
