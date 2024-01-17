@@ -1,4 +1,3 @@
-import "./App.css";
 import { useEffect, useState } from "react";
 import { STATE, StateContext } from "./utils/state";
 import { Route, Routes } from "react-router";

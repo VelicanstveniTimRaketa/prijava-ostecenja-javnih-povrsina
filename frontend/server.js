@@ -27,7 +27,7 @@ const staticPath = join(dirname(fileURLToPath(import.meta.url)), "dist");
 app.use(express.static(staticPath))
 
 app.listen(PORT, HOST, () => {
-  console.log(`Starting Proxy at ${HOST}:${PORT}`);
+  console.info(`Starting Proxy at ${HOST}:${PORT}`);
 });
 
 app.get("*", async (req, res) => {

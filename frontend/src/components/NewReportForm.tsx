@@ -63,8 +63,8 @@ function NewReportForm(props: NewReportFormProps) {
   const initialData = props.initialData && {
     reportName: props.initialData.naziv,
     opis: props.initialData.opis,
-    ostecenja: props.initialData.gradskiUred.tipOstecenja.naziv,
-    ured: props.initialData.gradskiUred.naziv,
+    ostecenja: props.initialData.gradskiUred.tipOstecenja.id,
+    ured: props.initialData.gradskiUred.id,
   };
 
   return (
@@ -76,20 +76,20 @@ function NewReportForm(props: NewReportFormProps) {
         <TextArea rows={4} />
       </Form.Item>
       <Form.Item required name="ostecenja" label="Tip oštećenja" rules={[{ required: true, message: "Molimo označite tip oštećenja." }]}>
-        <Select onChange={() => form.resetFields(["ured"])}>
+        <Select onChange={() => form.setFieldValue("ured", undefined)}>
           {ostecenja && ostecenja.map(ostecenje => (
-            <Select.Option key={ostecenje.id}>{ostecenje.naziv}</Select.Option>
+            <Select.Option key={ostecenje.id} value={ostecenje.id}>{ostecenje.naziv}</Select.Option>
           ))}
         </Select>
       </Form.Item>
       <Form.Item required label="Gradski ured" shouldUpdate={(prevValues, currentValues) => prevValues.ostecenja !== currentValues.ostecenja}>
         {({ getFieldValue }) => {
-          const filtriraniUredi = uredi?.filter(ured => ured.tipOstecenja.id.toString() === getFieldValue("ostecenja"));
+          const filtriraniUredi = uredi?.filter(ured => ured.tipOstecenja.id === getFieldValue("ostecenja"));
           return (
             <Form.Item noStyle name="ured" rules={[{ required: true, message: "Molimo označite gradski ured." }]}>
               <Select disabled={!getFieldValue("ostecenja")}>
-                {filtriraniUredi && filtriraniUredi.map(ostecenje => (
-                  <Select.Option key={ostecenje.id}>{ostecenje.naziv}</Select.Option>
+                {filtriraniUredi && filtriraniUredi.map(ured => (
+                  <Select.Option key={ured.id} value={ured.id}>{ured.naziv}</Select.Option>
                 ))}
               </Select>
             </Form.Item>

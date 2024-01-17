@@ -4,6 +4,7 @@ import { deletePrijava, getPrijava } from "../utils/fetch";
 import { Prijava } from "../utils/types";
 import { Button, Layout, Image, Card, Checkbox, notification } from "antd";
 import { locationToGoogle } from "../utils/location";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import MapJsApi from "../components/MapJsApi";
 import Check from "../components/Check";
 import CustomList from "../components/CustomList";
@@ -14,7 +15,7 @@ interface ReportProps {
 
 function Report(props: ReportProps) {
   const location = useLocation();
-  const [prijava, setPrijava] = useState<Prijava | undefined>(location.state.prijava);
+  const [prijava, setPrijava] = useState<Prijava | undefined>(location.state?.prijava);
   const { id } = useParams();
   const navigate = useNavigate();
   const realId = Number.parseInt(id as string);
@@ -48,14 +49,14 @@ function Report(props: ReportProps) {
       { title: "Prijavitelj:", value: prijava.parentPrijava.kreator?.username || "Anoniman" },
       { title: "Datum prijave:", value: prijava.parentPrijava.prvoVrijemePrijave?.toLocaleDateString() },
       { title: "Otklonjeno:", value: <Checkbox className="normalCursor" checked={!!prijava.parentPrijava.vrijemeOtklona} /> },
-      { value: <Button style={{ marginLeft: "2em" }} onClick={() => prijava.parentPrijava && onButtonClick(prijava.parentPrijava)} type="primary">Detalji</Button> },
+      { value: <Button style={{ marginLeft: "2em" }} onClick={() => prijava.parentPrijava && viewParentPrijava(prijava.parentPrijava)} type="primary">Detalji</Button> },
     ],
   };
 
-
-  function onButtonClick(prijava: Prijava) {
+  function viewParentPrijava(prijava: Prijava) {
     navigate(`/search/${prijava.id.toString()}`, { state: { prijava: prijava } });
   }
+
   return (
     <Check if={!isIdBad && !!prijava} elseNavigateTo="/">
       <Layout style={{ margin: "2em" }}>
@@ -94,8 +95,8 @@ function Report(props: ReportProps) {
             </Card>
             <div style={{ display: "flex", gap: "0.8em", margin: "0.8em 0.8em" }}>
               <Button onClick={() => navigate(-1)}>Natrag</Button>
-              {props.enableEditing && <Button onClick={() => navigate(`/editReport/${prijava.id}`)}>Uredi prijavu</Button>}
-              {props.enableEditing && <Button danger onClick={() => izbrisiPrijavu()}>Izbriši prijavu</Button>}
+              {props.enableEditing && <Button icon={<EditOutlined />} onClick={() => navigate(`/editReport/${prijava.id}`)}>Uredi prijavu</Button>}
+              {props.enableEditing && <Button danger icon={<DeleteOutlined />} onClick={() => izbrisiPrijavu()}>Izbriši prijavu</Button>}
             </div>
           </div>
           <div>
