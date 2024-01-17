@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { deletePrijava, getPrijava } from "../utils/fetch";
 import { Prijava } from "../utils/types";
-import { Button, Layout, Image, Card, Checkbox, notification } from "antd";
+import { Button, Layout, Image, Card, Checkbox, notification, Typography, Modal } from "antd";
 import { locationToGoogle } from "../utils/location";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import MapJsApi from "../components/MapJsApi";
@@ -10,12 +10,13 @@ import Check from "../components/Check";
 import CustomList from "../components/CustomList";
 
 interface ReportProps {
-  enableEditing?: boolean
+  enableEditing?: boolean;
 }
 
 function Report(props: ReportProps) {
   const location = useLocation();
   const [prijava, setPrijava] = useState<Prijava | undefined>(location.state?.prijava);
+  const [deletingPrijava, setDeletingPrijava] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
   const realId = Number.parseInt(id as string);
@@ -41,7 +42,7 @@ function Report(props: ReportProps) {
   if (isIdBad || !prijava) return <div>Loading</div>;
   const marker = locationToGoogle(prijava.lokacija);
 
-  const item = prijava.parentPrijava && { 
+  const item = prijava.parentPrijava && {
     id: prijava.parentPrijava?.id,
     items: [
       { title: "ID:", value: prijava.parentPrijava.id },
@@ -59,50 +60,60 @@ function Report(props: ReportProps) {
 
   return (
     <Check if={!isIdBad && !!prijava} elseNavigateTo="/">
-      <Layout style={{ margin: "2em" }}>
-        <div style={{ display: "flex", justifyContent: "space-evenly", gap: "0.4em" }}>
-          <div style={{ width: "30em", fontSize: "1.5em" }}>
-            <Card style={{ fontSize: "1.1em" }}>
-              <div>
-                <span style={{ fontWeight: "bold" }}>Naziv: </span>
-                <span>{prijava.naziv ? prijava.naziv : "Naziv prijave ne postoji."}</span>
-              </div>
-              <div>
-                <span style={{ fontWeight: "bold" }}>Gradski ured: </span>
-                <span>{prijava.gradskiUred.naziv ? prijava.gradskiUred.naziv : "Nema odabranog gradskog ureda."}</span>
-              </div>
-              <div>
-                <span style={{ fontWeight: "bold" }}>Opis: </span>
-                <span>{prijava.opis ? prijava.opis : "Nema opisa za traženu prijavu."}</span>
-              </div>
-              <div>
-                <span style={{ fontWeight: "bold" }}>Tip oštećenja: </span>
-                <span>{prijava.gradskiUred.tipOstecenja.naziv ? prijava.gradskiUred.tipOstecenja.naziv : "Nije određen tip oštećenja."}</span>
-              </div>
-              <div>
-                <div style={{ fontWeight: "bold" }}>Parent: </div>
-                {prijava.parentPrijava ?
-                  item && <CustomList onHoverText="Klikni za prikaz lokacije na karti!" data={[item]} />
-                  : <div>Ne postoji parent prijava za traženu prijavu!</div>}
-              </div>
-              <div style={{ fontWeight: "bold" }}>Slike:</div>
-              <div style={{ display: "flex", gap: "0.2em", flexWrap: "wrap" }}>{prijava.slike.length == 0 ? "Nema priloženih slika" : (
-                prijava.slike.map((slika, index) => (
-                  <Image id={slika.podatak.toString()} width={180} height={130} src={`/api/getImage/${slika.podatak}`} alt={`Slika-${index}`} />
-                ))
-              )}
-              </div>
-            </Card>
-            <div style={{ display: "flex", gap: "0.8em", margin: "0.8em 0.8em" }}>
-              <Button onClick={() => navigate(-1)}>Natrag</Button>
-              {props.enableEditing && <Button icon={<EditOutlined />} onClick={() => navigate(`/editReport/${prijava.id}`)}>Uredi prijavu</Button>}
-              {props.enableEditing && <Button danger icon={<DeleteOutlined />} onClick={() => izbrisiPrijavu()}>Izbriši prijavu</Button>}
+      <Layout style={{ margin: "2em", display: "flex", justifyContent: "space-evenly", gap: "0.4em", flexDirection: "row" }}>
+        <div style={{ width: "30em", fontSize: "1.5em" }}>
+          <Card style={{ fontSize: "1.1em" }}>
+            <Typography.Title level={3}>Prijava ID {prijava.id}</Typography.Title>
+            <div>
+              <span style={{ fontWeight: "bold" }}>Naziv: </span>
+              <span>{prijava.naziv ? prijava.naziv : "Naziv prijave ne postoji."}</span>
             </div>
-          </div>
-          <div>
-            <MapJsApi zoom={16} center={marker} marker={marker} />
+            <div>
+              <span style={{ fontWeight: "bold" }}>Opis: </span>
+              <span>{prijava.opis ? prijava.opis : "Nema opisa za traženu prijavu."}</span>
+            </div>
+            <div>
+              <span style={{ fontWeight: "bold" }}>Gradski ured: </span>
+              <span>{prijava.gradskiUred.naziv ? prijava.gradskiUred.naziv : "Nema odabranog gradskog ureda."}</span>
+            </div>
+            <div>
+              <span style={{ fontWeight: "bold" }}>Tip oštećenja: </span>
+              <span>{prijava.gradskiUred.tipOstecenja.naziv ? prijava.gradskiUred.tipOstecenja.naziv : "Nije određen tip oštećenja."}</span>
+            </div>
+            <div>
+              <div style={{ fontWeight: "bold" }}>Povezana prijava: </div>
+              {prijava.parentPrijava ?
+                item && <CustomList onHoverText="Klikni za prikaz lokacije na karti!" data={[item]} />
+                : <div>Ne postoji parent prijava za traženu prijavu!</div>}
+            </div>
+            <div style={{ fontWeight: "bold" }}>Slike:</div>
+            <div style={{ display: "flex", gap: "0.2em", flexWrap: "wrap" }}>{prijava.slike.length == 0 ? "Nema priloženih slika" : (
+              prijava.slike.map((slika, index) => (
+                <Image id={slika.podatak.toString()} width={180} height={130} src={`/api/getImage/${slika.podatak}`} alt={`Slika-${index}`} />
+              ))
+            )}
+            </div>
+          </Card>
+          <div style={{ display: "flex", gap: "0.8em", margin: "0.8em" }}>
+            <Button onClick={() => navigate(-1)}>Natrag</Button>
+            {props.enableEditing && <Button icon={<EditOutlined />} onClick={() => navigate(`/editReport/${prijava.id}`)}>Uredi prijavu</Button>}
+            {props.enableEditing && <Button danger icon={<DeleteOutlined />} onClick={() => setDeletingPrijava(true)}>Izbriši prijavu</Button>}
           </div>
         </div>
+        <div>
+          <Typography.Title level={3}>Lokacija prijave</Typography.Title>
+          <MapJsApi zoom={16} center={marker} marker={marker} />
+        </div>
+        <Modal
+          open={deletingPrijava}
+          title="Potvrdite brisanje"
+          onOk={() => izbrisiPrijavu()}
+          onCancel={() => setDeletingPrijava(false)}
+          okText="U redu"
+          cancelText="Odustani"
+        >
+          <p>Želite li stvarno izbrisati ovu prijavu?</p>
+        </Modal>
       </Layout>
     </Check >
   );

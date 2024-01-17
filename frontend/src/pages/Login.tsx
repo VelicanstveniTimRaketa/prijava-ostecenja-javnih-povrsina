@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Layout, Button, Typography, Form, Input, notification } from "antd";
-import { LockOutlined, MailOutlined } from "@ant-design/icons";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Content } from "antd/es/layout/layout";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "antd/es/form/Form";
@@ -8,6 +8,7 @@ import { StateContext } from "../utils/state";
 import { Link } from "react-router-dom";
 import { login } from "../utils/fetch";
 import { LoginData, Response } from "../utils/types";
+import { getUser } from "../utils/user";
 import LoginRegisterHeader from "../components/LoginRegisterHeader";
 import Check from "../components/Check";
 
@@ -32,7 +33,7 @@ function Login() {
       console.error("no response data");
       return;
     }
-    setGlobal({ ...global, user: { ...response.data.korisnik, token: response.data.token, refreshToken: response.data.refreshToken } });
+    setGlobal({ ...global, user: getUser(response.data.korisnik, response.data.token, response.data.refreshToken) });
     navigate("/");
   }, [global, setGlobal, navigate, response]);
 
@@ -61,7 +62,7 @@ function Login() {
               name="username"
               rules={[{ required: true, message: "Molimo unesite važeće korisničko ime" }]}
             >
-              <Input prefix={<MailOutlined style={{ color: "rgba(0, 0, 0, 0.25)" }} />} placeholder="Korisničko ime" autoFocus />
+              <Input prefix={<UserOutlined style={{ color: "rgba(0, 0, 0, 0.25)" }} />} placeholder="Korisničko ime" autoFocus />
             </Form.Item>
             <Form.Item
               name="password"

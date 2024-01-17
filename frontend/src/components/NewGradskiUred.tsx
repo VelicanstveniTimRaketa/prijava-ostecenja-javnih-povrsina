@@ -1,9 +1,10 @@
 import { Button, Form, Input, Select, Typography, notification } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { useOstecenja } from "../hooks/useOstecenja";
-import { addGradskiUred, getUserFromToken } from "../utils/fetch";
+import { addGradskiUred } from "../utils/fetch";
 import { useContext } from "react";
 import { StateContext } from "../utils/state";
+import { getSavedUser } from "../utils/user";
 
 function NewGradskiUred() {
   const { global, setGlobal } = useContext(StateContext);
@@ -24,9 +25,7 @@ function NewGradskiUred() {
           description: "",
           placement: "top",
         });
-        getUserFromToken().then(u => {
-          u.success && u.data && global.user && setGlobal({ ...global, user: { ...u.data, token: global.user.token, refreshToken: global.user.refreshToken } });
-        });
+        getSavedUser().then(user => setGlobal({ ...global, user }));
       } else {
         notification.error({
           message: "Dodavanje gradskog ureda nije uspješno",

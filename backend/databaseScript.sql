@@ -51,7 +51,7 @@ insert into public.prijave
 
 select * from korisnici;
 
-select prijave.* from prijave natural join lokacije where latitude between (45.3271 - 0.0005) and (45.3271 + 0.0005) and longitude between (14.4422 - 0.0005) and (14.4422 + 0.0005);
+select prijave.* from prijave natural join lokacije where latitude between (45.3271 - 0.001) and (45.3271 + 0.001) and longitude between (14.4422 - 0.001) and (14.4422 + 0.001);
 
 
 select * from prijave;
