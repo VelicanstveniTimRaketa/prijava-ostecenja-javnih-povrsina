@@ -27,9 +27,7 @@ function NewReportForm(props: NewReportFormProps) {
   const [locationFromImage, setLocationFromImage] = useState<google.maps.LatLngLiteral | undefined>(undefined);
   const ostecenja = useOstecenja();
   const uredi = useGradskiUredi();
-  console.log(props.initialData);
-  console.log(props.initialData && locationToGoogle(props.initialData?.lokacija))
-  console.log(location, center);  
+
   function locationValidator() {
     return location !== undefined ? Promise.resolve() : Promise.reject();
   }
@@ -62,14 +60,15 @@ function NewReportForm(props: NewReportFormProps) {
     };
     props.onSubmit(prijava);
   }
-  // const initialData = props.initialData && {
-  //   reportName: props.initialData.naziv,
-  //   opis: props.initialData.opis,
-  //   ostecenja: props.initialData.gradskiUred.tipOstecenja.naziv,
-  //   ured: props.initialData.gradskiUred.naziv,
-  // }
+  const initialData = props.initialData && {
+    reportName: props.initialData.naziv,
+    opis: props.initialData.opis,
+    ostecenja: props.initialData.gradskiUred.tipOstecenja.id,
+    ured: props.initialData.gradskiUred.id,
+  };
+
   return (
-    <Form id="addPrijava" form={form} onFinish={onSubmit} labelCol={{ span: "5" }} wrapperCol={{ span: "20" }} style={{ width: "100%" }}>
+    <Form id="addPrijava" form={form} onFinish={onSubmit} initialValues={initialData} labelCol={{ span: "5" }} wrapperCol={{ span: "20" }} style={{ width: "100%" }}>
       <Form.Item required name="reportName" label="Naziv: " rules={[{ required: true, message: "Molimo unesite naziv prijave." }]}>
         <Input />
       </Form.Item>
@@ -77,20 +76,20 @@ function NewReportForm(props: NewReportFormProps) {
         <TextArea rows={4} />
       </Form.Item>
       <Form.Item required name="ostecenja" label="Tip oštećenja" rules={[{ required: true, message: "Molimo označite tip oštećenja." }]}>
-        <Select onChange={() => form.resetFields(["ured"])}>
+        <Select onChange={() => form.setFieldValue("ured", undefined)}>
           {ostecenja && ostecenja.map(ostecenje => (
-            <Select.Option key={ostecenje.id}>{ostecenje.naziv}</Select.Option>
+            <Select.Option key={ostecenje.id} value={ostecenje.id}>{ostecenje.naziv}</Select.Option>
           ))}
         </Select>
       </Form.Item>
       <Form.Item required label="Gradski ured" shouldUpdate={(prevValues, currentValues) => prevValues.ostecenja !== currentValues.ostecenja}>
         {({ getFieldValue }) => {
-          const filtriraniUredi = uredi?.filter(ured => ured.tipOstecenja.id.toString() === getFieldValue("ostecenja"));
+          const filtriraniUredi = uredi?.filter(ured => ured.tipOstecenja.id === getFieldValue("ostecenja"));
           return (
             <Form.Item noStyle name="ured" rules={[{ required: true, message: "Molimo označite gradski ured." }]}>
               <Select disabled={!getFieldValue("ostecenja")}>
-                {filtriraniUredi && filtriraniUredi.map(ostecenje => (
-                  <Select.Option key={ostecenje.id}>{ostecenje.naziv}</Select.Option>
+                {filtriraniUredi && filtriraniUredi.map(ured => (
+                  <Select.Option key={ured.id} value={ured.id}>{ured.naziv}</Select.Option>
                 ))}
               </Select>
             </Form.Item>

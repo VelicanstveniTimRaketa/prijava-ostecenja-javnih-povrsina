@@ -11,6 +11,7 @@ import { User, UserRegiser } from "../utils/types";
 interface UserFormProps {
   initialData?: User;
   noPassword?: boolean;
+  submitText: string;
   onSubmit: (user: UserRegiser) => void;
 }
 
@@ -116,7 +117,7 @@ function UserForm(props: UserFormProps) {
         </Upload>
       </Form.Item>
       <Form.Item key="submit" wrapperCol={{ offset: 7 }}>
-        <Button type="primary" loading={loading} htmlType="submit">Registriraj se</Button>
+        <Button type="primary" loading={loading} htmlType="submit">{props.submitText ?? "Registriraj se"}</Button>
       </Form.Item>
     </Form>
   );

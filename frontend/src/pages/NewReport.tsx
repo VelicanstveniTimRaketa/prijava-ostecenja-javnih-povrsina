@@ -2,18 +2,14 @@ import { Layout, theme, Modal, Typography, notification } from "antd";
 import { Content } from "antd/es/layout/layout";
 import { useEffect, useState } from "react";
 import { RcFile } from "antd/es/upload";
-import NewReportForm from "../components/NewReportForm";
-import { AddPrijavaResponse, BarebonesPrijava, Prijava, Response } from "../utils/types";
+import { AddPrijavaResponse, BarebonesPrijava, Response } from "../utils/types";
 import { addPrijava, connectPrijave } from "../utils/fetch";
 import { useNavigate } from "react-router";
-import Title from "antd/es/typography/Title";
+import NewReportForm from "../components/NewReportForm";
 import ReportList from "../components/ReportList";
+import Title from "antd/es/typography/Title";
 
-interface NewReportProps {
-  initialData?: Prijava;
-}
-
-function NewReport(props: NewReportProps) {
+function NewReport() {
   const { token: { colorBgContainer } } = theme.useToken();
   const [response, setResponse] = useState<Response<AddPrijavaResponse>>();
   const navigate = useNavigate();

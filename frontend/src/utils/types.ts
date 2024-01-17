@@ -31,6 +31,7 @@ export type User = UserBase & {
 
 export type CurrentUser = User & {
   token: string;
+  refreshToken: string;
 }
 
 export type Location = {
@@ -98,8 +99,9 @@ export type Response<T> = {
 }
 
 export type LoginData = {
-  token: string;
   korisnik: User;
+  token: string;
+  refreshToken: string;
 }
 
 export type AddPrijavaResponse = {

@@ -1,30 +1,40 @@
 import { Button, Form, Input, Select, Typography, notification } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { useOstecenja } from "../hooks/useOstecenja";
-import { addGradskiUred } from "../utils/fetch";
+import { addGradskiUred, getUserFromToken } from "../utils/fetch";
+import { useContext } from "react";
+import { StateContext } from "../utils/state";
 
 function NewGradskiUred() {
+  const { global, setGlobal } = useContext(StateContext);
   const [form] = useForm();
   const ostecenja = useOstecenja();
 
   function onSubmit() {
     const ostecenjeName = form.getFieldValue("newOstecenje");
-    const noviTipOstecenjaNaziv = ostecenjeName && "Oštećenje " + form.getFieldValue("newOstecenje");
+    const tipOstecenjaNaziv = ostecenjeName && "Oštećenje " + form.getFieldValue("newOstecenje");
     const data = {
       nazivUreda: "Ured za " + form.getFieldValue("uredName"),
-      tipOstecenjeID: form.getFieldValue("ostecenje") === "drugi" ? "0" : form.getFieldValue("ostecenje"),
+      tipOstecenjeID: form.getFieldValue("ostecenje") === "other" ? "0" : form.getFieldValue("ostecenje"),
     };
-    addGradskiUred(data, noviTipOstecenjaNaziv).then(v => v.success ?
-      notification.success({
-        message: "Dodavanje gradskog ureda uspješno",
-        description: "",
-        placement: "top",
-      }) :
-      notification.error({
-        message: "Dodavanje gradskog ureda nije uspješno",
-        description: v.errors && v.errors[0],
-        placement: "top",
-      })
+    addGradskiUred(data, tipOstecenjaNaziv).then(v => {
+      if (v.success) {
+        notification.success({
+          message: "Dodavanje gradskog ureda uspješno",
+          description: "",
+          placement: "top",
+        });
+        getUserFromToken().then(u => {
+          u.success && u.data && global.user && setGlobal({ ...global, user: { ...u.data, token: global.user.token, refreshToken: global.user.refreshToken } });
+        });
+      } else {
+        notification.error({
+          message: "Dodavanje gradskog ureda nije uspješno",
+          description: v.errors && v.errors[0],
+          placement: "top",
+        });
+      }
+    }
     );
   }
 

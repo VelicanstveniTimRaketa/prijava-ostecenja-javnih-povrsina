@@ -64,6 +64,6 @@ public class KorisnikServiceImpl implements KorisnikService {
         return new KorisnikDTO(korisnik.getId(), korisnik.getUsername(), korisnik.getIme(),
                 korisnik.getPrezime(), korisnik.getRole(),
                 korisnik.getActive(), korisnik.getUred_status(),
-                korisnik.getEmail());
+                korisnik.getUred(), korisnik.getEmail());
     }
 }

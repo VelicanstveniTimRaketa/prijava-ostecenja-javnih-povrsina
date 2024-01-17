@@ -32,15 +32,13 @@ function Login() {
       console.error("no response data");
       return;
     }
-    console.log(response.data.korisnik);
-    setGlobal({ ...global, user: { ...response.data.korisnik, token: response.data.token } });
+    setGlobal({ ...global, user: { ...response.data.korisnik, token: response.data.token, refreshToken: response.data.refreshToken } });
     navigate("/");
   }, [global, setGlobal, navigate, response]);
 
   async function onSubmit() {
     setLoading(true);
     const data = { username: form.getFieldValue("username"), password: form.getFieldValue("password") };
-    console.log(data);
     login(data).then(v => {
       setResponse(v);
       setLoading(false);

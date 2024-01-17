@@ -39,7 +39,7 @@ function UserIcon() {
   return (
     <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
       <Typography.Title level={5} style={{ margin: "0 1em" }}>{global.user?.username}</Typography.Title>
-      <Avatar onClick={toggle} icon={<UserOutlined />} />
+      <Avatar onClick={toggle} className="onClick" style={{ cursor: "pointer" }} icon={<UserOutlined />} />
       {active && <FloatingList data={items} />}
     </div>
   );

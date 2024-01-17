@@ -12,7 +12,7 @@ import AlertBanner from "../components/AlertBanner";
 function notify(v: { success: boolean, errors?: string[] }) {
   if (v.success) {
     notification.success({
-      message: "Uspijeh",
+      message: "Uspjeh",
       description: "",
       placement: "top",
     });
@@ -49,7 +49,7 @@ function GradskiUredi() {
         { title: "ID:", value: ured.id },
         { title: "Naziv:", value: ured.naziv },
         { title: "Oštećenje:", value: ured.tipOstecenja?.naziv },
-        ...(global.user ? [{ value: button }] : [])
+        ...(global.user && !global.user.ured ? [{ value: button }] : [])
       ]
     };
   }), [global.user, uredi]);
@@ -67,17 +67,16 @@ function GradskiUredi() {
             potvrdiUred(ured.id).then(v => {
               notify(v);
               getGradskiUredi().then(res => setUredi(res.data));
-              getNeaktivniGradskiUredi().then(res => setNeaktivniUredi(res.data));
+              global.user?.role === "ADMIN" && getNeaktivniGradskiUredi().then(res => setNeaktivniUredi(res.data));
             });
           }} type="primary">Potvrdi</Button>
         }] : []),
         ...(global.user ? [{
           value: <Button style={{ marginLeft: "2em" }} onClick={() => {
             odbijUred(ured.id).then(v => {
-              console.log(v);
               notify(v);
               getGradskiUredi().then(res => setUredi(res.data));
-              getNeaktivniGradskiUredi().then(res => setNeaktivniUredi(res.data));
+              global.user?.role === "ADMIN" && getNeaktivniGradskiUredi().then(res => setNeaktivniUredi(res.data));
             });
           }} type="primary">Odbij</Button>
         }] : []),

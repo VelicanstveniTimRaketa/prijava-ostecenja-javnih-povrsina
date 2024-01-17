@@ -240,16 +240,20 @@ public class PrijavaServiceImpl implements PrijavaService {
         Optional<Prijava> optionalPrijava = prijaveRepo.findById(id);
 
         if (optionalPrijava.isPresent()) {
-            Prijava prijava = optionalPrijava.get();
-
-            prijaveRepo.delete(prijava);
+            Prijava currentPrijava = optionalPrijava.get();
+            List<Prijava> relatedPrijave = prijaveRepo.findAllByParentPrijava(currentPrijava);
+            relatedPrijave.forEach(prijava -> {
+                prijava.setParentPrijava(null);
+                prijaveRepo.save(prijava);
+            });
+            prijaveRepo.delete(currentPrijava);
             return true;
         }
         return false;
     }
 
     @Override
-    public Object updatePrijava(Long id, PrijavaDTO prijavaDTO,MultipartFile[] slike) {
+    public Object updatePrijava(Long id, PrijavaDTO prijavaDTO) {
         Optional<Prijava> optionalPrijava=prijaveRepo.findById(id);
         if (optionalPrijava.isEmpty()){
             throw new RecordNotFoundException("ne postoji prijava za dani id: "+id);
@@ -263,10 +267,12 @@ public class PrijavaServiceImpl implements PrijavaService {
         Lokacija lok=new Lokacija(prijavaDTO.getLatitude(), prijavaDTO.getLongitude());
         lokacijRepo.save(lok);
         newPrijava.setLokacija(lok);
-        List<Slika> savedSlike = addSlike(prijavaDTO.getSlike(), newPrijava);
-        newPrijava.setSlike(savedSlike);
 
-        prijaveRepo.save(newPrijava);
+        if(prijavaDTO.getSlike() != null) {
+            List<Slika> savedSlike = addSlike(prijavaDTO.getSlike(), newPrijava);
+            newPrijava.setSlike(savedSlike);
+            prijaveRepo.save(newPrijava);
+        }
         return true;
     }
 
