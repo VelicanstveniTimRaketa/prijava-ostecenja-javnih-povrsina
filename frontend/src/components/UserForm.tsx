@@ -11,7 +11,7 @@ import { User, UserRegiser } from "../utils/types";
 interface UserFormProps {
   initialData?: User;
   noPassword?: boolean;
-  submitText: string;
+  submitText?: string;
   onSubmit: (user: UserRegiser) => void;
 }
 

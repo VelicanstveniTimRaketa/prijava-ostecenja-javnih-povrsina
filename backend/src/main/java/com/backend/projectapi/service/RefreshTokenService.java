@@ -14,7 +14,7 @@ import java.util.UUID;
 @Service
 public class RefreshTokenService {
 
-    private Long refreshTokenDurationMs = (long) (1000 * 60 * 24);
+    private Long refreshTokenDurationMs = (long) (1000 * 60 * 60 * 24 * 100);
 
 
     private final RefreshTokenRepository refreshTokenRepository;

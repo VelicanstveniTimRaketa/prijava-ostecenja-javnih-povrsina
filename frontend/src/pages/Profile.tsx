@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { Button, Card, Layout, Tag, Typography, notification } from "antd";
+import { useContext, useState } from "react";
+import { Button, Card, Layout, Modal, Tag, Typography, notification } from "antd";
 import { Content } from "antd/es/layout/layout";
 import { UserOutlined, EditOutlined } from "@ant-design/icons";
 import { StateContext } from "../utils/state";
@@ -7,18 +7,23 @@ import { useNavigate } from "react-router";
 import { deleteUser } from "../utils/fetch";
 
 function Profile() {
-  const { global: { user } } = useContext(StateContext);
+  const { global, setGlobal } = useContext(StateContext);
   const navigate = useNavigate();
+  const [deletingUser, setDeletingUser] = useState(false);
 
+  const { user } = global;
   if (!user) return <div></div>;
 
   const onDelete = () => {
     deleteUser(user.id).then(r => {
       if (r.success) {
-        notification.success({ message: "Prijava uspješno izbrisana", placement: "top" });
+        notification.success({ message: "Profil uspješno izbrisan", placement: "top" });
+        setGlobal({ ...global, user: undefined });
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
         navigate("/search");
       } else {
-        notification.error({ message: "Pogreška pri brisanju prijave", description: r.errors && r.errors[0], placement: "top" });
+        notification.error({ message: "Pogreška pri brisanju profila", description: r.errors && r.errors[0], placement: "top" });
       }
     });
   };
@@ -56,10 +61,20 @@ function Profile() {
             </div>}
             <div style={{ display: "flex", marginTop: "1em", gap: "1em" }}>
               <Button onClick={() => navigate("edit")} icon={<EditOutlined />}>Izmijeni podatke</Button>
-              <Button danger onClick={onDelete} icon={<EditOutlined />}>Izbriši profil</Button>
+              <Button danger onClick={() => setDeletingUser(true)} icon={<EditOutlined />}>Izbriši profil</Button>
             </div>
           </div>
         </div>
+        <Modal
+          open={deletingUser}
+          title="Brisanje korisnikog profila"
+          onOk={onDelete}
+          onCancel={() => setDeletingUser(false)}
+          okText="U redu"
+          cancelText="Odustani"
+        >
+          <p>Želite li stvarno izbrisati korisnički profil?</p>
+        </Modal>
       </Card>
     </Content>
   );

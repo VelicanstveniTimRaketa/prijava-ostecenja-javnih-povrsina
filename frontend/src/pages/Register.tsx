@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { StateContext } from "../utils/state";
 import { LoginData, Response, UserRegiser } from "../utils/types";
 import { register } from "../utils/fetch";
+import { getUser } from "../utils/user";
 import LoginRegisterHeader from "../components/LoginRegisterHeader";
 import UserForm from "../components/UserForm";
 import Check from "../components/Check";
@@ -28,7 +29,7 @@ function Register() {
       console.error("no response data");
       return;
     }
-    setGlobal({ ...global, user: { ...response.data.korisnik, token: response.data.token } });
+    setGlobal({ ...global, user: getUser(response.data.korisnik, response.data.token, response.data.refreshToken) });
     navigate("/");
   }, [global, setGlobal, navigate, response]);
 

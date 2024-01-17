@@ -28,7 +28,7 @@ function WelcomeView() {
     <Layout style={{ padding: "5em 4em", display: "flex", flexDirection: "row" }} className="bgAnim">
       <Content style={{ display: "flex", flexDirection: "column", minHeight: 280, alignItems: "center", height: "fit-content" }}>
         <Logo size="8em" />
-        <Typography.Title level={1}>Prijava oštećenja na javnim površinama</Typography.Title>
+        <Typography.Title level={1}>Prijavi oštećenja na javnim površinama</Typography.Title>
         <Typography.Paragraph style={{ fontSize: "1.5em" }}>
           Rješavaju se u rekordnom roku!
         </Typography.Paragraph>

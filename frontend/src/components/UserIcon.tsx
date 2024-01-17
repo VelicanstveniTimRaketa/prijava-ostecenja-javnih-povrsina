@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 import { useToggleable } from "../hooks/useToggleable";
 import Avatar from "antd/es/avatar/avatar";
 import FloatingList from "./FloatingList";
+import { clearSavedUser } from "../utils/user";
 
 function UserIcon() {
   const { global, setGlobal } = useContext(StateContext);
@@ -14,7 +15,7 @@ function UserIcon() {
 
   function onLogout() {
     setGlobal({ ...global, user: undefined });
-    localStorage.removeItem("token");
+    clearSavedUser();
     navigate("/login");
   }
 
