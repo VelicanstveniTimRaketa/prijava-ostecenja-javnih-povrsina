@@ -60,7 +60,7 @@ public class KorisikServiceTest {
         userList.add(korisnik1);
         userList.add(korisnik2);
 
-        when(korisniciRepo.findAll()).thenReturn(userList);
+        when(korisniciRepo.findAllActive()).thenReturn(userList);
 
 
         List<Korisnik> result = korisnikService.getAllUsers(null);
