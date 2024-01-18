@@ -121,11 +121,7 @@ function Main() {
             </Routes>
           </Check>
         } />
-        <Route path="editReport/:id" element={
-          <Check if={global.user?.role === "ADMIN"} elseNavigateTo="search/:id">
-            <EditReport />
-          </Check>
-        } />
+        <Route path="editReport/:id" element={<EditReport />} />
       </Routes>
     </Layout>
   );

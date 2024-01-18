@@ -9,20 +9,25 @@ import Register from "./pages/Register";
 
 function App() {
   const [global, setGlobal] = useState(STATE);
+  const [loginChecked, setLoginChecked] = useState(false);
 
   useEffect(() => {
-    !global.user && getSavedUser().then(user => setGlobal({ ...global, user }));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [global.user]);
+    !global.user && getSavedUser().then(user => {
+      user && setGlobal({ ...global, user });
+      setLoginChecked(true);
+    });
+  }, [global, global.user]);
 
   return (
     <BrowserRouter>
       <StateContext.Provider value={{ global, setGlobal }}>
-        <Routes>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/register" element={<Register />}></Route>
-          <Route path="*" element={<Main />}></Route>
-        </Routes>
+        {loginChecked &&
+          <Routes>
+            <Route path="/login" element={<Login />}></Route>
+            <Route path="/register" element={<Register />}></Route>
+            <Route path="*" element={<Main />}></Route>
+          </Routes>
+        }
       </StateContext.Provider>
     </BrowserRouter>
   );
