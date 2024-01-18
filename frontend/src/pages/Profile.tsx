@@ -67,7 +67,7 @@ function Profile() {
         </div>
         <Modal
           open={deletingUser}
-          title="Brisanje korisnikog profila"
+          title="Brisanje korisničkog profila"
           onOk={onDelete}
           onCancel={() => setDeletingUser(false)}
           okText="U redu"

@@ -12,8 +12,6 @@ export async function getSavedUser() {
   const refreshToken = localStorage.getItem("refreshToken");
   const timeSaved = localStorage.getItem("timeSaved");
 
-  console.log(token, refreshToken, timeSaved);
-
   if (!token || !refreshToken || !timeSaved) {
     clearSavedUser();
     return;

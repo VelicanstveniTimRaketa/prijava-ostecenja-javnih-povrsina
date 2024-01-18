@@ -1,11 +1,13 @@
 import { Layout, Typography, notification } from "antd";
 import { Content } from "antd/es/layout/layout";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { getPrijava, updatePrijava } from "../utils/fetch";
-import NewReportForm from "../components/NewReportForm";
 import { BarebonesPrijava, Prijava, Slika } from "../utils/types";
+import { StateContext } from "../utils/state";
 import { RcFile } from "antd/es/upload";
+import Check from "../components/Check";
+import NewReportForm from "../components/NewReportForm";
 
 function convertSlikaToRcFile(slika: Slika): RcFile {
   const url = slika.podatak; // Assuming 'podatak' represents the image URL
@@ -23,6 +25,7 @@ function convertSlikaToRcFile(slika: Slika): RcFile {
 }
 
 function EditReport() {
+  const { global } = useContext(StateContext);
   const [prijava, setPrijava] = useState<Prijava>();
   const [images, setImages] = useState<Slika[]>();
   const { id } = useParams();
@@ -50,22 +53,26 @@ function EditReport() {
   }
 
   return (
-    <Layout style={{ margin: "1.5em", display: "flex", alignItems: "center" }}>
-      <Content style={{
-        display: "flex",
-        flexDirection: "column",
-        maxWidth: "100%",
-        alignItems: "center",
-      }}>
-        <Typography.Title level={2}>Uredi podatke prijave</Typography.Title>
-        <hr style={{ fontWeight: "bold", color: "black" }} />
-        {prijava ? (
-          <NewReportForm onSubmit={onSubmit} initialData={prijava} />
-        ) : (
-          <p>Loading...</p>
-        )}
-      </Content>
-    </Layout>
+    <Check if={!!global.user} elseNavigateTo="/login">
+      <Layout style={{ margin: "1.5em", display: "flex", alignItems: "center" }}>
+        <Content style={{
+          display: "flex",
+          flexDirection: "column",
+          maxWidth: "100%",
+          alignItems: "center",
+        }}>
+          <Typography.Title level={2}>Uredi podatke prijave</Typography.Title>
+          <hr style={{ fontWeight: "bold", color: "black" }} />
+          {prijava ? (
+            <Check if={global.user?.role === "ADMIN" || prijava.kreator?.id === global.user?.id} elseNavigateTo="/">
+              <NewReportForm onSubmit={onSubmit} initialData={prijava} />
+            </Check>
+          ) : (
+            <p>Loading...</p>
+          )}
+        </Content>
+      </Layout>
+    </Check>
   );
 }
 

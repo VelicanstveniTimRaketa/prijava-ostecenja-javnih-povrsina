@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Layout, Button, Typography, Form, Input, notification } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Content } from "antd/es/layout/layout";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "antd/es/form/Form";
 import { StateContext } from "../utils/state";
 import { Link } from "react-router-dom";
@@ -17,6 +17,9 @@ function Login() {
   const [form] = useForm();
   const [response, setResponse] = useState<Response<LoginData>>();
   const [loading, setLoading] = useState(false);
+  const location = useLocation();
+  const [cameFromFailedCheck] = useState<boolean>(location.state?.checkFailed);
+  const justLoggedIn = useRef(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,7 +37,7 @@ function Login() {
       return;
     }
     setGlobal({ ...global, user: getUser(response.data.korisnik, response.data.token, response.data.refreshToken) });
-    navigate("/");
+    justLoggedIn.current = true;
   }, [global, setGlobal, navigate, response]);
 
   async function onSubmit() {
@@ -47,7 +50,7 @@ function Login() {
   }
 
   return (
-    <Check if={!global.user} elseNavigateTo="/">
+    <Check if={!global.user} elseNavigateTo={cameFromFailedCheck && justLoggedIn.current ? -2 : "/" /* zasto ide -2 a ne -1, nmp */}>
       <LoginRegisterHeader />
       <Layout>
         <Content style={{ display: "flex", alignItems: "center", flexDirection: "column", flex: "1", width: "100%" }}>
