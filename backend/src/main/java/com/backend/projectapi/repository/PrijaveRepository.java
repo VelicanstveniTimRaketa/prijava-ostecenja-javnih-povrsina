@@ -24,27 +24,21 @@ public interface PrijaveRepository extends JpaRepository<Prijava, Long> {
     @Query(value = "select prijave.* from prijave natural join lokacije where " +
             "prvo_vrijeme_prijave between cast (current_timestamp - interval '24 hours' as timestamp) and " +
             "cast (current_timestamp + interval '24 hours' as timestamp) and vrijeme_otklona is null and " +
-            "latitude between (:lat - 0.0005) and (:lat + 0.0005) and longitude between (:lng - 0.0005) and " +
-            "(:lng + 0.0005) and id != :ID", nativeQuery = true)
+            "latitude between (:lat - 0.001) and (:lat + 0.001) and longitude between (:lng - 0.001) and " +
+            "(:lng + 0.001) and id != :ID", nativeQuery = true)
     List<Prijava> findClosePrijave (@Param("lat") Double lat, @Param("lng") Double lng, @Param("ID") Long ID);
 
-    @Query(value = "SELECT * FROM prijave  WHERE ostecenje_id = :id",nativeQuery = true)
+    @Query(value = "SELECT p.* FROM prijave p JOIN gradski_uredi g ON p.gradski_ured_Id=g.id where g.ostecenje_id= :id",nativeQuery = true)
     List<Prijava> findAllByTipOstecenja(@Param("id") Long id);
 
-    @Query(value = "SELECT * FROM prijave where id = :uvjeti",nativeQuery = true)
-    List<Prijava> findOvisnoOUvjetu(@Param("uvjeti") String uvjeti);
-
-    @Query(value = "SELECT * FROM prijave  where vrijeme_otklona is null and ostecenje_id = :id",nativeQuery = true)
-    List<Prijava> findAllByTipOstecenjaAndActive(@Param("id") Long id);
-
-    @Query(value = "SELECT * FROM prijave  where vrijeme_otklona is not null and ostecenje_id = :id",nativeQuery = true)
-    List<Prijava> findAllByTipOstecenjaAndNotActive(@Param("id") Long id);
+    @Query(value = "SELECT p.* FROM prijave p where p.gradski_ured_id = :id ",nativeQuery = true)
+    List<Prijava> findAllByGradskiUred(@Param("id") Long id);
 
     //WHERE timestamp_with_zone AT TIME ZONE 'UTC' = '2023-01-01T12:34:56.789Z'::timestamptz AT TIME ZONE 'UTC';
     @Query(value = "select * from prijave where prvo_vrijeme_prijave AT TIME ZONE 'CET' between :prvoVrijemePrijave and :prvoVrijemePrijave2",nativeQuery = true)
     List<Prijava> findAllByPrvoVrijemePrijaveBetween(@NonNull ZonedDateTime prvoVrijemePrijave, @NonNull ZonedDateTime prvoVrijemePrijave2);
 
-    @Query (value = "select prijave.* from prijave natural join lokacije where latitude between (:lat - 0.0005) and (:lat + 0.0005) and longitude between (:lng - 0.0005) and (:lng + 0.0005)", nativeQuery = true)
+    @Query (value = "select prijave.* from prijave natural join lokacije where latitude between (:lat - 0.001) and (:lat + 0.001) and longitude between (:lng - 0.001) and (:lng + 0.001)", nativeQuery = true)
     List<Prijava> findAllByLokacija(@Param("lat") Double lat, @Param("lng") Double lng);
 
     @Query(value = "SELECT * FROM prijave  where kreator_id = :id",nativeQuery = true)

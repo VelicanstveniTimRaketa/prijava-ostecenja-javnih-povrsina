@@ -2,7 +2,9 @@ package com.backend.projectapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.aspectj.weaver.ast.Literal;
 
 import java.util.List;
 
@@ -22,7 +24,28 @@ public class TipOstecenja {
     private String naziv;
 
     @JsonIgnore
+    @NotNull
     @OneToMany(mappedBy = "tipOstecenja", cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<Prijava> prijave;
+    private List<GradskiUred> gradskiUredi;
+
+    public TipOstecenja(@NonNull String naziv, List<GradskiUred> gradskiUredi) {
+        this.naziv = naziv;
+        this.gradskiUredi = gradskiUredi;
+    }
+
+//    public TipOstecenja(Long id, @NonNull String naziv, List<GradskiUred> gradskiUredi) {
+//        Id = id;
+//        this.naziv = naziv;
+//        this.gradskiUredi = gradskiUredi;
+//    }
+
+    /*@NotNull
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "ostecenjeId")
+    private TipOstecenja tipOstecenja;*/
+
+    /*@JsonIgnore
+    @OneToMany(mappedBy = "tipOstecenja", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Prijava> prijave;*/
 
 }

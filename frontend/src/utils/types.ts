@@ -16,7 +16,7 @@ export type UserRegiser = UserBase & {
 }
 
 export type UserLogin = {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -26,10 +26,12 @@ export type User = UserBase & {
   id: number;
   role: UserRole;
   ured?: GradskiUred;
+  ured_status: undefined | "pending" | "active";
 }
 
 export type CurrentUser = User & {
   token: string;
+  refreshToken: string;
 }
 
 export type Location = {
@@ -41,7 +43,12 @@ export type GradskiUred = {
   id: number;
   naziv: string;
   tipOstecenja: TipOstecenja;
+  active: "true" | "false";
 }
+
+export type GradskiUredDetailed = GradskiUred & {
+  clanovi: User[];
+};
 
 export type TipOstecenja = {
   id: number;
@@ -56,17 +63,22 @@ export type BarebonesPrijava = {
   longitude: number;
 }
 
+export type Slika = {
+  podatak: string;
+  id: number;
+}
+
 export type Prijava = {
   id: number;
   naziv: string;
   opis: string;
   lokacija: Location;
-  ured: GradskiUred;
+  gradskiUred: GradskiUred;
   kreator?: User;
   parentPrijava?: Prijava;
   prvoVrijemePrijave: Date;
   vrijemeOtklona?: Date;
-  slike: string[];
+  slike: Slika[];
 }
 
 export type PrijaveOptions = {
@@ -77,6 +89,7 @@ export type PrijaveOptions = {
   dateTo?: string;
   lat?: string;
   lng?: string;
+  uredId?: string;
 };
 
 export type Response<T> = {
@@ -86,14 +99,20 @@ export type Response<T> = {
 }
 
 export type LoginData = {
-  token: string;
   korisnik: User;
+  token: string;
+  refreshToken: string;
 }
 
 export type AddPrijavaResponse = {
   newReport: Prijava,
   nearbyReports: Prijava[]
 };
+
+export type NewGradskiUred = {
+  nazivUreda: string;
+  tipOstecenjeID?: string;
+}
 
 // this is some vile black magic fr
 export type MenuPropsWithComponent = MenuProps["items"] extends ((infer T)[] | undefined) ? ({ item: T extends null ? { key: string } : T, component: React.FC, admin?: boolean })[] : never;

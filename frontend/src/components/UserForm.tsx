@@ -11,6 +11,7 @@ import { User, UserRegiser } from "../utils/types";
 interface UserFormProps {
   initialData?: User;
   noPassword?: boolean;
+  submitText?: string;
   onSubmit: (user: UserRegiser) => void;
 }
 
@@ -18,19 +19,22 @@ function UserForm(props: UserFormProps) {
   const [form] = useForm();
   const [image, setImage] = useState<RcFile>();
   const [imageB64, setImageB64] = useState<string>();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     image && getBase64(image).then(setImageB64);
   }, [image]);
 
   async function onSubmit() {
-    props.onSubmit({
+    setLoading(true);
+    await props.onSubmit({
       username: form.getFieldValue("username"),
       email: form.getFieldValue("email"),
       ime: form.getFieldValue("name"),
       prezime: form.getFieldValue("surname"),
       password: form.getFieldValue("password"),
     });
+    setLoading(false);
   }
 
   function passwordValidator(_: RuleObject, value: StoreValue) {
@@ -113,7 +117,7 @@ function UserForm(props: UserFormProps) {
         </Upload>
       </Form.Item>
       <Form.Item key="submit" wrapperCol={{ offset: 7 }}>
-        <Button type="primary" htmlType="submit">Registriraj se</Button>
+        <Button type="primary" loading={loading} htmlType="submit">{props.submitText ?? "Registriraj se"}</Button>
       </Form.Item>
     </Form>
   );

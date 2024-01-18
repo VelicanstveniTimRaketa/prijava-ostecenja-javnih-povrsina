@@ -1,5 +1,6 @@
 package com.backend.projectapi.service.impl;
 
+import com.backend.projectapi.DTO.KorisnikDTO;
 import com.backend.projectapi.exception.RecordNotFoundException;
 import com.backend.projectapi.model.Korisnik;
 import com.backend.projectapi.repository.KorisniciRepository;
@@ -29,7 +30,7 @@ public class KorisnikServiceImpl implements KorisnikService {
                 throw new RecordNotFoundException("ne postoji korisnik za dani id: "+id);
             }
         }else{
-            return korisniciRepo.findAll();
+            return korisniciRepo.findAllActive();
         }
     }
 
@@ -56,5 +57,13 @@ public class KorisnikServiceImpl implements KorisnikService {
         }else{
             return new RecordNotFoundException("korisnik sa danim id-em :"+id+" ne postoji");
         }
+    }
+
+    @Override
+    public KorisnikDTO mapToKorisnikDTO(Korisnik korisnik) {
+        return new KorisnikDTO(korisnik.getId(), korisnik.getUsername(), korisnik.getIme(),
+                korisnik.getPrezime(), korisnik.getRole(),
+                korisnik.getActive(), korisnik.getUred_status(),
+                korisnik.getUred(), korisnik.getEmail());
     }
 }

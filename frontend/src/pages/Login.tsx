@@ -1,13 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Layout, Button, Typography, Form, Input, notification } from "antd";
-import { LockOutlined, MailOutlined } from "@ant-design/icons";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Content } from "antd/es/layout/layout";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "antd/es/form/Form";
 import { StateContext } from "../utils/state";
 import { Link } from "react-router-dom";
 import { login } from "../utils/fetch";
 import { LoginData, Response } from "../utils/types";
+import { getUser } from "../utils/user";
 import LoginRegisterHeader from "../components/LoginRegisterHeader";
 import Check from "../components/Check";
 
@@ -15,6 +16,10 @@ function Login() {
   const { global, setGlobal } = useContext(StateContext);
   const [form] = useForm();
   const [response, setResponse] = useState<Response<LoginData>>();
+  const [loading, setLoading] = useState(false);
+  const location = useLocation();
+  const [cameFromFailedCheck] = useState<boolean>(location.state?.checkFailed);
+  const justLoggedIn = useRef(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,17 +36,21 @@ function Login() {
       console.error("no response data");
       return;
     }
-    setGlobal({ ...global, user: { ...response.data.korisnik,  token: response.data.token }});
-    navigate("/");
+    setGlobal({ ...global, user: getUser(response.data.korisnik, response.data.token, response.data.refreshToken) });
+    justLoggedIn.current = true;
   }, [global, setGlobal, navigate, response]);
 
   async function onSubmit() {
-    const data = { email: form.getFieldValue("email"), password: form.getFieldValue("password") };
-    login(data).then(setResponse);
+    setLoading(true);
+    const data = { username: form.getFieldValue("username"), password: form.getFieldValue("password") };
+    login(data).then(v => {
+      setResponse(v);
+      setLoading(false);
+    });
   }
 
   return (
-    <Check if={!global.user} elseNavigateTo="/">
+    <Check if={!global.user} elseNavigateTo={cameFromFailedCheck && justLoggedIn.current ? -2 : "/" /* zasto ide -2 a ne -1, nmp */}>
       <LoginRegisterHeader />
       <Layout>
         <Content style={{ display: "flex", alignItems: "center", flexDirection: "column", flex: "1", width: "100%" }}>
@@ -53,10 +62,10 @@ function Login() {
             style={{ width: "100%", maxWidth: "20em" }}
           >
             <Form.Item
-              name="email"
-              rules={[{ required: true, type: "email", message: "Molimo unesite važeći email" }]}
+              name="username"
+              rules={[{ required: true, message: "Molimo unesite važeće korisničko ime" }]}
             >
-              <Input prefix={<MailOutlined style={{ color: "rgba(0, 0, 0, 0.25)" }} />} placeholder="Email" autoFocus />
+              <Input prefix={<UserOutlined style={{ color: "rgba(0, 0, 0, 0.25)" }} />} placeholder="Korisničko ime" autoFocus />
             </Form.Item>
             <Form.Item
               name="password"
@@ -68,7 +77,7 @@ function Login() {
               <Input.Password placeholder="Lozinka" prefix={<LockOutlined style={{ color: "rgba(0, 0, 0, 0.25)" }} />} />
             </Form.Item>
             <Form.Item key="submit">
-              <Button type="primary" htmlType="submit" style={{ width: "100%" }}>Prijava</Button>
+              <Button type="primary" loading={loading} htmlType="submit" style={{ width: "100%" }}>Prijava</Button>
               Nemaš račun? <Link to="/register">Registriraj se!</Link>
             </Form.Item>
           </Form>

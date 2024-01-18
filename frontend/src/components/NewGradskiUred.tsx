@@ -1,13 +1,40 @@
-import { Button, Form, Input, Select, Typography } from "antd";
+import { Button, Form, Input, Select, Typography, notification } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { useOstecenja } from "../hooks/useOstecenja";
+import { addGradskiUred } from "../utils/fetch";
+import { useContext } from "react";
+import { StateContext } from "../utils/state";
+import { getSavedUser } from "../utils/user";
 
 function NewGradskiUred() {
+  const { global, setGlobal } = useContext(StateContext);
   const [form] = useForm();
   const ostecenja = useOstecenja();
 
   function onSubmit() {
-    console.log("ured submit");
+    const ostecenjeName = form.getFieldValue("newOstecenje");
+    const tipOstecenjaNaziv = ostecenjeName && "Oštećenje " + form.getFieldValue("newOstecenje");
+    const data = {
+      nazivUreda: "Ured za " + form.getFieldValue("uredName"),
+      tipOstecenjeID: form.getFieldValue("ostecenje") === "other" ? "0" : form.getFieldValue("ostecenje"),
+    };
+    addGradskiUred(data, tipOstecenjaNaziv).then(v => {
+      if (v.success) {
+        notification.success({
+          message: "Dodavanje gradskog ureda uspješno",
+          description: "",
+          placement: "top",
+        });
+        getSavedUser().then(user => setGlobal({ ...global, user }));
+      } else {
+        notification.error({
+          message: "Dodavanje gradskog ureda nije uspješno",
+          description: v.errors && v.errors[0],
+          placement: "top",
+        });
+      }
+    }
+    );
   }
 
   return (
@@ -17,11 +44,11 @@ function NewGradskiUred() {
         <Form.Item label="Naziv: " name="uredName" rules={[{ required: true, message: "Molimo unesite naziv novog ureda" }]}>
           <Input prefix="Ured za " placeholder="..." />
         </Form.Item>
-        <Form.Item label="Opis: " name="description" rules={[{ required: true, message: "Molimo unesite opis ureda" }]}>
+        {/*<Form.Item label="Opis: " name="description" rules={[{ required: true, message: "Molimo unesite opis ureda" }]}>
           <Input.TextArea rows={4} />
-        </Form.Item>
+        </Form.Item>*/}
         <Form.Item required name="ostecenje" label="Tip oštećenja" rules={[{ required: true, message: "Molimo označite tip oštećenja." }]}>
-          <Select onChange={() => form.setFieldValue("ured", undefined)}>
+          <Select onChange={() => form.setFieldValue("newOstecenje", undefined)}>
             {ostecenja && ostecenja.map(ostecenje => (
               <Select.Option key={ostecenje.id}>{ostecenje.naziv}</Select.Option>
             ))}
@@ -30,7 +57,7 @@ function NewGradskiUred() {
         </Form.Item>
         <Form.Item noStyle shouldUpdate={(prevValues, currentValues) => prevValues.ostecenje !== currentValues.ostecenje}>
           {({ getFieldValue }) => getFieldValue("ostecenje") === "other" ? (
-            <Form.Item name="ured" label="Novi tip oštećenja: " rules={[{ required: true, message: "Molimo unesite ime nove vrste oštećenja" }]}>
+            <Form.Item name="newOstecenje" label="Novi tip oštećenja: " rules={[{ required: true, message: "Molimo unesite ime nove vrste oštećenja" }]}>
               <Input prefix="Oštećenje " placeholder="..." />
             </Form.Item>
           ) : null}

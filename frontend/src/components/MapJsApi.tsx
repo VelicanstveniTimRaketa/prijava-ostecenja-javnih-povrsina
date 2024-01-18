@@ -1,4 +1,4 @@
-import { useEffect, useState, CSSProperties, Fragment } from "react";
+import { useEffect, useState, CSSProperties } from "react";
 import { GoogleMap, Libraries, Marker, useJsApiLoader } from "@react-google-maps/api";
 import Layout from "antd/es/layout";
 
@@ -34,6 +34,13 @@ function MapJsApi(props: MapJsApiProps) {
 
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [enabled, setEnabled] = useState(!props.disabled);
+  const [marker, setMarker] = useState<google.maps.LatLng | google.maps.LatLngLiteral>();
+  const [secondaryMakers, setSecondaryMarkers] = useState<(google.maps.LatLng | google.maps.LatLngLiteral)[]>();
+
+  useEffect(() => {
+    setMarker(isLoaded ? props.marker : undefined);
+    setSecondaryMarkers(isLoaded ? props.secondaryMarkers : undefined);
+  }, [isLoaded, props.marker, props.secondaryMarkers]);
 
   useEffect(() => {
     if (props.disabled && enabled) {
@@ -44,7 +51,7 @@ function MapJsApi(props: MapJsApiProps) {
       setEnabled(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.disabled]);
+  }, [props.disabled, isLoaded]);
 
   useEffect(() => {
     map && setMapInteractivityEnabled(enabled);
@@ -72,14 +79,8 @@ function MapJsApi(props: MapJsApiProps) {
           options={{ fullscreenControl: false, streetViewControl: false }}
           onClick={handleMapClick}
         >
-          {props.marker && (
-            <Marker position={props.marker}></Marker>
-          )}
-          {props.secondaryMarkers && props.secondaryMarkers.map((marker, i) => (
-            <Fragment key={i}>
-              <Marker position={marker}></Marker>
-            </Fragment>
-          ))}
+          {isLoaded && marker && <Marker position={marker}></Marker>}
+          {secondaryMakers && secondaryMakers.map((marker, i) => <Marker key={i} position={marker} />)}
         </GoogleMap>
       )}
     </Layout>

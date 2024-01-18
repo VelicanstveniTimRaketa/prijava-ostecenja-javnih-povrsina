@@ -22,15 +22,26 @@ body {
   min-height: 100vh;
 }
 
-html, body, #root {
+html,
+body,
+#root {
   background: white;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  color: black;
 }
 
 .shadow {
   box-shadow: 0 0 3px 0 rgba(30, 30, 30, 0.33);
 }
 
-.normalCursor, .normalCursor * {
+.normalCursor,
+.normalCursor * {
   cursor: default !important;
 }
 
@@ -48,11 +59,34 @@ html, body, #root {
   transition: 200ms;
 }
 
-.parentIconHover:hover > .iconHover {
+.parentIconHover:hover>.iconHover {
   color: rgba(0, 0, 0, 0.25);
 }
 
-
 .iconHover:hover {
   color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.bgAnim {
+  /*background: linear-gradient(30deg, rgb(115, 140, 199) 0%, rgb(215, 222, 232) 35%, rgb(248, 248, 249) 100%);*/
+  background: linear-gradient(30deg, rgb(86, 112, 174) 0%, rgb(201, 211, 225) 35%, rgb(250, 250, 250) 65%, rgb(250, 250, 250) 100%);
+	background-size: 200% 200%;
+  animation: 3s infinite alternate bgGradientSlide;
+}
+
+@keyframes bgGradientSlide {
+	0% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.onClick {
+  transition: transform 150ms;
+}
+
+.onClick:active {
+  transform: scale(0.9);
 }

@@ -2,6 +2,7 @@
 **/.vscode
 **/.DS_Store
 **/.env
+**/.vite
 
 frontend/dist
 frontend/node_modules
@@ -17,3 +18,5 @@ docs/*.synctex.gz
 docs/*.toc
 docs/*.fdb_latexmk
 docs/*.fls
+
+static

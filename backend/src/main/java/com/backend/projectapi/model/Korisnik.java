@@ -3,6 +3,7 @@ package com.backend.projectapi.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -40,12 +41,19 @@ public class Korisnik implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+
     @Column(columnDefinition = "VARCHAR(6) DEFAULT 'true'")
     private String active;
+
 
     @ManyToOne
     @JoinColumn(name = "uredId")
     private GradskiUred ured;
+
+
+    @Column(columnDefinition = "VARCHAR(7) DEFAULT NULL")
+    @Pattern(regexp = "(NULL|pending|active)")
+    private String ured_status;
 
     @NonNull
     @Email

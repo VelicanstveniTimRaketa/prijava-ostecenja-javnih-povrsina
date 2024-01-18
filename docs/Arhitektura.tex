@@ -192,39 +192,67 @@ vrijeme{\_}otklona, naziv, opis. Ovaj entitet u vezi je One-to-One s tablicom lo
 			
 		\section{Dijagram razreda}
 		
-			\textit{Potrebno je priložiti dijagram razreda s pripadajućim opisom. Zbog preglednosti je moguće dijagram razlomiti na više njih, ali moraju biti grupirani prema sličnim razinama apstrakcije i srodnim funkcionalnostima.}\\
+			Na slikama 4.3 i 4.4 prikazani su razredi i njihove relacije na serverskoj strani aplikacije. Konkretnije rečeno prikazani su modeli i kontroleri. \\
 			
-			\textbf{\textit{dio 1. revizije}}\\
+			Svi kontroleri nasljeđuju razred Controller. Metode koje su u njima implementirane ovise o DTO objektima, koji se realiziraju pomoću metoda implementiranih u Domain dijelu razreda.
 			
-			\textit{Prilikom prve predaje projekta, potrebno je priložiti potpuno razrađen dijagram razreda vezan uz \textbf{generičku funkcionalnost} sustava. Ostale funkcionalnosti trebaju biti idejno razrađene u dijagramu sa sljedećim komponentama: nazivi razreda, nazivi metoda i vrste pristupa metodama (npr. javni, zaštićeni), nazivi atributa razreda, veze i odnosi između razreda.}\\
 			
-			\textbf{\textit{dio 2. revizije}}\\			
-			
-			\textit{Prilikom druge predaje projekta dijagram razreda i opisi moraju odgovarati stvarnom stanju implementacije}
-			
+				\begin{figure}[H]
+			\includegraphics[scale=0.3]{slike/kontroleri.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Dijagram razreda - Controllers dio}
+			\label{fig:bazapod}
+		\end{figure}
+		
+		\pagebreak
+		
+		Domain dio razreda preslikava strukturu baze podataka, te svi razredi nasljeđuju razred Model. Ovako ilustrirani razredi su zapravo odraz onih relacija koji su zapisani u bazi podataka, te direktno komunciraju sa bazom podataka. Razred Korisnik je ilustracija bilo kojeg registriranog usera koji ima svoju ulogu (povezan sa enumom Role), te može podnijeti prijavu u sustav (pvezanost sa razredom Prijava preko private atributa prijave). Prijave kada se konstruiraju zadaje im se lokacija (pa su preko atributa lokacija povezane sa razredom Lokacija), slika (agregatna povezanost sa razredom Slika preko varijable slike) i tip ostecenja (agregatna povezanost sa razredom tipOstecenja preko atributa tipOstecenja). Razred GradskiUred je reprezentacija gradskig ureda koje je povezan sa tipom oštećenja preko atributa tipOstecenja. \\
+		
+		
+			\begin{figure}[H]
+			\includegraphics[scale=0.3]{slike/domain.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Dijagram razreda - Controllers dio}
+			\label{fig:bazapod}
+		\end{figure}
 			
 			
 			\eject
-		
 		\section{Dijagram stanja}
 			
 			
-			\textbf{\textit{dio 2. revizije}}\\
+			Dijagrami stanja su tu da predoče stanja objekta, te prijelaze iz jednog stanja u drugo na poticaj nekakvog događaja (okidača). Na slici je prikazan dijagram stanja za prijavljenog korisnika. Korisniku je prikazana početna stranica sa Google Maps kartom na kojoj su ozačene prijave koje su aktivne, ali i opcija za podnošenje nove prijave kao i pretraga prijava po određenim filterima. Pri odabiru opcije za podnošenje nove prijave otvara mu se forma koja zahtjeva unos odrešenih podataka karakterističnih za vrstu  štete. Također, ako korisnik ne želi podnijeti novu prijavu u sustav, već po pretragama postojećih, može samo tu istu odabrati i klikom na "Pošalji" se ta ista prijava šalje opet u sustav. Nadalje, korisnik klikom na "Gradski uredi" može vidjeti listu postojećih gradskih ureda, ali i kreirati novi gdje mu se otavara forma koja zahtjeva unos podataka za novi ured. Korisnik u svakom trenutku može kliknuti na ikonicu profila i odabirom "Izmijeni profil" uređivati svoje podatke, ali i pregledati vlastite prijave klikom na "Pregled mojih prijava". Korisnik se iz sustava odjavljuje odabirom opcije "Odjava."
 			
-			\textit{Potrebno je priložiti dijagram stanja i opisati ga. Dovoljan je jedan dijagram stanja koji prikazuje \textbf{značajan dio funkcionalnosti} sustava. Na primjer, stanja korisničkog sučelja i tijek korištenja neke ključne funkcionalnosti jesu značajan dio sustava, a registracija i prijava nisu. }
 			
+			\begin{figure}[H]
+			\includegraphics[scale=0.4]{slike/DijagramStanja.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Dijagram stanja - Prijavljeni korisnik}
+			\label{fig:bazapod}
+		\end{figure}
 			
 			\eject 
 		
 		\section{Dijagram aktivnosti}
 			
-			\textbf{\textit{dio 2. revizije}}\\
+			Dijagram aktivnosti se koristi za opis modela toka upravljanja ili toka podataka. U modeliranju jednog takvog dijagrama aktivnosti, podrazumijeva se da se novi korak inicira tek kada prethodni završi. Na dijagramu prikazanom na idućoj slici prikazano je podnošenje prijave u sustav nakon logina korisnika. Korisnik su se nakon opcije prjavi otvara forma sa traženim podacima. Kada unese tražene podatke, korisnik podnosi prijavu u sustav.
 			
-			 \textit{Potrebno je priložiti dijagram aktivnosti s pripadajućim opisom. Dijagram aktivnosti treba prikazivati značajan dio sustava.}
+			
+			\begin{figure}[H]
+			\includegraphics[scale=0.4]{slike/ActivityDiagram.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Dijagram aktivnosti - Dodavanje prijave}
+			\label{fig:bazapod}
+		\end{figure}
 			
 			\eject
 		\section{Dijagram komponenti}
 		
-			\textbf{\textit{dio 2. revizije}}\\
-		
-			 \textit{Potrebno je priložiti dijagram komponenti s pripadajućim opisom. Dijagram komponenti treba prikazivati strukturu cijele aplikacije.}
+			Dijagram komponenti nam pomaže slikovno ilustrirati ovisnost i razmještaj svih komponenti u sustavu. Dijagram predočen slikom 4.8. sastoji se od 3 glavne komponente: web preglednika kojim korisnik pristupa aplikaciji, frontend dijela zaduženog za interakciju sa kroisnikom i prosljeđivanje podataka backendu, te backend dijela koji vrši svu pozadinsku funkcionalnost aplikacije. Preko seb sučelja se u web pregledniku prikazuju određeni "pogledi", tj. Router određuje koja će se stranica prikazati na osnoi upisanog URL-a. Ključne stvari od kojih se još frontend satsoji su index.ts, App.tsx i React JavaScript.  Sve TypeScript datoteke ovise o biblioteci React JavaScript koja dohvaća gotove komponente koje se koriste u interakcijama. index.ts je početni prikaz koji kominicira sa App.tsx-om koji dalje izgrađuje grafičko sučelje (poziva svoje specijalizacije) ovisno o korisnikovim akcijama. Kako bi se dohvatile JSON datoteke view komponenta preko REST API-ja komunicira sa backend dijelom sustava. Controller komponenta na backend strani prima podatke, ali i šalje odgovarajuće response poruke. Service komponenta prima zahtjeve od Controllera, obrađuje ih i prosljeđuje Repository komponenti koja preko JPA sučelja "izvlači" određene tablice iz baze podataka i pretvara ih u DTO oblik koje šalje opet u protok kroz arhitekturu.
+			
+			\begin{figure}[H]
+			\includegraphics[scale=0.5]{slike/compDiagram.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Dijagram komponenti}
+			\label{fig:bazapod}
+		\end{figure}

@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 import { useToggleable } from "../hooks/useToggleable";
 import Avatar from "antd/es/avatar/avatar";
 import FloatingList from "./FloatingList";
+import { clearSavedUser } from "../utils/user";
 
 function UserIcon() {
   const { global, setGlobal } = useContext(StateContext);
@@ -14,6 +15,7 @@ function UserIcon() {
 
   function onLogout() {
     setGlobal({ ...global, user: undefined });
+    clearSavedUser();
     navigate("/login");
   }
 
@@ -38,7 +40,7 @@ function UserIcon() {
   return (
     <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
       <Typography.Title level={5} style={{ margin: "0 1em" }}>{global.user?.username}</Typography.Title>
-      <Avatar onClick={toggle} icon={<UserOutlined />} />
+      <Avatar onClick={toggle} className="onClick" style={{ cursor: "pointer" }} icon={<UserOutlined />} />
       {active && <FloatingList data={items} />}
     </div>
   );

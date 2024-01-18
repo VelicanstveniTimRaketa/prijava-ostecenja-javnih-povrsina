@@ -3,9 +3,13 @@ package com.backend.projectapi.config;
 import com.backend.projectapi.ResponseData;
 import com.backend.projectapi.exception.RecordNotFoundException;
 import com.backend.projectapi.model.Korisnik;
+import com.backend.projectapi.model.RefreshToken;
 import com.backend.projectapi.model.Role;
 import com.backend.projectapi.repository.KorisniciRepository;
+import com.backend.projectapi.repository.RefreshTokenRepository;
+import com.backend.projectapi.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,12 +22,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class AuthenticationService {
     private final KorisniciRepository korisnikRepo;
     private final PasswordEncoder encoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final RefreshTokenService refreshTokenService;
+    private final RefreshTokenRepository refreshTokenRepository;
+
+    public AuthenticationService(KorisniciRepository korisnikRepo, PasswordEncoder encoder, JwtService jwtService, AuthenticationManager authenticationManager, RefreshTokenService refreshTokenService, RefreshTokenRepository refreshTokenRepository) {
+        this.korisnikRepo = korisnikRepo;
+        this.encoder = encoder;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+        this.refreshTokenService = refreshTokenService;
+        this.refreshTokenRepository = refreshTokenRepository;
+    }
+
     public AuthenticationResponse register(RegisterRequest req){
         var korisnik = Korisnik.builder()
                 .ime(req.getIme())
@@ -31,6 +47,7 @@ public class AuthenticationService {
                 .username(req.getUsername())
                 .email(req.getEmail())
                 .role(Role.USER)
+                .active("true")
                 .password(encoder.encode(req.getPassword()))
                 .build();
 
@@ -39,10 +56,12 @@ public class AuthenticationService {
         }else if(korisnikRepo.findByUsername(req.getUsername()).isPresent()){
             throw new RecordNotFoundException("Korisnik s danim usernameom već postoji.");
         }
-        korisnikRepo.save(korisnik);
+        Korisnik korisnik1 = korisnikRepo.save(korisnik);
         var jwtToken = jwtService.generateToken(korisnik);
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(korisnik1.getId());
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .refreshToken(refreshToken.getToken())
                 .korisnik(korisnikRepo.findByEmail(req.getEmail()).get())
                 .build();
     }
@@ -51,21 +70,29 @@ public class AuthenticationService {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            request.getEmail(),
+                            request.getUsername(),
                             request.getPassword()
                     )
             );
         }catch (AuthenticationException exc){
-            throw new RecordNotFoundException("Pogrešan email ili lozinka.");
+            throw new RecordNotFoundException("Pogrešno korisničko ime ili lozinka.");
+
         }
 
-        var korisnik= korisnikRepo.findByEmail(request.getEmail()).orElseThrow();
+        var korisnik= korisnikRepo.findByUsername(request.getUsername()).orElseThrow();
 
-        // System.out.println(encoder.matches(request.password,korisnik.getPassword()));
+        if (korisnik.getActive().equals("false")){
+            throw new RecordNotFoundException("Pogrešno korisničko ime ili lozinka.");
+        }
+
+
         var jwtToken = jwtService.generateToken(korisnik);
+        RefreshToken refreshToken = refreshTokenRepository.findByKorisnikId(korisnik.getId()).get();
+
         return AuthenticationResponse.builder()
                 .token(jwtToken)
-                .korisnik(korisnikRepo.findByEmail(request.getEmail()).get())
+                .refreshToken(refreshToken.getToken())
+                .korisnik(korisnikRepo.findByUsername(request.getUsername()).get())
                 .build();
     }
 }

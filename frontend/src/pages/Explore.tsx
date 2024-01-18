@@ -2,7 +2,7 @@ import { Button, DatePicker, Divider, Form, Select, Typography } from "antd";
 import { CloseCircleFilled } from "@ant-design/icons";
 import { useForm } from "antd/es/form/Form";
 import { Content } from "antd/es/layout/layout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Prijava, PrijaveOptions } from "../utils/types";
 import { getPrijave } from "../utils/fetch";
 import { useOstecenja } from "../hooks/useOstecenja";
@@ -12,6 +12,7 @@ import { locationToGoogle } from "../utils/location";
 import locale from "antd/es/date-picker/locale/hr_HR";
 import ReportList from "../components/ReportList";
 import MapJsApi from "../components/MapJsApi";
+import AlertBanner from "../components/AlertBanner";
 
 const styleLocationActive = {
   color: "green",
@@ -26,7 +27,13 @@ function Explore() {
   const [location, setLocation] = useState<google.maps.LatLng | undefined>(undefined);
   const [selectedPrijava, setSelectedPrijava] = useState<Prijava>();
   const [locationActive, toggleLocation, ref] = useToggleable(false);
+  const [loading, setLoading] = useState(false);
   const ostecenja = useOstecenja();
+
+  useEffect(() => {
+    onSubmit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function onSubmit() {
     const options: PrijaveOptions = {};
@@ -47,7 +54,11 @@ function Explore() {
       options.lng = location.lng().toString();
     }
 
-    getPrijave(options).then(res => setData(res.data));
+    setLoading(true);
+    getPrijave(options).then(res => {
+      setData(res.data?.sort((p1, p2) => p2.prvoVrijemePrijave.getTime() - p1.prvoVrijemePrijave.getTime()));
+      setLoading(false);
+    });
   }
 
   const selectedPrijavaSpot = selectedPrijava && locationToGoogle(selectedPrijava.lokacija);
@@ -119,7 +130,7 @@ function Explore() {
           </Select>
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">Pošalji</Button>
+          <Button type="primary" loading={loading} htmlType="submit">Pošalji</Button>
         </Form.Item>
       </Form>
       <Divider />
@@ -127,13 +138,17 @@ function Explore() {
         <Typography.Title level={5} style={{ margin: "0.5em" }}>Broj pronađenih prijava: {data.length}</Typography.Title>
         <div style={{ display: "flex" }}>
           <ReportList onClick={p => setSelectedPrijava({ ...p })} data={data} />
-          <MapJsApi
-            style={{ display: "flex", position: "sticky", top: "30vh", margin: "1em 2em" }}
-            marker={selectedPrijavaSpot}
-            center={selectedPrijavaSpot}
-            zoom={selectedPrijava && 15}
-            secondaryMarkers={selectedPrijava ? undefined : data.map(p => locationToGoogle(p.lokacija))}
-          />
+          {data.length > 0 ?
+            <MapJsApi
+              style={{ display: "flex", position: "sticky", top: "30vh", margin: "1em 2em" }}
+              marker={selectedPrijavaSpot}
+              center={selectedPrijavaSpot}
+              zoom={selectedPrijava && 15}
+              secondaryMarkers={selectedPrijava ? undefined : data.map(p => locationToGoogle(p.lokacija))}
+            />
+            :
+            <AlertBanner message="Nema prijava za odabrane filtere!" />
+          }
         </div>
       </>}
     </Content>

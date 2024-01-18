@@ -1,10 +1,28 @@
 import { Content } from "antd/es/layout/layout";
+import { Button, Checkbox, Modal, Typography, notification } from "antd";
+import { deleteUser, getAllUsers } from "../utils/fetch";
+import { useState, useEffect } from "react";
+import { User, Response } from "../utils/types";
 import CustomList from "../components/CustomList";
-import { useUsers } from "../hooks/useUsers";
-import { Button, Checkbox, Typography } from "antd";
 
 function Users() {
-  const users = useUsers();
+  const [users, setUsers] = useState<User[]>();
+  const [deletingUser, setDeletingUser] = useState<number>();
+
+  useEffect(() => {
+    getAllUsers().then(res => setUsers(res.data));
+  }, []);
+
+  function userRemovedHandler(e: Response<unknown>) {
+    if (e.success) {
+      notification.success({ message: "Korisnik uspješno izbrisan", description: "", placement: "top" });
+      getAllUsers().then(res => setUsers(res.data));
+      setDeletingUser(undefined);
+    } else {
+      notification.error({ message: "Pogreška pri brisanju korisnika", description: e.errors && e.errors[0], placement: "top" });
+    }
+  }
+
   const data = users?.map(user => ({
     id: user.id,
     items: [
@@ -22,14 +40,14 @@ function Users() {
       },
       {
         title: "Ured",
-        value: user.ured?.naziv || "Nema"
+        value: user.ured?.naziv || "Nema",
       },
       {
         title: "Administrator",
         value: <Checkbox disabled defaultChecked={user.role === "ADMIN"} />
       },
       {
-        value: <Button>Izbriši</Button>
+        value: <Button danger onClick={() => setDeletingUser(user.id)}>Izbriši</Button>
       },
     ]
   }));
@@ -37,7 +55,17 @@ function Users() {
     <Content style={{ margin: "2em", display: "flex", flexDirection: "column", alignItems: "center" }}>
       <Typography.Title level={2}>Korisnici</Typography.Title>
       {data && <CustomList data={data} />}
-    </Content>
+      <Modal
+        open={deletingUser !== undefined}
+        title="Potvrdite brisanje"
+        onOk={() => deletingUser && deleteUser(deletingUser).then(userRemovedHandler)}
+        onCancel={() => setDeletingUser(undefined)}
+        okText="U redu"
+        cancelText="Odustani"
+      >
+        <p>Želite li stvarno izbrisati prijavu {deletingUser}?</p>
+    </Modal>
+    </Content >
   );
 }
 

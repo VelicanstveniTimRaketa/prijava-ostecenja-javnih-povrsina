@@ -19,6 +19,8 @@ import Check from "../components/Check";
 import EditProfile from "./EditProfile";
 import Profile from "./Profile";
 import UserReports from "./UserReports";
+import MyOffice from "../components/MyOffice";
+import EditReport from "./EditReport";
 
 const items: MenuPropsWithComponent = [
   {
@@ -77,8 +79,9 @@ function Main() {
         <Layout style={{ display: "flex", flexDirection: "row", background: "white", alignItems: "center" }}>
           <Logo />
           <Menu
-            style={{ display: "flex", padding: "0 1em", minWidth: "fit-content" }}
+            style={{ display: "flex", padding: "0 1em", maxWidth: "fit-content" }}
             mode="horizontal"
+            disabledOverflow={true}
             onClick={info => navigate(info.key)}
             selectedKeys={[currentPage]}
             items={menuItems}
@@ -104,6 +107,7 @@ function Main() {
         {items.map(item => (
           <Route key={item.item.key} path={item.item.key as string} element={<item.component />} />
         ))}
+        <Route path="offices/myOffice" element={<MyOffice />} />
         <Route path="search/:id" element={<Report enableEditing={global.user?.role === "ADMIN"} />} />
         <Route path="users" element={<Users />} />
         <Route path="report" element={<NewReport />} />
@@ -117,6 +121,7 @@ function Main() {
             </Routes>
           </Check>
         } />
+        <Route path="editReport/:id" element={<EditReport />} />
       </Routes>
     </Layout>
   );
