@@ -81,6 +81,10 @@ public class AuthenticationService {
 
         var korisnik= korisnikRepo.findByUsername(request.getUsername()).orElseThrow();
 
+        if (korisnik.getActive().equals("false")){
+            throw new RecordNotFoundException("Pogrešno korisničko ime ili lozinka.");
+        }
+
 
         var jwtToken = jwtService.generateToken(korisnik);
         RefreshToken refreshToken = refreshTokenRepository.findByKorisnikId(korisnik.getId()).get();
