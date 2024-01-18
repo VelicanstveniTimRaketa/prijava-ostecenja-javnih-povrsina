@@ -48,6 +48,9 @@ $ mvn clean spring-boot:run
 ```
 Moguće je konfigurirati postavke backenda postavljajući sljedeće vrijednosti u `backend/.env` datoteku:  
 ```ini
+JWT_SECRET_TOKEN=token                       # JWT tajni token, OBAVEZANO ga postaviti
+
+# OBAVEZNO SAMO ZA PRODUKCIJU
 PORT=8080                                    # Port na kojem je izložen API
 DB_URL=jdbc:postgresql://localhost:5432/pojp # URL baze podataka
 DB_USERNAME=postgres                         # Korisnik baze podataka
