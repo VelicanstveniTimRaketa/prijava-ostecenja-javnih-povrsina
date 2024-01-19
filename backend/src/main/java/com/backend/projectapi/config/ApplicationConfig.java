@@ -19,14 +19,13 @@ public class ApplicationConfig {
     private final KorisniciRepository korisniciRepo;
 
     @Bean
-    public UserDetailsService userDetailsService(){
+    public UserDetailsService userDetailsService() {
 
-        return username -> korisniciRepo.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return username -> korisniciRepo.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
@@ -35,12 +34,12 @@ public class ApplicationConfig {
 
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception{
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }

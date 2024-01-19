@@ -16,11 +16,11 @@ import java.util.Arrays;
 
 
 @Controller
-public class ImageController extends ApplicationController{
+public class ImageController extends ApplicationController {
 
     @GetMapping("/getImage/{id}/{name}")
     @ResponseBody
-    public ResponseEntity<Resource> serveImage(@PathVariable("id") String id,@PathVariable("name") String name) {
+    public ResponseEntity<Resource> serveImage(@PathVariable("id") String id, @PathVariable("name") String name) {
         // Load image dynamically based on imageName
         // ...
         // Replace "path/to/dynamic/images" with the actual directory where you store dynamic images
@@ -34,14 +34,11 @@ public class ImageController extends ApplicationController{
                 System.out.println("------------------------------------------------------");
                 System.out.println(resource.getFilename());
                 String[] type = resource.getFilename().split("\\.");
-                String typee=type[type.length-1];
+                String typee = type[type.length - 1];
                 System.out.println(Arrays.toString(Arrays.stream(type).toArray()));
                 System.out.println(typee);
 
-                return ResponseEntity.ok()
-                        .header(HttpHeaders.CONTENT_DISPOSITION, "filename=" + resource.getFilename())
-                        .header(HttpHeaders.CONTENT_TYPE, "image/"+typee)
-                        .body(resource);
+                return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "filename=" + resource.getFilename()).header(HttpHeaders.CONTENT_TYPE, "image/" + typee).body(resource);
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
