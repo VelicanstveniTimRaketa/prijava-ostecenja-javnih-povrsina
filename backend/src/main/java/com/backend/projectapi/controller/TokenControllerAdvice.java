@@ -16,10 +16,6 @@ public class TokenControllerAdvice {
     @ExceptionHandler(value = TokenRefreshException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public RecordNotFoundException handleTokenRefreshException(TokenRefreshException ex, WebRequest request) {
-        return new RecordNotFoundException(""+
-                HttpStatus.FORBIDDEN.value()+
-                new Date()+
-                ex.getMessage()+
-                request.getDescription(false));
+        return new RecordNotFoundException("" + HttpStatus.FORBIDDEN.value() + new Date() + ex.getMessage() + request.getDescription(false));
     }
 }

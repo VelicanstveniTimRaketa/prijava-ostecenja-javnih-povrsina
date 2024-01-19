@@ -40,48 +40,31 @@ public class AuthenticationService {
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
-    public AuthenticationResponse register(RegisterRequest req){
-        var korisnik = Korisnik.builder()
-                .ime(req.getIme())
-                .prezime(req.getPrezime())
-                .username(req.getUsername())
-                .email(req.getEmail())
-                .role(Role.USER)
-                .active("true")
-                .password(encoder.encode(req.getPassword()))
-                .build();
+    public AuthenticationResponse register(RegisterRequest req) {
+        var korisnik = Korisnik.builder().ime(req.getIme()).prezime(req.getPrezime()).username(req.getUsername()).email(req.getEmail()).role(Role.USER).active("true").password(encoder.encode(req.getPassword())).build();
 
-        if(korisnikRepo.findByEmail(req.getEmail()).isPresent()){
+        if (korisnikRepo.findByEmail(req.getEmail()).isPresent()) {
             throw new RecordNotFoundException("Korisnik s danim emailom već postoji.");
-        }else if(korisnikRepo.findByUsername(req.getUsername()).isPresent()){
+        } else if (korisnikRepo.findByUsername(req.getUsername()).isPresent()) {
             throw new RecordNotFoundException("Korisnik s danim usernameom već postoji.");
         }
         Korisnik korisnik1 = korisnikRepo.save(korisnik);
         var jwtToken = jwtService.generateToken(korisnik);
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(korisnik1.getId());
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .refreshToken(refreshToken.getToken())
-                .korisnik(korisnikRepo.findByEmail(req.getEmail()).get())
-                .build();
+        return AuthenticationResponse.builder().token(jwtToken).refreshToken(refreshToken.getToken()).korisnik(korisnikRepo.findByEmail(req.getEmail()).get()).build();
     }
 
-    public AuthenticationResponse authenticate(AuthenticationRequest request){
+    public AuthenticationResponse authenticate(AuthenticationRequest request) {
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            request.getUsername(),
-                            request.getPassword()
-                    )
-            );
-        }catch (AuthenticationException exc){
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        } catch (AuthenticationException exc) {
             throw new RecordNotFoundException("Pogrešno korisničko ime ili lozinka.");
 
         }
 
-        var korisnik= korisnikRepo.findByUsername(request.getUsername()).orElseThrow();
+        var korisnik = korisnikRepo.findByUsername(request.getUsername()).orElseThrow();
 
-        if (korisnik.getActive().equals("false")){
+        if (korisnik.getActive().equals("false")) {
             throw new RecordNotFoundException("Pogrešno korisničko ime ili lozinka.");
         }
 
@@ -89,10 +72,6 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(korisnik);
         RefreshToken refreshToken = refreshTokenRepository.findByKorisnikId(korisnik.getId()).get();
 
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .refreshToken(refreshToken.getToken())
-                .korisnik(korisnikRepo.findByUsername(request.getUsername()).get())
-                .build();
+        return AuthenticationResponse.builder().token(jwtToken).refreshToken(refreshToken.getToken()).korisnik(korisnikRepo.findByUsername(request.getUsername()).get()).build();
     }
 }

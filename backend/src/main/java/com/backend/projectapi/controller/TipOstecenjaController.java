@@ -16,12 +16,13 @@ import java.util.List;
 @RestController
 public class TipOstecenjaController extends ApplicationController {
     private final TipOstecenjaService service;
-    public TipOstecenjaController(TipOstecenjaService ostecenjaService){
+
+    public TipOstecenjaController(TipOstecenjaService ostecenjaService) {
         this.service = ostecenjaService;
     }
 
     @GetMapping("/ostecenja")
-    public ResponseEntity<ResponseData<List<TipOstecenja>>> getOstecenja(){
+    public ResponseEntity<ResponseData<List<TipOstecenja>>> getOstecenja() {
         return new ResponseEntity<>(ResponseData.success(service.getAllTipOstecenja()), HttpStatus.OK);
     }
 }

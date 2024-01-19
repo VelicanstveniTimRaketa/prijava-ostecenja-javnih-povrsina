@@ -3,8 +3,6 @@ package com.backend.projectapi.config;
 import java.util.List;
 
 public class JwtResponse {
-
-
     private String token;
     private String type = "Bearer";
     private String refreshToken;

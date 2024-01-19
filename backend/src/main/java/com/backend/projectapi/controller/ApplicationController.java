@@ -24,7 +24,7 @@ public abstract class ApplicationController {
     public Korisnik getCurrentUser(HttpServletRequest request) {
         String authorizationHeader = request.getHeader("Authorization");
 
-        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer")){
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer")) {
             String token = authorizationHeader.substring(7);
 
             try {
@@ -32,12 +32,12 @@ public abstract class ApplicationController {
                 String username = jwtService.extractUsername(token);
                 Optional<Korisnik> korisnikOpt = korisnikRepo.findByUsername(username);
                 Korisnik korisnik = null;
-                if(korisnikOpt.isPresent()){
+                if (korisnikOpt.isPresent()) {
                     korisnik = korisnikOpt.get();
                     this.currentUser = korisnik;
                 }
                 return korisnik;
-            }catch (Exception e){
+            } catch (Exception e) {
                 return null;
             }
         }
