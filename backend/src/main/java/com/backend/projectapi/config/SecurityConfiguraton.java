@@ -19,17 +19,11 @@ public class SecurityConfiguraton {
     private final JwtAuthenticationFilter jwtAuthFiter;
 
     private final AuthenticationProvider authenticationProvider;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http
-                .csrf(csrf->csrf.disable())
-                .authorizeHttpRequests(auth->auth
-                        .anyRequest()
-                        .permitAll())
-                .sessionManagement(sess->sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFiter, UsernamePasswordAuthenticationFilter.class);
+        http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth.anyRequest().permitAll()).sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authenticationProvider(authenticationProvider).addFilterBefore(jwtAuthFiter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

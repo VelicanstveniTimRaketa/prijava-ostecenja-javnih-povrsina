@@ -61,17 +61,13 @@ public class KorisnikController extends ApplicationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseData<Object>> register(
-            @RequestBody RegisterRequest request
-    ) {
+    public ResponseEntity<ResponseData<Object>> register(@RequestBody RegisterRequest request) {
 
         return new ResponseEntity<>(ResponseData.success(authService.register(request)), HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseData<Object>> login(
-            @RequestBody AuthenticationRequest request
-    ) {
+    public ResponseEntity<ResponseData<Object>> login(@RequestBody AuthenticationRequest request) {
         return new ResponseEntity<>(ResponseData.success(authService.authenticate(request)), HttpStatus.OK);
     }
 
@@ -80,19 +76,16 @@ public class KorisnikController extends ApplicationController {
     public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest request) {
         String requestRefreshToken = request.getRefreshToken();
 
-        return refreshTokenService.findByToken(requestRefreshToken)
-                .map(refreshTokenService::verifyExpiration)
-                .map(RefreshToken::getUser)
-                .map(user -> {
-                    String token = jwtService.generateToken(user);
-                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
-                })
-                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
-                        "Refresh token is not in database!"));
+        return refreshTokenService.findByToken(requestRefreshToken).map(refreshTokenService::verifyExpiration).map(RefreshToken::getUser).map(user -> {
+            String token = jwtService.generateToken(user);
+            return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
+        }).orElseThrow(() -> new TokenRefreshException(requestRefreshToken, "Refresh token is not in database!"));
     }
 
     @GetMapping("/me")
     public ResponseEntity<?> currentUser(@RequestHeader("Authorization") String authorizationHeader) {
+
+        // System.out.println(jwtService.generateToken(korisniciRepo.findByUsername("guest").get()));
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer")) {
             String token = authorizationHeader.substring(7);
