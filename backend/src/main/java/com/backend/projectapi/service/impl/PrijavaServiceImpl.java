@@ -296,11 +296,6 @@ public class PrijavaServiceImpl implements PrijavaService {
         Lokacija lok=new Lokacija(prijavaDTO.getLatitude(), prijavaDTO.getLongitude());
         lokacijRepo.save(lok);
         newPrijava.setLokacija(lok);
-//
-//        if(prijavaDTO.getSlike() != null) {
-//            List<Slika> savedSlike = addSlike(prijavaDTO.getSlike(), newPrijava);
-//            newPrijava.setSlike(savedSlike);
-//        }
         prijaveRepo.save(newPrijava);
         return true;
     }
