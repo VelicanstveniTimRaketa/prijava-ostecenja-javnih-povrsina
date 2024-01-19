@@ -194,25 +194,41 @@ vrijeme{\_}otklona, naziv, opis. Ovaj entitet u vezi je One-to-One s tablicom lo
 		
 			Na slikama 4.3 i 4.4 prikazani su razredi i njihove relacije na serverskoj strani aplikacije. Konkretnije rečeno prikazani su modeli i kontroleri. \\
 			
-			Svi kontroleri nasljeđuju razred Controller. Metode koje su u njima implementirane ovise o DTO objektima, koji se realiziraju pomoću metoda implementiranih u Domain dijelu razreda.
+			Svi kontroleri nasljeđuju razred ApplicationController. Metode koje su u njima implementirane ovise o DTO objektima, koji se realiziraju pomoću metoda implementiranih u Domain dijelu razreda.
 			
 			
 				\begin{figure}[H]
-			\includegraphics[scale=0.3]{slike/kontroleri.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\includegraphics[scale=0.65]{slike/kontroleri1.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
 			\centering
-			\caption{Dijagram razreda - Controllers dio}
-			\label{fig:bazapod}
+			\caption{Dijagram razreda 1 - Controllers dio} 
+			\label{fig:ijagraz2}
+		\end{figure}
+		
+		\begin{figure}[H]
+			\includegraphics[scale=0.65]{slike/kontroleri2.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Dijagram razreda 2 - Controllers dio}
+			\label{fig:dijagraz1}
+		\end{figure}
+		
+		Data Transfer Objects su prisutni u sustavi da bi se olakšala razmjena podataka između više slojva. GradskiUredDTO, PrijavaDTO i KorisnikDTO služe za stvaranje novih objekata za gradski ured, prijavu te korisnika. GradskiUredDTOR služi za prikazaivanje određenog gradskog ureda krajnjem korisniku.
+		
+		\begin{figure}[H]
+			\includegraphics[scale=0.65]{slike/dto.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\centering
+			\caption{Dijagram razreda - DTO}
+			\label{fig:dijagraz1}
 		\end{figure}
 		
 		\pagebreak
 		
-		Domain dio razreda preslikava strukturu baze podataka, te svi razredi nasljeđuju razred Model. Ovako ilustrirani razredi su zapravo odraz onih relacija koji su zapisani u bazi podataka, te direktno komunciraju sa bazom podataka. Razred Korisnik je ilustracija bilo kojeg registriranog usera koji ima svoju ulogu (povezan sa enumom Role), te može podnijeti prijavu u sustav (pvezanost sa razredom Prijava preko private atributa prijave). Prijave kada se konstruiraju zadaje im se lokacija (pa su preko atributa lokacija povezane sa razredom Lokacija), slika (agregatna povezanost sa razredom Slika preko varijable slike) i tip ostecenja (agregatna povezanost sa razredom tipOstecenja preko atributa tipOstecenja). Razred GradskiUred je reprezentacija gradskig ureda koje je povezan sa tipom oštećenja preko atributa tipOstecenja. \\
+		Domain dio razreda preslikava strukturu baze podataka, te svi razredi nasljeđuju razred Model. Ovako ilustrirani razredi su zapravo odraz onih relacija koji su zapisani u bazi podataka, te direktno komunciraju sa bazom podataka. Razred Korisnik je ilustracija bilo kojeg registriranog usera koji ima svoju ulogu (povezan sa enumom Role), te može podnijeti prijavu u sustav (pvezanost sa razredom Prijava preko private atributa prijave). Prijave kada se konstruiraju zadaje im se lokacija (pa su preko atributa lokacija povezane sa razredom Lokacija), slika (agregatna povezanost sa razredom Slika preko varijable slike) i tip ostecenja (agregatna povezanost sa razredom tipOstecenja preko atributa tipOstecenja). Razred GradskiUred je reprezentacija gradskig ureda koje je povezan sa tipom oštećenja preko atributa tipOstecenja. Također, gradski ured je povezan i sa objektom korisnik jer korinsik može biti pripadnik isključivo jednog gradskog ureda. Kod relacije Prijava uočavamo refleksivnu vezu jer se prijava na uskom području u približno jednako vrijeme kao i ona prije nje može samo nadovezati na nju. RefreshToken koji je povezan sa relacijom korisnik služi za uspostavu sjednice. \\
 		
 		
 			\begin{figure}[H]
-			\includegraphics[scale=0.3]{slike/domain.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
+			\includegraphics[scale=0.5]{slike/domain.PNG} %veličina slike u odnosu na originalnu datoteku i pozicija slike
 			\centering
-			\caption{Dijagram razreda - Controllers dio}
+			\caption{Dijagram razreda - Domain dio}
 			\label{fig:bazapod}
 		\end{figure}
 			
