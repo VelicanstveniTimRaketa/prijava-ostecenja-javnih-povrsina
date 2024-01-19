@@ -18,8 +18,8 @@ function WelcomeView() {
 
     const settings = {
       active: "true",
-      dateFrom: startDate.toISOString(),
-      dateTo: new Date().toISOString(),
+      //dateFrom: startDate.toISOString(),
+      //dateTo: new Date().toISOString(),
     };
     getPrijave(settings).then(v => setPrijavaLocations(v.data?.map(p => locationToGoogle(p.lokacija))));
   }, []);
