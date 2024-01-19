@@ -1,5 +1,6 @@
 package com.backend.projectapi.config;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -16,8 +17,8 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
+    private static final String SECRET_KEY = Dotenv.load().get("JWT_SECRET_KEY");
 
-    private static final String SECRET_KEY = System.getenv("JWT_SECRET_KEY");
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
