@@ -43,14 +43,10 @@ public class GradskiUrediServiceImpl implements GradskiUrediService {
 
     @Override
     public Object addGradskiUred(GradskiUredDTO gradskiUredDTO,Korisnik kreator,String tipOstecenjaNaziv){
-
         System.out.println(gradskiUredDTO.getNazivUreda());
         System.out.println(gradskiUredDTO.getTipOstecenjeID());
 
-
-
         ArrayList<Korisnik> listaKorisnika= new ArrayList<>();
-//        listaKorisnika.add(kreator);
 
         TipOstecenja praviTipOstecenja;
 

@@ -46,7 +46,6 @@ public class PrijaveController extends ApplicationController {
 
     @GetMapping("/prijave/{id}")
     public ResponseEntity<ResponseData<PrijavaResponse>> getPrijavaById(@PathVariable("id") Long id, Model model) {
-        System.out.println(currentUser.getId());
         return new ResponseEntity<>(ResponseData.success(prijavaService.findById(id)), HttpStatus.OK);
     }
 

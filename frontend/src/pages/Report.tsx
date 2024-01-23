@@ -24,8 +24,10 @@ function Report(props: ReportProps) {
   const isIdBad = isNaN(realId) || id === undefined;
 
   useEffect(() => {
-    if (isIdBad || prijava) return;
-    getPrijava(realId).then(val => setPrijava(val.data));
+    if (isIdBad) return;
+    if (!prijava || prijava.id != realId) {
+      getPrijava(realId).then(val => setPrijava(val.data));
+    }
   }, [isIdBad, prijava, realId]);
 
   function izbrisiPrijavu() {

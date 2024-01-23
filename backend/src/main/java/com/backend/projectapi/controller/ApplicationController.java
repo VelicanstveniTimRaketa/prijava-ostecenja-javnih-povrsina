@@ -28,7 +28,6 @@ public abstract class ApplicationController {
             String token = authorizationHeader.substring(7);
 
             try {
-                System.out.println("testing");
                 String username = jwtService.extractUsername(token);
                 Optional<Korisnik> korisnikOpt = korisnikRepo.findByUsername(username);
                 Korisnik korisnik = null;
