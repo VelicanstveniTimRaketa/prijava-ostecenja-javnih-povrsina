@@ -1,10 +1,10 @@
-import { Button, DatePicker, Divider, Form, Select, Typography } from "antd";
+import { Button, DatePicker, Divider, Form, InputNumber, Select, Typography, notification } from "antd";
 import { CloseCircleFilled } from "@ant-design/icons";
 import { useForm } from "antd/es/form/Form";
 import { Content } from "antd/es/layout/layout";
 import { useEffect, useState } from "react";
 import { Prijava, PrijaveOptions } from "../utils/types";
-import { getPrijave } from "../utils/fetch";
+import { getPrijava, getPrijave } from "../utils/fetch";
 import { useOstecenja } from "../hooks/useOstecenja";
 import { Dayjs } from "dayjs";
 import { useToggleable } from "../hooks/useToggleable";
@@ -13,6 +13,7 @@ import locale from "antd/es/date-picker/locale/hr_HR";
 import ReportList from "../components/ReportList";
 import MapJsApi from "../components/MapJsApi";
 import AlertBanner from "../components/AlertBanner";
+import { useNavigate } from "react-router";
 
 const styleLocationActive = {
   color: "green",
@@ -29,6 +30,7 @@ function Explore() {
   const [locationActive, toggleLocation, ref] = useToggleable(false);
   const [loading, setLoading] = useState(false);
   const ostecenja = useOstecenja();
+  const navigate = useNavigate();
 
   useEffect(() => {
     onSubmit();
@@ -58,6 +60,17 @@ function Explore() {
     getPrijave(options).then(res => {
       setData(res.data?.sort((p1, p2) => p2.prvoVrijemePrijave.getTime() - p1.prvoVrijemePrijave.getTime()));
       setLoading(false);
+    });
+  }
+
+  function handleViewPrijava(form: { id: unknown }) {
+    if (!form || typeof form.id !== "number") return;
+    getPrijava(form.id).then(r => {
+      if (!r.success || !r.data || !form.id) {
+        notification.error({ message: "Pogreška", description: r.errors && r.errors[0], placement: "top" });
+        return;
+      }
+      navigate(form.id.toString(), { state: { prijava: r.data } });
     });
   }
 
@@ -131,6 +144,15 @@ function Explore() {
         </Form.Item>
         <Form.Item>
           <Button type="primary" loading={loading} htmlType="submit">Pošalji</Button>
+        </Form.Item>
+      </Form>
+      <div>ili</div>
+      <Form layout="inline" onFinish={handleViewPrijava}>
+        <Form.Item required={false} name="id" label="Pogledajte prijavu po ID-ju:" rules={[{ required: true, message: "" }]}>
+          <InputNumber />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" loading={loading} htmlType="submit">Pogledaj</Button>
         </Form.Item>
       </Form>
       <Divider />

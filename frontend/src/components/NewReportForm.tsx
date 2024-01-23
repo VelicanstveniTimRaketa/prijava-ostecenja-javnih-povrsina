@@ -53,7 +53,7 @@ function NewReportForm(props: NewReportFormProps) {
     }
     const prijava: BarebonesPrijava = {
       naziv: form.getFieldValue("reportName"),
-      opis: form.getFieldValue("opis"),
+      opis: form.getFieldValue("opis") || "",
       ured: Number.parseInt(form.getFieldValue("ured")),
       latitude: location?.lat,
       longitude: location?.lng,

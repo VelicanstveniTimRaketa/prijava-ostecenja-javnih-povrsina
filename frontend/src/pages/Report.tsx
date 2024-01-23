@@ -75,6 +75,10 @@ function Report(props: ReportProps) {
               <span>{prijava.opis ? prijava.opis : "Nema opisa za traženu prijavu."}</span>
             </div>
             <div>
+              <span style={{ fontWeight: "bold" }}>Datum prijave: </span>
+              <span>{prijava.prvoVrijemePrijave.toLocaleString()}</span>
+            </div>
+            <div>
               <span style={{ fontWeight: "bold" }}>Gradski ured: </span>
               <span>{prijava.gradskiUred.naziv ? prijava.gradskiUred.naziv : "Nema odabranog gradskog ureda."}</span>
             </div>
@@ -83,10 +87,14 @@ function Report(props: ReportProps) {
               <span>{prijava.gradskiUred.tipOstecenja.naziv ? prijava.gradskiUred.tipOstecenja.naziv : "Nije određen tip oštećenja."}</span>
             </div>
             <div>
+              <span style={{ fontWeight: "bold" }}>Prijavitelj: </span>
+              <span>{prijava.kreator ? prijava.kreator.username : "Anoniman"}</span>
+            </div>
+            <div>
               <div style={{ fontWeight: "bold" }}>Povezana prijava: </div>
               {prijava.parentPrijava ?
                 item && <CustomList onHoverText="Klikni za prikaz lokacije na karti!" data={[item]} />
-                : <div>Ne postoji parent prijava za traženu prijavu!</div>}
+                : <div>Ne postoji povezana prijava za traženu prijavu!</div>}
             </div>
             <div style={{ fontWeight: "bold" }}>Slike:</div>
             <div style={{ display: "flex", gap: "0.2em", flexWrap: "wrap" }}>{prijava.slike.length == 0 ? "Nema priloženih slika" : (
